@@ -1,5 +1,5 @@
 {
-  "name": "@tramy-dev/tramy",
+  "name": "tramy",
   "version": "1.0.0",
   "description": "The Ultimate AI Productivity Toolkit for Claude Code",
   "type": "module",
