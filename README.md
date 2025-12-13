@@ -1,22 +1,26 @@
-```
-████████╗ ██████╗  █████╗ ███╗   ███╗ ██╗   ██╗
-╚══██╔══╝ ██╔══██╗██╔══██╗████╗ ████║ ╚██╗ ██╔╝
-   ██║    ██████╔╝███████║██╔████╔██║  ╚████╔╝
-   ██║    ██╔══██╗██╔══██║██║╚██╔╝██║   ╚██╔╝
-   ██║    ██║  ██║██║  ██║██║ ╚═╝ ██║    ██║
-   ╚═╝    ╚═╝  ╚═╝╚═╝  ╚═╝╚═╝     ╚═╝    ╚═╝
-```
+<p align="center">
+  <img src="assets/logo.png" alt="Tramy Logo" width="200" />
+</p>
 
-# The Ultimate AI Productivity Toolkit for Claude Code
+<h1 align="center">TRAMY</h1>
+<p align="center"><strong>The Ultimate AI Productivity Toolkit for Claude Code</strong></p>
 
-[![npm version](https://img.shields.io/npm/v/tramy.svg?style=flat-square&color=cb3837)](https://www.npmjs.com/package/tramy)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square)](https://opensource.org/licenses/MIT)
-[![Downloads](https://img.shields.io/npm/dm/tramy.svg?style=flat-square&color=blue)](https://www.npmjs.com/package/tramy)
-[![Node](https://img.shields.io/node/v/tramy.svg?style=flat-square&color=green)](https://nodejs.org)
+<p align="center">
+  <a href="https://www.npmjs.com/package/tramy"><img src="https://img.shields.io/npm/v/tramy.svg?style=flat-square&color=cb3837" alt="npm version" /></a>
+  <a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square" alt="License: MIT" /></a>
+  <a href="https://www.npmjs.com/package/tramy"><img src="https://img.shields.io/npm/dm/tramy.svg?style=flat-square&color=blue" alt="Downloads" /></a>
+  <a href="https://nodejs.org"><img src="https://img.shields.io/node/v/tramy.svg?style=flat-square&color=green" alt="Node" /></a>
+</p>
 
-**12 Roles** | **100+ Commands** | **15 Workflows**
+<p align="center"><strong>12 Roles</strong> | <strong>100+ Commands</strong> | <strong>15 Workflows</strong></p>
 
-[Quick Start](#-quick-start) • [Data Analyst](#-data-analyst-role) • [All Roles](#-all-roles) • [Workflows](#-workflows) • [Documentation](#-configuration)
+<p align="center">
+  <a href="#-quick-start">Quick Start</a> •
+  <a href="#-data-analyst-role">Data Analyst</a> •
+  <a href="#-all-roles">All Roles</a> •
+  <a href="#-workflows">Workflows</a> •
+  <a href="#-configuration">Documentation</a>
+</p>
 
 ---
 
