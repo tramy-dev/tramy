@@ -145,3 +145,4 @@ vite.config.ts.timestamp-*
 
 # Spec file (internal only)
 TRAMY_SPEC.md
+TRAMY_DA_COMPLETE_v1.2.md
