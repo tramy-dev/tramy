@@ -1,5 +1,3 @@
-<div align="center">
-
 ```
 ████████╗ ██████╗  █████╗ ███╗   ███╗ ██╗   ██╗
 ╚══██╔══╝ ██╔══██╗██╔══██╗████╗ ████║ ╚██╗ ██╔╝
@@ -8,7 +6,6 @@
    ██║    ██║  ██║██║  ██║██║ ╚═╝ ██║    ██║
    ╚═╝    ╚═╝  ╚═╝╚═╝  ╚═╝╚═╝     ╚═╝    ╚═╝
 ```
-
 
 # The Ultimate AI Productivity Toolkit for Claude Code
 
@@ -20,8 +17,6 @@
 **12 Roles** | **100+ Commands** | **15 Workflows**
 
 [Quick Start](#-quick-start) • [Data Analyst](#-data-analyst-role) • [All Roles](#-all-roles) • [Workflows](#-workflows) • [Documentation](#-configuration)
-
-</div>
 
 ---
 
