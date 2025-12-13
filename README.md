@@ -2,7 +2,7 @@
 
 > The Ultimate AI Productivity Toolkit for Claude Code
 
-[![npm version](https://img.shields.io/npm/v/@tramy-dev/tramy.svg)](https://www.npmjs.com/package/@tramy-dev/tramy)
+[![npm version](https://img.shields.io/npm/v/tramy.svg)](https://www.npmjs.com/package/tramy)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 **12 Professional Roles | 60+ Commands | 15 Workflows**
@@ -21,7 +21,7 @@ Tramy supercharges [Claude Code](https://claude.ai/code) with specialized AI rol
 
 ```bash
 # Install globally
-npm install -g @tramy-dev/tramy
+npm install -g tramy
 
 # Initialize in your project
 cd your-project
