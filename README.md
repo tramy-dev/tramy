@@ -1,3 +1,5 @@
+<div align="center">
+
 ```
 ████████╗██████╗  █████╗ ███╗   ███╗██╗   ██╗
 ╚══██╔══╝██╔══██╗██╔══██╗████╗ ████║╚██╗ ██╔╝
@@ -7,7 +9,6 @@
    ╚═╝   ╚═╝  ╚═╝╚═╝  ╚═╝╚═╝     ╚═╝   ╚═╝
 ```
 
-<div align="center">
 
 # The Ultimate AI Productivity Toolkit for Claude Code
 
