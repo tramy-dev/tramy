@@ -1,0 +1,72 @@
+{
+  "name": "@tramy-dev/tramy",
+  "version": "1.0.0",
+  "description": "The Ultimate AI Productivity Toolkit for Claude Code",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "bin": {
+    "tramy": "./bin/tramy.js"
+  },
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "files": [
+    "dist",
+    "bin"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint src --ext .ts",
+    "test": "vitest",
+    "test:coverage": "vitest --coverage",
+    "prepublishOnly": "npm run build"
+  },
+  "keywords": [
+    "claude",
+    "claude-code",
+    "ai",
+    "productivity",
+    "cli",
+    "workflow",
+    "automation"
+  ],
+  "author": "tramy.dev <daiduong.eth>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tramy-dev/tramy.git"
+  },
+  "bugs": {
+    "url": "https://github.com/tramy-dev/tramy/issues"
+  },
+  "homepage": "https://github.com/tramy-dev/tramy#readme",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "dependencies": {
+    "commander": "^12.1.0",
+    "chalk": "^5.3.0",
+    "yaml": "^2.4.5",
+    "ora": "^8.0.1",
+    "prompts": "^2.4.2",
+    "fs-extra": "^11.2.0",
+    "glob": "^10.4.1"
+  },
+  "devDependencies": {
+    "@types/fs-extra": "^11.0.4",
+    "@types/node": "^20.14.9",
+    "@types/prompts": "^2.4.9",
+    "tsup": "^8.1.0",
+    "typescript": "^5.5.2",
+    "vitest": "^1.6.0",
+    "eslint": "^8.57.0",
+    "@typescript-eslint/eslint-plugin": "^7.14.1",
+    "@typescript-eslint/parser": "^7.14.1"
+  }
+}
