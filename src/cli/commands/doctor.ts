@@ -1,9 +1,10 @@
 /**
- * Doctor command - Check installation health
+ * Doctor command - Check installation health for Tramy v2.0
  */
 
 import { Command } from 'commander';
 import fs from 'fs-extra';
+import path from 'path';
 import chalk from 'chalk';
 import { logger } from '../utils/logger.js';
 import {
@@ -11,6 +12,7 @@ import {
   loadConfig,
   getClaudeDir,
   getClaudeCommandsDir,
+  getClaudeAgentsDir,
   getConfigPath,
 } from '../../core/index.js';
 
@@ -19,7 +21,7 @@ export const doctorCommand = new Command('doctor')
   .action(async () => {
     const projectPath = process.cwd();
 
-    logger.header('Tramy Health Check');
+    logger.header('Tramy v2.0 Health Check');
     console.log();
 
     let allGood = true;
@@ -41,17 +43,26 @@ export const doctorCommand = new Command('doctor')
 
       try {
         const config = await loadConfig(projectPath);
-        console.log(`  ${chalk.green('✓')} Config is valid`);
-        console.log(chalk.dim(`    Mode: ${config.mode}`));
+        console.log(`  ${chalk.green('✓')} Config is valid (v${config.version})`);
+        console.log(chalk.dim(`    Project: ${config.project.name}`));
         console.log(chalk.dim(`    Default role: ${config.defaultRole}`));
-        console.log(chalk.dim(`    Enabled roles: ${config.enabledRoles.length}`));
-      } catch (error) {
+        console.log(chalk.dim(`    Enabled roles: ${config.roles.length}`));
+      } catch {
         console.log(`  ${chalk.red('✗')} Config is invalid`);
         allGood = false;
       }
     } else if (initialized) {
       console.log(`  ${chalk.yellow('!')} Config file missing`);
       allGood = false;
+    }
+
+    // Check CLAUDE.md
+    const claudeMdPath = path.join(projectPath, 'CLAUDE.md');
+    if (await fs.pathExists(claudeMdPath)) {
+      console.log(`  ${chalk.green('✓')} CLAUDE.md exists`);
+    } else {
+      console.log(`  ${chalk.yellow('!')} CLAUDE.md missing`);
+      console.log(chalk.dim('    Run "tramy context update" to regenerate'));
     }
 
     // Check Claude directory
@@ -67,10 +78,19 @@ export const doctorCommand = new Command('doctor')
     const commandsDir = getClaudeCommandsDir(projectPath);
     if (await fs.pathExists(commandsDir)) {
       const entries = await fs.readdir(commandsDir);
-      const commandCount = entries.length;
-      console.log(`  ${chalk.green('✓')} Commands directory exists (${commandCount} items)`);
+      console.log(`  ${chalk.green('✓')} Commands: ${entries.length} files`);
     } else {
       console.log(`  ${chalk.red('✗')} Commands directory missing`);
+      allGood = false;
+    }
+
+    // Check agents directory
+    const agentsDir = getClaudeAgentsDir(projectPath);
+    if (await fs.pathExists(agentsDir)) {
+      const entries = await fs.readdir(agentsDir);
+      console.log(`  ${chalk.green('✓')} Agents: ${entries.length} roles`);
+    } else {
+      console.log(`  ${chalk.red('✗')} Agents directory missing`);
       allGood = false;
     }
 
@@ -78,9 +98,9 @@ export const doctorCommand = new Command('doctor')
     const nodeVersion = process.version;
     const majorVersion = parseInt(nodeVersion.slice(1).split('.')[0], 10);
     if (majorVersion >= 18) {
-      console.log(`  ${chalk.green('✓')} Node.js version: ${nodeVersion}`);
+      console.log(`  ${chalk.green('✓')} Node.js ${nodeVersion}`);
     } else {
-      console.log(`  ${chalk.red('✗')} Node.js version: ${nodeVersion} (requires >= 18)`);
+      console.log(`  ${chalk.red('✗')} Node.js ${nodeVersion} (requires >= 18)`);
       allGood = false;
     }
 
