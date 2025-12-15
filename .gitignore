@@ -143,6 +143,19 @@ vite.config.ts.timestamp-*
 # Tramy generated directories (project-specific)
 .tramy/
 
-# Spec file (internal only)
+# Spec files (internal only)
 TRAMY_SPEC.md
 TRAMY_DA_COMPLETE_v1.2.md
+TRAMY_V2_FINAL_SPEC.md
+*_SPEC*.md
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Claude Code generated (for user projects)
+CLAUDE.md
