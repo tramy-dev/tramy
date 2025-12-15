@@ -2,7 +2,7 @@
   <img src="assets/logo.png" alt="Tramy Logo" width="200" />
 </p>
 
-<h1 align="center">TRAMY v2.0</h1>
+<h1 align="center">TRAMY</h1>
 <p align="center"><strong>The Ultimate AI Productivity Toolkit for Claude Code</strong></p>
 
 <p align="center">
@@ -23,22 +23,13 @@
 
 ---
 
-## ✨ What's New in v2.0
+## ✨ Features
 
-- **Simplified Commands** - 5 universal commands that work with any role
-- **14 Professional Roles** - Context-aware AI assistants
-- **Data Analyst Powerhouse** - 8 specialized commands for SQL, BI tools, and analytics
-- **Auto-Project Detection** - Scans your project and generates CLAUDE.md
-- **Role-Adaptive Behavior** - Same commands, different outputs based on role
-
-### Why v2.0?
-
-| Aspect | v1.0 | v2.0 |
-|--------|------|------|
-| Commands to remember | 120+ | **13** |
-| Learning curve | High | **Low** |
-| Files generated | 100+ | **~28** |
-| Role switching | Manual | **Contextual** |
+- **5 Universal Commands** - `/plan`, `/cook`, `/fix`, `/test`, `/commit` work with any role
+- **14 Professional Roles** - Context-aware AI assistants that adapt output to your role
+- **8 Data Analyst Commands** - Specialized toolkit for SQL, BI tools, and analytics
+- **Auto-Project Detection** - Scans your project and generates context automatically
+- **Role-Adaptive Behavior** - Same commands, different outputs based on active role
 
 ---
 
@@ -119,7 +110,7 @@ After setup, use commands in Claude Code:
 
 ## 📊 Data Analyst Commands
 
-**The killer feature** - 8 specialized commands for data work:
+**8 specialized commands** for data work:
 
 | Command | Description | Example |
 |---------|-------------|---------|
@@ -299,7 +290,7 @@ MIT © [tramy.dev](https://github.com/tramy-dev)
 
 ```
 ╔═══════════════════════════════════════════════════════════╗
-║                      TRAMY v2.0                           ║
+║                        TRAMY                              ║
 ╠═══════════════════════════════════════════════════════════╣
 ║                                                           ║
 ║  CORE COMMANDS (use with any role)                        ║
