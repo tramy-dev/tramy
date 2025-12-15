@@ -207,5 +207,20 @@ async function createClaudeSettings(projectPath: string): Promise<void> {
     }
   }
 
+  // Add hook to auto-inject CLAUDE.md context on every prompt
+  settings.hooks = {
+    UserPromptSubmit: [
+      {
+        matcher: '*',
+        hooks: [
+          {
+            type: 'command',
+            command: 'cat CLAUDE.md 2>/dev/null || echo "Run: tramy setup"',
+          },
+        ],
+      },
+    ],
+  };
+
   await fs.writeFile(settingsPath, JSON.stringify(settings, null, 2), 'utf-8');
 }
