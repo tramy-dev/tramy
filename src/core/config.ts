@@ -1,5 +1,5 @@
 /**
- * Configuration management for Tramy
+ * Configuration management for Tramy v2.0
  */
 
 import fs from 'fs-extra';
@@ -44,7 +44,12 @@ export async function loadConfig(projectPath: string = process.cwd()): Promise<T
   const content = await fs.readFile(configPath, 'utf-8');
   const config = yaml.parse(content) as Partial<TramyConfig>;
 
-  return { ...DEFAULT_CONFIG, ...config };
+  return {
+    ...DEFAULT_CONFIG,
+    ...config,
+    project: { ...DEFAULT_CONFIG.project, ...config.project },
+    output: { ...DEFAULT_CONFIG.output, ...config.output },
+  };
 }
 
 /**
@@ -59,25 +64,6 @@ export async function saveConfig(
 
   await fs.ensureDir(configDir);
   await fs.writeFile(configPath, yaml.stringify(config), 'utf-8');
-}
-
-/**
- * Get a specific config value with environment variable override
- */
-export function getEnvOverride<T>(key: string, defaultValue: T): T {
-  const envKey = `TRAMY_${key.toUpperCase().replace(/\./g, '_')}`;
-  const envValue = process.env[envKey];
-
-  if (envValue === undefined) {
-    return defaultValue;
-  }
-
-  // Handle boolean values
-  if (typeof defaultValue === 'boolean') {
-    return (envValue.toLowerCase() === 'true') as unknown as T;
-  }
-
-  return envValue as unknown as T;
 }
 
 /**
