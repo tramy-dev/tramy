@@ -16,11 +16,8 @@ const pluginDir = path.join(rootDir, 'plugin');
 async function buildPlugin() {
   console.log('🔨 Building Tramy plugin...\n');
 
-  // Import the compiled generator
-  const { default: generator } = await import('../dist/core/generator.js');
-
-  // If generator exports functions directly
-  const generatorModule = await import('../dist/core/index.js');
+  // Import from the main bundle
+  const generatorModule = await import('../dist/index.js');
 
   const commandsDir = path.join(pluginDir, 'commands');
   const agentsDir = path.join(pluginDir, 'agents');
