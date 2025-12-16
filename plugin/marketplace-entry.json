@@ -1,0 +1,48 @@
+{
+  "name": "tramy",
+  "description": "The Ultimate AI Productivity Toolkit - 25 roles, 137 commands, multi-role workflows",
+  "version": "2.0.2",
+  "source": {
+    "type": "github",
+    "repo": "tramy-dev/tramy",
+    "path": "plugin"
+  },
+  "author": {
+    "name": "tramy.dev",
+    "url": "https://github.com/tramy-dev"
+  },
+  "license": "MIT",
+  "tags": [
+    "productivity",
+    "workflow",
+    "roles",
+    "agents",
+    "commands",
+    "multi-role",
+    "automation",
+    "pm",
+    "devops",
+    "frontend",
+    "backend",
+    "data-analyst"
+  ],
+  "categories": [
+    "productivity",
+    "workflow",
+    "development"
+  ],
+  "features": {
+    "coreCommands": 6,
+    "roles": 25,
+    "roleCommands": 131,
+    "workflows": 21,
+    "agents": 25,
+    "totalCommands": 137
+  },
+  "stats": {
+    "commands": 137,
+    "agents": 25,
+    "skills": 0,
+    "hooks": 1
+  }
+}

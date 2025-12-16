@@ -149,25 +149,24 @@ export const setupCommand = new Command('setup')
       spinner.succeed('Tramy v2.0 setup complete!');
 
       logger.blank();
-      logger.success('Tramy is ready!');
+      logger.success('Tramy is ready! 🚀');
       logger.blank();
-      logger.info('Core commands (use with any role):');
+      logger.info('📊 137 commands installed (6 core + 131 role commands)');
+      logger.blank();
+      logger.info('Core commands (multi-role workflows):');
       logger.list([
-        '/plan <desc>    - Create detailed plan',
-        '/cook <desc>    - Plan + implement',
-        '/fix <issue>    - Fix bugs',
-        '/test [scope]   - Run tests',
-        '/commit [msg]   - Smart git commit',
+        '/plan <desc>    - Planning (PM → Arch → role)',
+        '/build <desc>   - Build feature (PM → Dev → Test → Docs)',
+        '/fix <issue>    - Fix bugs (Support → Dev → Test)',
+        '/review <scope> - Code review (Dev → Sec → Test)',
+        '/ship <version> - Deploy (Test → Ops → Mkt)',
+        '/use <role>     - Show role info & commands',
       ]);
       logger.blank();
-      logger.info('Data Analyst commands:');
-      logger.list([
-        '/da:query       - Write SQL from question',
-        '/da:analyze     - Auto-detect analysis type',
-        '/da:report      - Full report + notebook',
-      ]);
+      logger.info('25 Roles: pm, da, de, dev, fe, be, fs, arch, test, ops, sec, docs, ux, ai,');
+      logger.info('         content, mkt, sales, support, proj, scrum, dba, mobile, game, web3, hr');
       logger.blank();
-      logger.info('Switch roles: /role <alias> (pm, da, de, dev, fe, be, fs, arch, test, ops, sec, docs, ux, ai)');
+      logger.info('Example: /da:query, /fe:component, /ops:ci - all commands always available!');
       logger.blank();
     } catch (error) {
       spinner.fail('Setup failed');
@@ -177,12 +176,20 @@ export const setupCommand = new Command('setup')
   });
 
 async function createDirectories(projectPath: string, config: TramyConfig): Promise<void> {
+  const commandsDir = getClaudeCommandsDir(projectPath);
+
+  // All 25 role command directories
+  const roleCommandDirs = [
+    'pm', 'da', 'de', 'dev', 'fe', 'be', 'fs', 'arch', 'test', 'ops', 'sec', 'docs', 'ux', 'ai',
+    'content', 'mkt', 'sales', 'support', 'proj', 'scrum', 'dba', 'mobile', 'game', 'web3', 'hr'
+  ];
+
   const dirs = [
     getConfigDir(projectPath),
     getClaudeDir(projectPath),
-    getClaudeCommandsDir(projectPath),
+    commandsDir,
     getClaudeAgentsDir(projectPath),
-    path.join(getClaudeCommandsDir(projectPath), 'da'),
+    ...roleCommandDirs.map(role => path.join(commandsDir, role)),
     path.join(projectPath, config.output.analysis),
     path.join(projectPath, config.output.reports),
     path.join(projectPath, config.output.notebooks),
