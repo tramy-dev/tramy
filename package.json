@@ -16,16 +16,19 @@
   },
   "files": [
     "dist",
-    "bin"
+    "bin",
+    "plugin",
+    ".claude-plugin"
   ],
   "scripts": {
     "build": "tsup",
+    "build:plugin": "npm run build && node scripts/build-plugin.js",
     "dev": "tsup --watch",
     "typecheck": "tsc --noEmit",
     "lint": "eslint src --ext .ts",
     "test": "vitest",
     "test:coverage": "vitest --coverage",
-    "prepublishOnly": "npm run build"
+    "prepublishOnly": "npm run build && npm run build:plugin"
   },
   "keywords": [
     "claude",

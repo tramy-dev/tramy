@@ -1,0 +1,33 @@
+{
+  "name": "tramy",
+  "description": "The Ultimate AI Productivity Toolkit - 25 roles, 137 commands, multi-role workflows for Claude Code",
+  "version": "2.0.2",
+  "author": {
+    "name": "tramy.dev",
+    "email": "daiduong.eth@gmail.com",
+    "url": "https://github.com/tramy-dev/tramy"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tramy-dev/tramy"
+  },
+  "homepage": "https://github.com/tramy-dev/tramy",
+  "keywords": [
+    "productivity",
+    "workflow",
+    "roles",
+    "agents",
+    "commands",
+    "multi-role",
+    "automation"
+  ],
+  "license": "MIT",
+  "engines": {
+    "claude-code": ">=2.0.0"
+  },
+  "categories": [
+    "productivity",
+    "workflow",
+    "development"
+  ]
+}

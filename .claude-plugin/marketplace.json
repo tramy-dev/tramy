@@ -1,0 +1,28 @@
+{
+  "name": "tramy",
+  "description": "Official Tramy Plugin Marketplace",
+  "owner": {
+    "name": "tramy.dev",
+    "email": "daiduong.eth@gmail.com",
+    "url": "https://github.com/tramy-dev"
+  },
+  "plugins": [
+    {
+      "name": "tramy",
+      "source": ".",
+      "description": "The Ultimate AI Productivity Toolkit - 25 roles, 137 commands, multi-role workflows",
+      "version": "2.0.2",
+      "author": {
+        "name": "tramy.dev"
+      },
+      "tags": ["productivity", "workflow", "roles", "agents", "commands"],
+      "features": {
+        "coreCommands": 6,
+        "roles": 25,
+        "roleCommands": 131,
+        "workflows": 21,
+        "agents": 25
+      }
+    }
+  ]
+}
