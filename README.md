@@ -86,6 +86,44 @@ data/raw/ → (clean/transform) → data/processed/ → (analyze) → reports/
 
 ---
 
+## Knowledge Management (v3.0)
+
+Commands automatically update `CLAUDE.md` with learned knowledge. Claude remembers across sessions.
+
+### How it works
+
+1. Run a command: `/analyze "sales data"`
+2. Command completes and delivers results
+3. Command updates `CLAUDE.md` with discoveries
+4. Next session, Claude has full context
+
+### Knowledge Sections
+
+| Section | Description | Updated by |
+|---------|-------------|------------|
+| `## Project Knowledge` | Insights, patterns learned | `/analyze`, `/da:analyze` |
+| `## Data Sources` | Schemas, relationships | `/analyze`, `/da:query`, `/doc` |
+| `## Current Plans` | Active plans, status | `/plan` |
+| `## Project Files` | Important files | `/build` |
+| `## Data Quality` | Validations, issues | `/test` |
+| `## Documentation` | Reports, docs links | `/doc`, `/da:report` |
+
+### Example
+
+After running `/analyze "sales_2024.csv"`:
+
+```markdown
+## Data Sources
+- sales_2024.csv: 50,000 rows, 12 columns
+- Key fields: date, product_id, revenue, region
+
+## Project Knowledge
+- Revenue peaks in Q4 (holiday season)
+- Top 3 regions: US, EU, APAC
+```
+
+---
+
 ## Examples
 
 ```bash
