@@ -1,68 +1,53 @@
 /**
- * List command - List all roles and commands for Tramy v2.0
+ * List command - List all commands for DA Toolkit
  */
 
 import { Command } from 'commander';
 import chalk from 'chalk';
 import { logger } from '../utils/logger.js';
-import { getAllRoles } from '../../core/index.js';
 
 export const listCommand = new Command('list')
-  .description('List roles and commands')
+  .description('List all DA Toolkit commands')
   .action(async () => {
-    logger.header('Tramy v2.0 - The Ultimate AI Productivity Toolkit');
+    logger.header('DA Toolkit v3.0 - Data Analyst Toolkit for Claude Code');
 
     // Stats
     console.log();
-    console.log(chalk.bold.white('📊 Statistics'));
-    console.log(`  ${chalk.dim('Core Commands:')} ${chalk.white('6')} multi-role workflows`);
-    console.log(`  ${chalk.dim('Roles:')} ${chalk.white('25')} specialized roles`);
-    console.log(`  ${chalk.dim('Role Commands:')} ${chalk.white('131')} commands + workflows`);
-    console.log(`  ${chalk.dim('Total:')} ${chalk.bold.green('137')} commands available`);
+    console.log(chalk.bold.white('Statistics'));
+    console.log(`  ${chalk.dim('Core Commands:')} ${chalk.white('6')}`);
+    console.log(`  ${chalk.dim('DA Commands:')} ${chalk.white('5')}`);
+    console.log(`  ${chalk.dim('Total:')} ${chalk.bold.green('11')} commands`);
 
     // Core commands
     console.log();
-    console.log(chalk.bold.green('🚀 Core Commands (always available)'));
-    console.log(`  ${chalk.green('/plan <desc>'.padEnd(28))} Planning workflow (PM → Arch → role)`);
-    console.log(`  ${chalk.green('/build <desc>'.padEnd(28))} Build feature (PM → Dev → Test → Docs)`);
-    console.log(`  ${chalk.green('/fix <issue>'.padEnd(28))} Fix bugs with RCA (Support → Dev → Test)`);
-    console.log(`  ${chalk.green('/review <scope>'.padEnd(28))} Code review + security (Dev → Sec → Test)`);
-    console.log(`  ${chalk.green('/ship <version>'.padEnd(28))} Deploy + announce (Test → Ops → Mkt)`);
-    console.log(`  ${chalk.green('/use <alias>'.padEnd(28))} Show role info & commands`);
+    console.log(chalk.bold.green('Core Commands'));
+    console.log(`  ${chalk.green('/analyze'.padEnd(20))} Explore and understand data/problems`);
+    console.log(`  ${chalk.green('/plan'.padEnd(20))} Create detailed analysis plan`);
+    console.log(`  ${chalk.green('/build'.padEnd(20))} Implement SQL, Python, notebooks`);
+    console.log(`  ${chalk.green('/test'.padEnd(20))} Validate data quality and results`);
+    console.log(`  ${chalk.green('/doc'.padEnd(20))} Generate documentation and reports`);
+    console.log(`  ${chalk.green('/commit'.padEnd(20))} Git commit with proper message`);
 
-    // Role commands info
+    // DA commands
     console.log();
-    console.log(chalk.bold.cyan('💼 Role Commands'));
-    console.log(chalk.dim('  All role commands are available. Use /use <alias> for role info.'));
+    console.log(chalk.bold.cyan('DA Commands'));
+    console.log(`  ${chalk.cyan('/da:query'.padEnd(20))} Write optimized SQL queries`);
+    console.log(`  ${chalk.cyan('/da:analyze'.padEnd(20))} Exploratory data analysis`);
+    console.log(`  ${chalk.cyan('/da:report'.padEnd(20))} Generate analysis reports`);
+    console.log(`  ${chalk.cyan('/da:dashboard'.padEnd(20))} Design BI dashboards`);
+    console.log(`  ${chalk.cyan('/da:notebook'.padEnd(20))} Create Jupyter notebooks`);
+
+    // Workflow
     console.log();
-    console.log(`  ${chalk.cyan('Pattern:'.padEnd(28))} /<role>:<command>`);
-    console.log(`  ${chalk.cyan('Example:'.padEnd(28))} /da:query, /fe:component, /ops:ci`);
+    console.log(chalk.bold.yellow('Recommended Workflow'));
+    console.log(`  ${chalk.yellow('/analyze')} → ${chalk.yellow('/plan')} → ${chalk.yellow('/build')} → ${chalk.yellow('/test')} → ${chalk.yellow('/doc')} → ${chalk.yellow('/commit')}`);
 
-    // Roles
+    // Examples
     console.log();
-    console.log(chalk.bold.yellow('👥 25 Available Roles'));
-    console.log();
-
-    const roles = getAllRoles();
-    const third = Math.ceil(roles.length / 3);
-
-    for (let i = 0; i < third; i++) {
-      const role1 = roles[i];
-      const role2 = roles[i + third];
-      const role3 = roles[i + third * 2];
-
-      const col1 = `  ${chalk.yellow(role1.alias.padEnd(8))} ${role1.name.padEnd(18)}`;
-      const col2 = role2 ? `${chalk.yellow(role2.alias.padEnd(8))} ${role2.name.padEnd(18)}` : '';
-      const col3 = role3 ? `${chalk.yellow(role3.alias.padEnd(8))} ${role3.name}` : '';
-
-      console.log(col1 + col2 + col3);
-    }
-
-    // Install info
-    console.log();
-    console.log(chalk.bold.magenta('📦 Installation'));
-    console.log(`  ${chalk.magenta('npm:'.padEnd(28))} npm install -g tramy && tramy setup`);
-    console.log(`  ${chalk.magenta('plugin:'.padEnd(28))} /plugin marketplace add tramy-dev/tramy`);
-    console.log(`  ${chalk.dim(''.padEnd(28))} /plugin install tramy@tramy`);
+    console.log(chalk.bold.magenta('Examples'));
+    console.log(`  ${chalk.magenta('/analyze'.padEnd(20))} monthly revenue trends`);
+    console.log(`  ${chalk.magenta('/da:query'.padEnd(20))} top 10 customers by LTV`);
+    console.log(`  ${chalk.magenta('/da:report'.padEnd(20))} Q1 sales analysis`);
+    console.log(`  ${chalk.magenta('/da:notebook'.padEnd(20))} customer churn analysis`);
     console.log();
   });

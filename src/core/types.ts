@@ -1,5 +1,5 @@
 /**
- * Core types for Tramy v2.0
+ * Core types for DA Toolkit v3.0
  */
 
 export interface Role {
@@ -22,6 +22,10 @@ export interface TramyConfig {
     analysis: string;
     reports: string;
     notebooks: string;
+  };
+  data: {
+    raw: string;
+    processed: string;
   };
 }
 
@@ -51,10 +55,10 @@ export interface ClaudeHook {
   command: string;
 }
 
+// All 25 roles available
 export const ALL_ROLES: Role[] = [
-  // Original 14 roles
   { id: 'product-manager', alias: 'pm', name: 'Product Manager', description: 'PRD, user stories, roadmap, prioritization' },
-  { id: 'data-analyst', alias: 'da', name: 'Data Analyst', description: 'SQL, analysis, BI tools, reporting' },
+  { id: 'data-analyst', alias: 'da', name: 'Data Analyst', description: 'SQL, Python, analysis, BI tools, reporting' },
   { id: 'data-engineer', alias: 'de', name: 'Data Engineer', description: 'ETL, pipelines, data modeling, orchestration' },
   { id: 'developer', alias: 'dev', name: 'Developer', description: 'General development, features, debugging' },
   { id: 'frontend-developer', alias: 'fe', name: 'Frontend Developer', description: 'React, Vue, UI components, styling' },
@@ -67,7 +71,6 @@ export const ALL_ROLES: Role[] = [
   { id: 'technical-writer', alias: 'docs', name: 'Technical Writer', description: 'Documentation, guides, API docs' },
   { id: 'ux-designer', alias: 'ux', name: 'UX Designer', description: 'User research, wireframes, prototypes' },
   { id: 'ai-engineer', alias: 'ai', name: 'AI Engineer', description: 'ML models, prompts, AI integration' },
-  // 10 new roles
   { id: 'content-writer', alias: 'content', name: 'Content Writer', description: 'Blog posts, SEO, copywriting, social media' },
   { id: 'marketing', alias: 'mkt', name: 'Marketing', description: 'Campaigns, funnels, ads, growth analytics' },
   { id: 'sales-engineer', alias: 'sales', name: 'Sales Engineer', description: 'Demos, proposals, technical sales support' },
@@ -82,18 +85,22 @@ export const ALL_ROLES: Role[] = [
 ];
 
 export const DEFAULT_CONFIG: TramyConfig = {
-  version: '2.0',
+  version: '3.0',
   project: {
     name: '',
     description: '',
     techStack: [],
   },
-  defaultRole: 'developer',
+  defaultRole: 'data-analyst',
   roles: ALL_ROLES.map(r => r.id),
   output: {
     analysis: 'analysis/',
     reports: 'reports/',
     notebooks: 'notebooks/',
+  },
+  data: {
+    raw: 'data/raw/',
+    processed: 'data/processed/',
   },
 };
 

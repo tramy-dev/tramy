@@ -1,5 +1,9 @@
 /**
- * Setup command - Initialize Tramy v2.0 in a project
+ * Setup command - Initialize DA Toolkit in a project
+ *
+ * Two modes:
+ * 1. `tramy setup` - Default: only generate CLAUDE.md with 6 core commands
+ * 2. `tramy setup da` - DA mode: generate full toolkit with folders and DA commands
  */
 
 import { Command } from 'commander';
@@ -17,21 +21,41 @@ import {
   isInitialized,
   DEFAULT_CONFIG,
   TramyConfig,
-  getAllRoles,
-  getRoleById,
   scanProject,
   generateClaudeMd,
+  generateClaudeMdDefault,
   generateAgentTemplates,
   generateCommandTemplates,
+  generateCoreCommandTemplates,
+  getRoleByAlias,
 } from '../../core/index.js';
 
 export const setupCommand = new Command('setup')
-  .description('Initialize Tramy v2.0 in your project')
+  .description('Initialize DA Toolkit in your project')
+  .argument('[role]', 'Role alias to setup (e.g., da)')
   .option('-y, --yes', 'Use defaults without prompting')
-  .action(async (options) => {
+  .action(async (role: string | undefined, options) => {
     const projectPath = process.cwd();
 
-    logger.header('Tramy v2.0 Setup');
+    // Determine mode
+    const isRoleMode = role !== undefined;
+    const selectedRole = isRoleMode ? getRoleByAlias(role) : null;
+
+    if (isRoleMode && !selectedRole) {
+      logger.error(`Unknown role: ${role}`);
+      logger.info('Available roles: da (Data Analyst)');
+      process.exit(1);
+    }
+
+    // Currently only DA role is fully supported
+    if (isRoleMode && selectedRole?.alias !== 'da') {
+      logger.error(`Role "${role}" is not yet supported.`);
+      logger.info('Currently supported: da (Data Analyst)');
+      process.exit(1);
+    }
+
+    const modeName = isRoleMode ? `DA Toolkit (${selectedRole?.name})` : 'DA Toolkit (Core)';
+    logger.header(`${modeName} v3.0 Setup`);
 
     // Check if already initialized
     if (await isInitialized(projectPath)) {
@@ -39,7 +63,7 @@ export const setupCommand = new Command('setup')
         const { overwrite } = await prompts({
           type: 'confirm',
           name: 'overwrite',
-          message: 'Tramy is already initialized. Reinitialize?',
+          message: 'DA Toolkit is already initialized. Reinitialize?',
           initial: false,
         });
 
@@ -58,115 +82,128 @@ export const setupCommand = new Command('setup')
       const projectInfo = await scanProject(projectPath);
       spinner.text = 'Project scanned';
 
-      let config: TramyConfig = {
+      // Configure based on mode
+      const config: TramyConfig = {
         ...DEFAULT_CONFIG,
         project: {
           name: projectInfo.name,
           description: projectInfo.description,
           techStack: projectInfo.techStack,
         },
+        roles: isRoleMode ? [selectedRole!.id] : DEFAULT_CONFIG.roles,
+        defaultRole: isRoleMode ? selectedRole!.id : 'data-analyst',
       };
 
       spinner.stop();
 
-      // Interactive setup if not using defaults
-      if (!options.yes) {
-        logger.blank();
-        logger.info(`Detected project: ${projectInfo.name}`);
-        if (projectInfo.techStack.length > 0) {
-          logger.info(`Tech stack: ${projectInfo.techStack.join(', ')}`);
-        }
-        logger.blank();
-
-        const allRoles = getAllRoles();
-
-        const answers = await prompts([
-          {
-            type: 'multiselect',
-            name: 'roles',
-            message: 'Select roles to enable (all recommended)',
-            choices: allRoles.map((role) => ({
-              title: `${role.alias.padEnd(5)} ${role.name}`,
-              value: role.id,
-              selected: true,
-            })),
-            min: 1,
-          },
-          {
-            type: 'select',
-            name: 'defaultRole',
-            message: 'Select default role',
-            choices: (prev: string[]) =>
-              prev.map((roleId: string) => {
-                const role = getRoleById(roleId);
-                return {
-                  title: role ? `${role.alias} - ${role.name}` : roleId,
-                  value: roleId,
-                };
-              }),
-          },
-        ]);
-
-        if (!answers.roles) {
-          logger.info('Setup cancelled');
-          return;
-        }
-
-        config = {
-          ...config,
-          roles: answers.roles,
-          defaultRole: answers.defaultRole,
-        };
+      // Show detected info
+      logger.blank();
+      logger.info(`Project: ${projectInfo.name}`);
+      if (projectInfo.techStack.length > 0) {
+        logger.info(`Tech stack: ${projectInfo.techStack.join(', ')}`);
       }
+      logger.blank();
 
       spinner.start();
-      spinner.text = 'Creating directories...';
 
-      // Create directories
-      await createDirectories(projectPath, config);
+      if (isRoleMode) {
+        // === ROLE MODE (DA) ===
+        spinner.text = 'Creating directories...';
+        await createDirectoriesForRole(projectPath, config);
 
-      // Save config
-      spinner.text = 'Saving configuration...';
-      await saveConfig(config, projectPath);
+        spinner.text = 'Saving configuration...';
+        await saveConfig(config, projectPath);
 
-      // Generate CLAUDE.md
-      spinner.text = 'Generating CLAUDE.md...';
-      const claudeMd = generateClaudeMd(projectInfo, config);
-      await fs.writeFile(path.join(projectPath, 'CLAUDE.md'), claudeMd, 'utf-8');
+        spinner.text = 'Generating CLAUDE.md...';
+        const claudeMd = generateClaudeMd(projectInfo, config);
+        await fs.writeFile(path.join(projectPath, 'CLAUDE.md'), claudeMd, 'utf-8');
 
-      // Generate agent templates
-      spinner.text = 'Generating agent templates...';
-      await generateAgentTemplates(projectPath, config);
+        spinner.text = 'Generating agent templates...';
+        await generateAgentTemplates(projectPath, config);
 
-      // Generate command templates
-      spinner.text = 'Generating command templates...';
-      await generateCommandTemplates(projectPath);
+        spinner.text = 'Generating command templates...';
+        await generateCommandTemplates(projectPath);
 
-      // Create Claude settings
-      spinner.text = 'Creating Claude settings...';
-      await createClaudeSettings(projectPath);
+        spinner.text = 'Creating Claude settings...';
+        await createClaudeSettings(projectPath);
 
-      spinner.succeed('Tramy v2.0 setup complete!');
+        spinner.succeed('DA Toolkit setup complete!');
+
+        // Show DA mode info
+        logger.blank();
+        logger.success('DA Toolkit is ready!');
+        logger.blank();
+        logger.info('11 commands installed (6 core + 5 DA commands)');
+        logger.blank();
+        logger.info('Core Commands:');
+        logger.list([
+          '/analyze   - Explore and understand data/problems',
+          '/plan      - Create detailed analysis plan',
+          '/build     - Implement SQL, Python, notebooks',
+          '/test      - Validate data quality and results',
+          '/doc       - Generate documentation and reports',
+          '/commit    - Git commit with proper message',
+        ]);
+        logger.blank();
+        logger.info('DA Commands:');
+        logger.list([
+          '/da:query     - Write optimized SQL queries',
+          '/da:analyze   - Exploratory data analysis',
+          '/da:report    - Generate analysis reports',
+          '/da:dashboard - Design BI dashboards',
+          '/da:notebook  - Create Jupyter notebooks',
+        ]);
+        logger.blank();
+        logger.info('Directories created:');
+        logger.list([
+          'data/raw/       - Raw data files',
+          'data/processed/ - Processed data files',
+          'analysis/       - Analysis outputs',
+          'reports/        - Generated reports',
+          'notebooks/      - Jupyter notebooks',
+        ]);
+      } else {
+        // === DEFAULT MODE (Core only) ===
+        spinner.text = 'Creating directories...';
+        await createDirectoriesDefault(projectPath);
+
+        spinner.text = 'Saving configuration...';
+        await saveConfig(config, projectPath);
+
+        spinner.text = 'Generating CLAUDE.md...';
+        const claudeMd = generateClaudeMdDefault(projectInfo, config);
+        await fs.writeFile(path.join(projectPath, 'CLAUDE.md'), claudeMd, 'utf-8');
+
+        spinner.text = 'Generating core commands...';
+        await generateCoreCommandTemplates(projectPath);
+
+        spinner.text = 'Creating Claude settings...';
+        await createClaudeSettings(projectPath);
+
+        spinner.succeed('DA Toolkit (Core) setup complete!');
+
+        // Show default mode info
+        logger.blank();
+        logger.success('DA Toolkit is ready!');
+        logger.blank();
+        logger.info('6 core commands installed');
+        logger.blank();
+        logger.info('Core Commands:');
+        logger.list([
+          '/analyze   - Explore and understand data/problems',
+          '/plan      - Create detailed analysis plan',
+          '/build     - Implement SQL, Python, notebooks',
+          '/test      - Validate data quality and results',
+          '/doc       - Generate documentation and reports',
+          '/commit    - Git commit with proper message',
+        ]);
+        logger.blank();
+        logger.info('25 roles available. To enable role-specific commands:');
+        logger.info('  tramy setup da   # Setup Data Analyst toolkit');
+      }
 
       logger.blank();
-      logger.success('Tramy is ready! 🚀');
-      logger.blank();
-      logger.info('📊 137 commands installed (6 core + 131 role commands)');
-      logger.blank();
-      logger.info('Core commands (multi-role workflows):');
-      logger.list([
-        '/plan <desc>    - Planning (PM → Arch → role)',
-        '/build <desc>   - Build feature (PM → Dev → Test → Docs)',
-        '/fix <issue>    - Fix bugs (Support → Dev → Test)',
-        '/review <scope> - Code review (Dev → Sec → Test)',
-        '/ship <version> - Deploy (Test → Ops → Mkt)',
-        '/use <role>     - Show role info & commands',
-      ]);
-      logger.blank();
-      logger.info('25 Roles: pm, da, de, dev, fe, be, fs, arch, test, ops, sec, docs, ux, ai,');
-      logger.info('         content, mkt, sales, support, proj, scrum, dba, mobile, game, web3, hr');
-      logger.blank();
-      logger.info('Example: /da:query, /fe:component, /ops:ci - all commands always available!');
+      logger.info('Workflow: /analyze → /plan → /build → /test → /doc → /commit');
       logger.blank();
     } catch (error) {
       spinner.fail('Setup failed');
@@ -175,28 +212,53 @@ export const setupCommand = new Command('setup')
     }
   });
 
-async function createDirectories(projectPath: string, config: TramyConfig): Promise<void> {
+async function createDirectoriesDefault(projectPath: string): Promise<void> {
   const commandsDir = getClaudeCommandsDir(projectPath);
 
-  // All 25 role command directories
-  const roleCommandDirs = [
-    'pm', 'da', 'de', 'dev', 'fe', 'be', 'fs', 'arch', 'test', 'ops', 'sec', 'docs', 'ux', 'ai',
-    'content', 'mkt', 'sales', 'support', 'proj', 'scrum', 'dba', 'mobile', 'game', 'web3', 'hr'
+  const dirs = [
+    getConfigDir(projectPath),
+    getClaudeDir(projectPath),
+    commandsDir,
   ];
+
+  for (const dir of dirs) {
+    await fs.ensureDir(dir);
+  }
+}
+
+async function createDirectoriesForRole(projectPath: string, config: TramyConfig): Promise<void> {
+  const commandsDir = getClaudeCommandsDir(projectPath);
 
   const dirs = [
     getConfigDir(projectPath),
     getClaudeDir(projectPath),
     commandsDir,
     getClaudeAgentsDir(projectPath),
-    ...roleCommandDirs.map(role => path.join(commandsDir, role)),
+    path.join(commandsDir, 'da'),
+    // Output directories
     path.join(projectPath, config.output.analysis),
     path.join(projectPath, config.output.reports),
     path.join(projectPath, config.output.notebooks),
+    // Data directories
+    path.join(projectPath, config.data.raw),
+    path.join(projectPath, config.data.processed),
   ];
 
   for (const dir of dirs) {
     await fs.ensureDir(dir);
+  }
+
+  // Create .gitkeep files for empty data directories
+  const gitkeepDirs = [
+    path.join(projectPath, config.data.raw),
+    path.join(projectPath, config.data.processed),
+  ];
+
+  for (const dir of gitkeepDirs) {
+    const gitkeepPath = path.join(dir, '.gitkeep');
+    if (!await fs.pathExists(gitkeepPath)) {
+      await fs.writeFile(gitkeepPath, '', 'utf-8');
+    }
   }
 }
 

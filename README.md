@@ -1,295 +1,214 @@
-<p align="center">
-  <img src="assets/logo.png" alt="Tramy Logo" width="200" />
-</p>
+# DA Toolkit
 
-<h1 align="center">TRAMY</h1>
-<p align="center"><strong>The Ultimate AI Productivity Toolkit for Claude Code</strong></p>
+**Data Analyst Toolkit for Claude Code**
 
-<p align="center">
-  <a href="https://www.npmjs.com/package/tramy"><img src="https://img.shields.io/npm/v/tramy.svg?style=flat-square&color=cb3837" alt="npm version" /></a>
-  <a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square" alt="License: MIT" /></a>
-  <a href="https://www.npmjs.com/package/tramy"><img src="https://img.shields.io/npm/dt/tramy.svg?style=flat-square&color=blue" alt="Total Downloads" /></a>
-  <a href="https://nodejs.org"><img src="https://img.shields.io/node/v/tramy.svg?style=flat-square&color=green" alt="Node" /></a>
-</p>
+[![npm version](https://img.shields.io/npm/v/tramy.svg?style=flat-square&color=cb3837)](https://www.npmjs.com/package/tramy)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square)](https://opensource.org/licenses/MIT)
+[![Node](https://img.shields.io/node/v/tramy.svg?style=flat-square&color=green)](https://nodejs.org)
 
-<p align="center"><strong>25 Roles</strong> | <strong>137 Commands</strong> | <strong>21 Multi-Role Workflows</strong></p>
-
-<p align="center">
-  <a href="#-quick-start">Quick Start</a> •
-  <a href="#-core-commands">Core Commands</a> •
-  <a href="#-roles">Roles</a> •
-  <a href="#-workflows">Workflows</a>
-</p>
+**6 Core Commands** | **5 DA Commands** | **11 Total**
 
 ---
 
-## ✨ Features
+## Installation
 
-- **6 Core Commands** - Multi-role workflows: `/plan`, `/build`, `/fix`, `/review`, `/ship`, `/use`
-- **25 Professional Roles** - From Product Manager to DevOps to Data Analyst
-- **131 Role Commands** - Specialized commands for each role (`/da:query`, `/fe:component`, `/ops:ci`)
-- **21 Multi-Role Workflows** - Complex tasks automated across roles
-- **Auto-Project Detection** - Scans your project and generates context automatically
-
----
-
-## 🚀 Quick Start
-
-### npm (Recommended)
 ```bash
 npm install -g tramy
+```
+
+## Quick Start
+
+### Default Setup (Core Commands Only)
+
+```bash
 cd your-project
 tramy setup
 ```
 
-### Claude Code Plugin
+**Generates:**
+- `CLAUDE.md` - Project context with 6 core commands
+- `.claude/commands/` - 6 core command templates
+
+### Data Analyst Setup (Full Toolkit)
+
 ```bash
-/plugin marketplace add tramy-dev/tramy
-/plugin install tramy@tramy
+cd your-project
+tramy setup da
 ```
 
-After setup, use commands in Claude Code:
-```bash
-/plan "add user authentication"
-/build "shopping cart feature"
-/fix "login timeout on mobile"
-/review src/auth/
-/ship v2.1.0
-```
+**Generates:**
+- `CLAUDE.md` - Full DA toolkit documentation
+- `.claude/commands/` - 6 core + 5 DA commands
+- `.claude/agents/` - DA agent template
+- `data/raw/` - Raw data files
+- `data/processed/` - Processed data files
+- `analysis/` - Analysis outputs
+- `reports/` - Generated reports
+- `notebooks/` - Jupyter notebooks
 
 ---
 
-## 🎯 Core Commands
+## Core Commands (6)
 
-**6 multi-role workflow commands** that orchestrate multiple specialists:
+| Command | Description |
+|---------|-------------|
+| `/analyze` | Explore and understand data/problems |
+| `/plan` | Create detailed analysis plan |
+| `/build` | Implement SQL, Python, notebooks |
+| `/test` | Validate data quality and results |
+| `/doc` | Generate documentation and reports |
+| `/commit` | Git commit with proper message |
 
-| Command | Description | Workflow |
-|---------|-------------|----------|
-| `/plan <desc>` | Planning workflow | PM → Arch → relevant role |
-| `/build <desc>` | Build feature | PM → Dev → Test → Docs |
-| `/fix <issue>` | Fix bugs with RCA | Support → Dev → Test |
-| `/review <scope>` | Code review + security | Dev → Sec → Test |
-| `/ship <version>` | Deploy + announce | Test → Ops → Docs → Mkt |
-| `/use <alias>` | Show role info & commands | - |
+## DA Commands (5)
 
-### Examples
-
-```bash
-# Planning
-/plan "implement OAuth2 authentication"
-# → PM defines requirements → Arch designs system → Dev plans implementation
-
-# Building
-/build "user dashboard with analytics"
-# → PM writes stories → Dev implements → Test writes tests → Docs updates
-
-# Fixing
-/fix "users can't reset password"
-# → Support triages → Dev investigates → Test adds regression test
-
-# Reviewing
-/review src/api/
-# → Dev reviews code → Sec audits security → Test checks coverage
-
-# Shipping
-/ship v2.0.0
-# → Test runs suite → Ops deploys → Docs updates changelog → Mkt announces
-```
+| Command | Description |
+|---------|-------------|
+| `/da:query` | Write optimized SQL queries |
+| `/da:analyze` | Exploratory data analysis |
+| `/da:report` | Generate analysis reports |
+| `/da:dashboard` | Design BI dashboards |
+| `/da:notebook` | Create Jupyter notebooks |
 
 ---
 
-## 👥 25 Roles
+## Workflow
 
-| Alias | Role | Commands |
-|-------|------|----------|
-| `pm` | Product Manager | /pm:prd, /pm:story, /pm:roadmap, /pm:priority |
-| `da` | Data Analyst | /da:query, /da:analyze, /da:report, /da:dashboard |
-| `de` | Data Engineer | /de:pipeline, /de:schema, /de:etl, /de:quality |
-| `dev` | Developer | /dev:implement, /dev:debug, /dev:refactor, /dev:review |
-| `fe` | Frontend | /fe:component, /fe:style, /fe:state, /fe:a11y |
-| `be` | Backend | /be:api, /be:model, /be:auth, /be:migrate |
-| `fs` | Fullstack | /fs:feature, /fs:integrate, /fs:e2e |
-| `arch` | Architect | /arch:design, /arch:adr, /arch:diagram, /arch:review |
-| `test` | Tester | /test:unit, /test:e2e, /test:coverage, /test:plan |
-| `ops` | DevOps | /ops:ci, /ops:docker, /ops:k8s, /ops:monitor |
-| `sec` | Security | /sec:audit, /sec:scan, /sec:pentest, /sec:compliance |
-| `docs` | Tech Writer | /docs:api, /docs:guide, /docs:changelog, /docs:readme |
-| `ux` | UX Designer | /ux:wireframe, /ux:flow, /ux:persona, /ux:audit |
-| `ai` | AI Engineer | /ai:prompt, /ai:eval, /ai:rag, /ai:finetune |
-| `content` | Content Writer | /content:blog, /content:seo, /content:copy, /content:social |
-| `mkt` | Marketing | /mkt:campaign, /mkt:funnel, /mkt:ads, /mkt:analytics |
-| `sales` | Sales Engineer | /sales:demo, /sales:proposal, /sales:objection, /sales:deck |
-| `support` | Support | /support:ticket, /support:kb, /support:escalate, /support:rca |
-| `proj` | Project Manager | /proj:timeline, /proj:standup, /proj:risk, /proj:status |
-| `scrum` | Scrum Master | /scrum:sprint, /scrum:retro, /scrum:backlog, /scrum:velocity |
-| `dba` | Database Admin | /dba:optimize, /dba:backup, /dba:index, /dba:monitor |
-| `mobile` | Mobile Dev | /mobile:screen, /mobile:native, /mobile:push, /mobile:store |
-| `game` | Game Dev | /game:mechanic, /game:asset, /game:physics, /game:balance |
-| `web3` | Blockchain | /web3:contract, /web3:audit, /web3:deploy, /web3:token |
-| `hr` | HR Specialist | /hr:job, /hr:interview, /hr:onboard, /hr:review |
+```
+/analyze → /plan → /build → /test → /doc → /commit
+```
 
-### Using Role Commands
+## Data Workflow
 
-```bash
-# Data Analyst
-/da:query "monthly active users by cohort"
-/da:analyze "conversion funnel drop-off"
-
-# Frontend Developer
-/fe:component "reusable data table with sorting"
-/fe:a11y "audit checkout form"
-
-# DevOps
-/ops:docker "multi-stage build for Node.js"
-/ops:k8s "deployment with auto-scaling"
-
-# Security
-/sec:audit "OWASP top 10 check"
-/sec:scan "dependency vulnerabilities"
+```
+data/raw/ → (clean/transform) → data/processed/ → (analyze) → reports/
 ```
 
 ---
 
-## 🔄 Multi-Role Workflows
-
-Workflows orchestrate multiple roles for complex tasks:
-
-| Workflow | Roles | Description |
-|----------|-------|-------------|
-| `/pm:launch` | PM → Mkt → Content → Sales → Support | Product launch |
-| `/pm:discovery` | UX → DA → PM → Arch | Product discovery |
-| `/dev:feature` | PM → Arch → Dev → Test → Sec → Docs | Full feature build |
-| `/dev:hotfix` | Support → Dev → Test → Ops | Emergency fix |
-| `/ops:release` | Dev → Test → Docs → Ops → Mkt | Release workflow |
-| `/ops:incident` | Support → Dev → Ops → Docs | Incident response |
-| `/sec:hardening` | Sec → Arch → Dev → Ops → Docs | Security hardening |
-| `/da:insight` | DA → PM → Dev → DA | Data to action |
-| `/arch:rfc` | Arch → Sec → Ops → Dev → Docs | RFC process |
-| `/test:regression` | Test → Support → Dev → Test | Full regression |
-| `/ux:redesign` | UX → PM → UX → FE → Test | UX redesign |
-| `/ai:deploy` | AI → Dev → Test → Sec → Ops → Docs | AI deployment |
-| `/content:campaign` | Mkt → Content → Sales → DA | Content campaign |
-| `/mkt:gtm` | Mkt → PM → Content → Sales → DA | Go-to-market |
-| `/sales:deal` | Sales → Arch → Sec → Proj → Support | Enterprise deal |
-| `/support:bug` | Support → Dev → Test → Ops | Bug resolution |
-| `/scrum:kickoff` | PM → Arch → Scrum → PM → Dev | Project kickoff |
-| `/dba:migration` | DBA → Dev → Test → Ops → DBA | Database migration |
-| `/mobile:launch` | Mobile → Test → Content → Ops → Mkt | App launch |
-| `/hr:hire` | HR → PM → HR → Dev → HR | Hiring workflow |
-| `/hr:offboard` | HR → Dev → Ops → PM → HR | Offboarding |
-
----
-
-## 🛠 CLI Commands
+## Examples
 
 ```bash
-tramy setup              # Interactive setup
-tramy setup --yes        # Quick setup with defaults
-tramy list               # List all roles and commands
-tramy doctor             # Health check
-tramy context            # Show project context
-tramy context update     # Re-scan and update
+# Analyze data
+/analyze monthly revenue trends
+/analyze user churn patterns
+
+# Write SQL
+/da:query top 10 customers by lifetime value
+/da:query monthly active users by cohort
+
+# Create reports
+/da:report Q1 sales performance
+/da:report customer segmentation analysis
+
+# Build dashboards
+/da:dashboard executive KPI overview
+/da:dashboard marketing campaign metrics
+
+# Create notebooks
+/da:notebook churn prediction model
+/da:notebook A/B test analysis
 ```
 
 ---
 
-## 📁 Project Structure
+## CLI Commands
 
-After `tramy setup`:
+```bash
+tramy setup        # Setup with core commands
+tramy setup da     # Setup DA toolkit with folders
+tramy setup --yes  # Quick setup (no prompts)
+tramy list         # List all commands
+tramy doctor       # Health check
+tramy context      # View project context
+tramy context update  # Update CLAUDE.md
+```
+
+---
+
+## Project Structure
+
+### Default Setup (`tramy setup`)
 
 ```
 your-project/
-├── CLAUDE.md                    # Project context (auto-generated)
+├── CLAUDE.md
 ├── .tramy/
-│   └── config.yaml              # Configuration
+│   └── config.yaml
 └── .claude/
-    ├── agents/                  # 25 role definitions
-    ├── commands/                # 137 commands
+    ├── commands/
+    │   ├── analyze.md
     │   ├── plan.md
     │   ├── build.md
-    │   ├── fix.md
-    │   ├── review.md
-    │   ├── ship.md
-    │   ├── use.md
-    │   ├── da/                  # Data Analyst (8 commands)
-    │   ├── pm/                  # Product Manager (6 commands)
-    │   ├── dev/                 # Developer (6 commands)
-    │   └── ...                  # 25 role folders
+    │   ├── test.md
+    │   ├── doc.md
+    │   └── commit.md
+    └── settings.json
+```
+
+### DA Setup (`tramy setup da`)
+
+```
+your-project/
+├── CLAUDE.md
+├── data/
+│   ├── raw/
+│   └── processed/
+├── analysis/
+├── reports/
+├── notebooks/
+├── .tramy/
+│   └── config.yaml
+└── .claude/
+    ├── agents/
+    │   └── data-analyst.md
+    ├── commands/
+    │   ├── analyze.md
+    │   ├── plan.md
+    │   ├── build.md
+    │   ├── test.md
+    │   ├── doc.md
+    │   ├── commit.md
+    │   └── da/
+    │       ├── query.md
+    │       ├── analyze.md
+    │       ├── report.md
+    │       ├── dashboard.md
+    │       └── notebook.md
     └── settings.json
 ```
 
 ---
 
-## 📋 Requirements
+## Available Roles (25)
+
+25 roles available for future extensions:
+
+| Alias | Role | Alias | Role |
+|-------|------|-------|------|
+| pm | Product Manager | mkt | Marketing |
+| da | Data Analyst | sales | Sales Engineer |
+| de | Data Engineer | support | Support Engineer |
+| dev | Developer | proj | Project Manager |
+| fe | Frontend Developer | scrum | Scrum Master |
+| be | Backend Developer | dba | Database Admin |
+| fs | Fullstack Developer | mobile | Mobile Developer |
+| arch | Architect | game | Game Developer |
+| test | Tester | web3 | Blockchain Developer |
+| ops | DevOps Engineer | hr | HR Specialist |
+| sec | Security Engineer | content | Content Writer |
+| docs | Technical Writer | ai | AI Engineer |
+| ux | UX Designer | | |
+
+**Currently supported:** `da` (Data Analyst)
+
+---
+
+## Requirements
 
 - **Node.js** >= 18.0.0
-- **Claude Code** CLI installed
 
 ---
 
-## 📜 License
+## License
 
-MIT © [tramy.dev](https://github.com/tramy-dev)
-
----
-
-## 🔗 Links
-
-- **npm**: [npmjs.com/package/tramy](https://www.npmjs.com/package/tramy)
-- **GitHub**: [github.com/tramy-dev/tramy](https://github.com/tramy-dev/tramy)
-- **Issues**: [Report a bug](https://github.com/tramy-dev/tramy/issues)
-
----
-
-## Quick Reference
-
-```
-╔════════════════════════════════════════════════════════════════╗
-║                          TRAMY v2.0                            ║
-╠════════════════════════════════════════════════════════════════╣
-║                                                                ║
-║  CORE COMMANDS (6 multi-role workflows)                        ║
-║  ──────────────────────────────────────                        ║
-║  /plan <desc>       PM → Arch → relevant role                  ║
-║  /build <desc>      PM → Dev → Test → Docs                     ║
-║  /fix <issue>       Support → Dev → Test                       ║
-║  /review <scope>    Dev → Sec → Test                           ║
-║  /ship <version>    Test → Ops → Docs → Mkt                    ║
-║  /use <alias>       Show role info & commands                  ║
-║                                                                ║
-║  ROLE COMMANDS (131 total)                                     ║
-║  ─────────────────────────                                     ║
-║  /da:query, /da:analyze, /da:report, /da:dashboard             ║
-║  /fe:component, /fe:style, /fe:state, /fe:a11y                 ║
-║  /ops:ci, /ops:docker, /ops:k8s, /ops:monitor                  ║
-║  /sec:audit, /sec:scan, /sec:pentest, /sec:compliance          ║
-║  ... and 115 more across 25 roles                              ║
-║                                                                ║
-║  25 ROLES                                                      ║
-║  ────────                                                      ║
-║  pm    Product Manager      mkt     Marketing                  ║
-║  da    Data Analyst         sales   Sales Engineer             ║
-║  de    Data Engineer        support Support                    ║
-║  dev   Developer            proj    Project Manager            ║
-║  fe    Frontend             scrum   Scrum Master               ║
-║  be    Backend              dba     Database Admin             ║
-║  fs    Fullstack            mobile  Mobile Dev                 ║
-║  arch  Architect            game    Game Dev                   ║
-║  test  Tester               web3    Blockchain                 ║
-║  ops   DevOps               hr      HR Specialist              ║
-║  sec   Security             content Content Writer             ║
-║  docs  Tech Writer          ai      AI Engineer                ║
-║  ux    UX Designer                                             ║
-║                                                                ║
-╚════════════════════════════════════════════════════════════════╝
-```
-
----
-
-<div align="center">
-
-**25 Roles • 137 Commands • 21 Workflows**
-
-Star ⭐ this repo if you find it useful!
-
-</div>
+MIT
