@@ -3,6 +3,7 @@
 **Data Analyst Toolkit for Claude Code**
 
 [![npm version](https://img.shields.io/npm/v/tramy.svg?style=flat-square&color=cb3837)](https://www.npmjs.com/package/tramy)
+[![npm downloads](https://img.shields.io/npm/dt/tramy.svg?style=flat-square&color=blue)](https://www.npmjs.com/package/tramy)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square)](https://opensource.org/licenses/MIT)
 [![Node](https://img.shields.io/node/v/tramy.svg?style=flat-square&color=green)](https://nodejs.org)
 

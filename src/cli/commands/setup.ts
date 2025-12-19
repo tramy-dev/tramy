@@ -25,7 +25,7 @@ import {
   generateClaudeMd,
   generateClaudeMdDefault,
   generateAgentTemplates,
-  generateCommandTemplates,
+  generateDACommandTemplates,
   generateCoreCommandTemplates,
   getRoleByAlias,
 } from '../../core/index.js';
@@ -121,8 +121,8 @@ export const setupCommand = new Command('setup')
         spinner.text = 'Generating agent templates...';
         await generateAgentTemplates(projectPath, config);
 
-        spinner.text = 'Generating command templates...';
-        await generateCommandTemplates(projectPath);
+        spinner.text = 'Generating DA command templates...';
+        await generateDACommandTemplates(projectPath);
 
         spinner.text = 'Creating Claude settings...';
         await createClaudeSettings(projectPath);
@@ -133,17 +133,7 @@ export const setupCommand = new Command('setup')
         logger.blank();
         logger.success('DA Toolkit is ready!');
         logger.blank();
-        logger.info('11 commands installed (6 core + 5 DA commands)');
-        logger.blank();
-        logger.info('Core Commands:');
-        logger.list([
-          '/analyze   - Explore and understand data/problems',
-          '/plan      - Create detailed analysis plan',
-          '/build     - Implement SQL, Python, notebooks',
-          '/test      - Validate data quality and results',
-          '/doc       - Generate documentation and reports',
-          '/commit    - Git commit with proper message',
-        ]);
+        logger.info('5 DA commands installed');
         logger.blank();
         logger.info('DA Commands:');
         logger.list([
@@ -203,7 +193,11 @@ export const setupCommand = new Command('setup')
       }
 
       logger.blank();
-      logger.info('Workflow: /analyze → /plan → /build → /test → /doc → /commit');
+      if (isRoleMode) {
+        logger.info('Workflow: /da:query → /da:analyze → /da:report');
+      } else {
+        logger.info('Workflow: /analyze → /plan → /build → /test → /doc → /commit');
+      }
       logger.blank();
     } catch (error) {
       spinner.fail('Setup failed');

@@ -32,19 +32,8 @@ ${info.structure}
 | \`${config.output.reports}\` | Generated reports |
 | \`${config.output.notebooks}\` | Jupyter notebooks |
 
-## DA Toolkit Commands
+## DA Toolkit Commands (5)
 
-### Core Commands (6)
-| Command | Description |
-|---------|-------------|
-| \`/analyze\` | Analyze data, code, or problems - explore and understand |
-| \`/plan\` | Create detailed plan for analysis or implementation |
-| \`/build\` | Implement solution - write code, queries, notebooks |
-| \`/test\` | Validate results, verify data quality, check outputs |
-| \`/doc\` | Generate documentation, reports, explanations |
-| \`/commit\` | Git commit with proper message |
-
-### DA Commands (5)
 | Command | Description |
 |---------|-------------|
 | \`/da:query\` | Write optimized SQL queries |
@@ -56,7 +45,7 @@ ${info.structure}
 ## Workflow
 
 \`\`\`
-/analyze → /plan → /build → /test → /doc → /commit
+/da:query → /da:analyze → /da:report
 \`\`\`
 
 ## Data Workflow
@@ -188,6 +177,32 @@ export async function generateCommandTemplates(projectPath: string): Promise<voi
     await fs.ensureDir(path.dirname(filePath));
     await fs.writeFile(filePath, content, 'utf-8');
   }
+}
+
+export async function generateDACommandTemplates(projectPath: string): Promise<void> {
+  const commandsDir = path.join(projectPath, '.claude', 'commands');
+  await fs.ensureDir(commandsDir);
+  await fs.ensureDir(path.join(commandsDir, 'da'));
+
+  const templates = getDACommandTemplates();
+
+  for (const [filename, content] of Object.entries(templates)) {
+    const filePath = path.join(commandsDir, filename);
+    await fs.ensureDir(path.dirname(filePath));
+    await fs.writeFile(filePath, content, 'utf-8');
+  }
+}
+
+function getDACommandTemplates(): Record<string, string> {
+  const allTemplates = getCommandTemplates();
+  // Only return DA commands (da/* commands)
+  return {
+    'da/query.md': allTemplates['da/query.md'],
+    'da/analyze.md': allTemplates['da/analyze.md'],
+    'da/report.md': allTemplates['da/report.md'],
+    'da/dashboard.md': allTemplates['da/dashboard.md'],
+    'da/notebook.md': allTemplates['da/notebook.md'],
+  };
 }
 
 function getAgentTemplates(): Record<string, string> {
