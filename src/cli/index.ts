@@ -1,5 +1,5 @@
 /**
- * Tramy CLI v2.0 - The Ultimate AI Productivity Toolkit for Claude Code
+ * DA Toolkit CLI - Data Analyst Toolkit for Claude Code
  */
 
 import { Command } from 'commander';
@@ -13,8 +13,8 @@ const program = new Command();
 
 program
   .name('tramy')
-  .description('The Ultimate AI Productivity Toolkit for Claude Code')
-  .version('2.0.0');
+  .description('DA Toolkit - Data Analyst Toolkit for Claude Code')
+  .version('3.0.0');
 
 // Setup command
 program.addCommand(setupCommand);
@@ -30,25 +30,28 @@ program.addCommand(doctorCommand);
 
 // Add a nice banner for help
 program.addHelpText('before', `
-${chalk.cyan.bold('TRAMY v2.0')} - The Ultimate AI Productivity Toolkit for Claude Code
+${chalk.cyan.bold('DA Toolkit v3.0')} - Data Analyst Toolkit for Claude Code
 
-${chalk.dim('14 Roles | 13 Commands | 1 Killer Feature (Data Analyst)')}
+${chalk.dim('6 Core Commands | 5 DA Commands | 11 Total')}
 `);
 
 program.addHelpText('after', `
 ${chalk.dim('Examples:')}
-  ${chalk.cyan('$')} tramy setup              ${chalk.dim('# Interactive setup')}
-  ${chalk.cyan('$')} tramy setup --yes        ${chalk.dim('# Quick setup with defaults')}
-  ${chalk.cyan('$')} tramy list               ${chalk.dim('# List roles and commands')}
-  ${chalk.cyan('$')} tramy context update     ${chalk.dim('# Re-scan and update CLAUDE.md')}
+  ${chalk.cyan('$')} tramy setup              ${chalk.dim('# Initialize DA Toolkit')}
+  ${chalk.cyan('$')} tramy setup --yes        ${chalk.dim('# Quick setup')}
+  ${chalk.cyan('$')} tramy list               ${chalk.dim('# List all commands')}
+  ${chalk.cyan('$')} tramy context update     ${chalk.dim('# Update CLAUDE.md')}
   ${chalk.cyan('$')} tramy doctor             ${chalk.dim('# Health check')}
 
 ${chalk.dim('After setup, use slash commands in Claude Code:')}
-  ${chalk.green('/plan')} "add user authentication"
-  ${chalk.green('/cook')} "dark mode toggle"
-  ${chalk.cyan('/da:query')} "monthly revenue by category"
-  ${chalk.cyan('/da:analyze')} "user churn patterns"
-  ${chalk.yellow('/role')} be ${chalk.dim('# Switch to Backend Developer')}
+  ${chalk.green('/analyze')} "monthly revenue trends"
+  ${chalk.green('/plan')} "build customer segmentation"
+  ${chalk.cyan('/da:query')} "top 10 products by sales"
+  ${chalk.cyan('/da:report')} "Q1 performance analysis"
+  ${chalk.cyan('/da:notebook')} "churn prediction model"
+
+${chalk.dim('Workflow:')}
+  /analyze → /plan → /build → /test → /doc → /commit
 
 ${chalk.dim('Documentation:')} ${chalk.underline('https://github.com/tramy-dev/tramy')}
 `);

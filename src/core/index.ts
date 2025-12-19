@@ -1,5 +1,5 @@
 /**
- * Core module exports for Tramy v2.0
+ * Core module exports for DA Toolkit v3.0
  */
 
 export * from './types.js';

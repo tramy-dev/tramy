@@ -1,5 +1,6 @@
 /**
- * CLAUDE.md and template generator for Tramy v2.0
+ * DA Toolkit - Template generator for Data Analyst workflows
+ * Version 3.0
  */
 
 import fs from 'fs-extra';
@@ -7,12 +8,12 @@ import path from 'path';
 import { ProjectInfo, TramyConfig } from './types.js';
 import { formatTechStack } from './scanner.js';
 
-export function generateClaudeMd(info: ProjectInfo, _config: TramyConfig): string {
+export function generateClaudeMd(info: ProjectInfo, config: TramyConfig): string {
   const techStack = formatTechStack(info.techStack);
 
   return `# Project: ${info.name}
 
-${info.description || 'A software project.'}
+${info.description || 'A data analysis project.'}
 
 ## Tech Stack
 ${techStack.map(t => `- ${t}`).join('\n')}
@@ -22,72 +23,156 @@ ${techStack.map(t => `- ${t}`).join('\n')}
 ${info.structure}
 \`\`\`
 
-## Available Commands
+## Data Directories
+| Directory | Purpose |
+|-----------|---------|
+| \`${config.data.raw}\` | Raw data files (original, unmodified) |
+| \`${config.data.processed}\` | Processed/cleaned data files |
+| \`${config.output.analysis}\` | Analysis outputs |
+| \`${config.output.reports}\` | Generated reports |
+| \`${config.output.notebooks}\` | Jupyter notebooks |
 
-### Core Commands (6 multi-role workflows)
-- \`/plan <description>\` - Planning workflow (PM → Arch → relevant role)
-- \`/build <description>\` - Build feature workflow (PM → Dev → Test → Docs)
-- \`/fix <issue>\` - Fix bugs with RCA (Support → Dev → Test)
-- \`/review <scope>\` - Code review + security (Dev → Sec → Test)
-- \`/ship <version>\` - Deploy + announce (Test → Ops → Docs → Mkt)
-- \`/use <alias>\` - Activate role + show role commands
+## DA Toolkit Commands
 
-### Role Commands
-Use \`/use <alias>\` to activate a role and see its commands.
+### Core Commands (6)
+| Command | Description |
+|---------|-------------|
+| \`/analyze\` | Analyze data, code, or problems - explore and understand |
+| \`/plan\` | Create detailed plan for analysis or implementation |
+| \`/build\` | Implement solution - write code, queries, notebooks |
+| \`/test\` | Validate results, verify data quality, check outputs |
+| \`/doc\` | Generate documentation, reports, explanations |
+| \`/commit\` | Git commit with proper message |
 
-Example: \`/use da\` activates Data Analyst with commands:
-- \`/da:query\`, \`/da:analyze\`, \`/da:report\`, \`/da:dashboard\`
+### DA Commands (5)
+| Command | Description |
+|---------|-------------|
+| \`/da:query\` | Write optimized SQL queries |
+| \`/da:analyze\` | Exploratory data analysis |
+| \`/da:report\` | Generate analysis reports |
+| \`/da:dashboard\` | Design BI dashboards |
+| \`/da:notebook\` | Create Jupyter notebooks |
 
-## 25 Available Roles
+## Workflow
 
-| Alias | Role | Commands | Workflows |
-|-------|------|----------|-----------|
-| pm | Product Manager | /pm:prd, /pm:story, /pm:roadmap, /pm:priority | /pm:launch, /pm:discovery |
-| da | Data Analyst | /da:query, /da:analyze, /da:report, /da:dashboard | /da:insight |
-| de | Data Engineer | /de:pipeline, /de:schema, /de:etl, /de:quality | |
-| dev | Developer | /dev:implement, /dev:debug, /dev:refactor, /dev:review | /dev:feature, /dev:hotfix |
-| fe | Frontend | /fe:component, /fe:style, /fe:state, /fe:a11y | |
-| be | Backend | /be:api, /be:model, /be:auth, /be:migrate | |
-| fs | Fullstack | /fs:feature, /fs:integrate, /fs:e2e | |
-| arch | Architect | /arch:design, /arch:adr, /arch:diagram, /arch:review | /arch:rfc |
-| test | Tester | /test:unit, /test:e2e, /test:coverage, /test:plan | /test:regression |
-| ops | DevOps | /ops:ci, /ops:docker, /ops:k8s, /ops:monitor | /ops:release, /ops:incident |
-| sec | Security | /sec:audit, /sec:scan, /sec:pentest, /sec:compliance | /sec:hardening |
-| docs | Tech Writer | /docs:api, /docs:guide, /docs:changelog, /docs:readme | |
-| ux | UX Designer | /ux:wireframe, /ux:flow, /ux:persona, /ux:audit | /ux:redesign |
-| ai | AI Engineer | /ai:prompt, /ai:eval, /ai:rag, /ai:finetune | /ai:deploy |
-| content | Content Writer | /content:blog, /content:seo, /content:copy, /content:social | /content:campaign |
-| mkt | Marketing | /mkt:campaign, /mkt:funnel, /mkt:ads, /mkt:analytics | /mkt:gtm |
-| sales | Sales Engineer | /sales:demo, /sales:proposal, /sales:objection, /sales:deck | /sales:deal |
-| support | Support | /support:ticket, /support:kb, /support:escalate, /support:rca | /support:bug |
-| proj | Project Manager | /proj:timeline, /proj:standup, /proj:risk, /proj:status | |
-| scrum | Scrum Master | /scrum:sprint, /scrum:retro, /scrum:backlog, /scrum:velocity | /scrum:kickoff |
-| dba | Database Admin | /dba:optimize, /dba:backup, /dba:index, /dba:monitor | /dba:migration |
-| mobile | Mobile Dev | /mobile:screen, /mobile:native, /mobile:push, /mobile:store | /mobile:launch |
-| game | Game Dev | /game:mechanic, /game:asset, /game:physics, /game:balance | |
-| web3 | Blockchain | /web3:contract, /web3:audit, /web3:deploy, /web3:token | |
-| hr | HR Specialist | /hr:job, /hr:interview, /hr:onboard, /hr:review | /hr:hire, /hr:offboard |
+\`\`\`
+/analyze → /plan → /build → /test → /doc → /commit
+\`\`\`
 
-## Workflows (Multi-Role)
-Workflows orchestrate multiple roles to complete complex tasks.
-Example: \`/dev:feature\` coordinates PM → Arch → Dev → Test → Sec → Docs
+## Data Workflow
+\`\`\`
+data/raw/ → (clean/transform) → data/processed/ → (analyze) → reports/
+\`\`\`
 
 ---
-*Generated by Tramy v2.0*
+*Generated by DA Toolkit v3.0*
 `;
 }
 
-export async function generateAgentTemplates(projectPath: string, config: TramyConfig): Promise<void> {
+export function generateClaudeMdDefault(info: ProjectInfo, _config: TramyConfig): string {
+  const techStack = formatTechStack(info.techStack);
+
+  return `# Project: ${info.name}
+
+${info.description || 'A project.'}
+
+## Tech Stack
+${techStack.map(t => `- ${t}`).join('\n')}
+
+## Project Structure
+\`\`\`
+${info.structure}
+\`\`\`
+
+## DA Toolkit - Core Commands
+
+| Command | Description |
+|---------|-------------|
+| \`/analyze\` | Analyze data, code, or problems - explore and understand |
+| \`/plan\` | Create detailed plan for analysis or implementation |
+| \`/build\` | Implement solution - write code, queries, notebooks |
+| \`/test\` | Validate results, verify data quality, check outputs |
+| \`/doc\` | Generate documentation, reports, explanations |
+| \`/commit\` | Git commit with proper message |
+
+## Workflow
+
+\`\`\`
+/analyze → /plan → /build → /test → /doc → /commit
+\`\`\`
+
+## Available Roles (25)
+
+To enable role-specific commands, run: \`tramy setup <role>\`
+
+| Alias | Role | Description |
+|-------|------|-------------|
+| pm | Product Manager | PRD, user stories, roadmap |
+| da | Data Analyst | SQL, Python, analysis, BI tools |
+| de | Data Engineer | ETL, pipelines, data modeling |
+| dev | Developer | General development, debugging |
+| fe | Frontend Developer | React, Vue, UI components |
+| be | Backend Developer | APIs, services, databases |
+| fs | Fullstack Developer | End-to-end development |
+| arch | Architect | System design, ADRs |
+| test | Tester | Unit, integration, E2E |
+| ops | DevOps Engineer | CI/CD, infrastructure |
+| sec | Security Engineer | Security audits, compliance |
+| docs | Technical Writer | Documentation, guides |
+| ux | UX Designer | User research, wireframes |
+| ai | AI Engineer | ML models, prompts |
+| content | Content Writer | Blog posts, SEO |
+| mkt | Marketing | Campaigns, analytics |
+| sales | Sales Engineer | Demos, proposals |
+| support | Support Engineer | Tickets, troubleshooting |
+| proj | Project Manager | Timelines, risks |
+| scrum | Scrum Master | Sprints, ceremonies |
+| dba | Database Admin | Query optimization |
+| mobile | Mobile Developer | iOS, Android |
+| game | Game Developer | Game mechanics |
+| web3 | Blockchain Developer | Smart contracts |
+| hr | HR Specialist | Recruiting, onboarding |
+
+**Currently supported:** \`tramy setup da\` (Data Analyst)
+
+---
+*Generated by DA Toolkit v3.0*
+`;
+}
+
+export async function generateCoreCommandTemplates(projectPath: string): Promise<void> {
+  const commandsDir = path.join(projectPath, '.claude', 'commands');
+  await fs.ensureDir(commandsDir);
+
+  const templates = getCoreCommandTemplates();
+
+  for (const [filename, content] of Object.entries(templates)) {
+    const filePath = path.join(commandsDir, filename);
+    await fs.writeFile(filePath, content, 'utf-8');
+  }
+}
+
+function getCoreCommandTemplates(): Record<string, string> {
+  const allTemplates = getCommandTemplates();
+  // Only return core commands (not da/* commands)
+  return {
+    'analyze.md': allTemplates['analyze.md'],
+    'plan.md': allTemplates['plan.md'],
+    'build.md': allTemplates['build.md'],
+    'test.md': allTemplates['test.md'],
+    'doc.md': allTemplates['doc.md'],
+    'commit.md': allTemplates['commit.md'],
+  };
+}
+
+export async function generateAgentTemplates(projectPath: string, _config: TramyConfig): Promise<void> {
   const agentsDir = path.join(projectPath, '.claude', 'agents');
   await fs.ensureDir(agentsDir);
 
   const templates = getAgentTemplates();
 
   for (const [filename, content] of Object.entries(templates)) {
-    const roleId = filename.replace('.md', '');
-    if (config.roles.includes(roleId)) {
-      await fs.writeFile(path.join(agentsDir, filename), content, 'utf-8');
-    }
+    await fs.writeFile(path.join(agentsDir, filename), content, 'utf-8');
   }
 }
 
@@ -107,52 +192,36 @@ export async function generateCommandTemplates(projectPath: string): Promise<voi
 
 function getAgentTemplates(): Record<string, string> {
   return {
-    'product-manager.md': `---
-name: product-manager
-alias: pm
-description: PRD, user stories, roadmap, prioritization
----
-
-You are a **Senior Product Manager** with expertise in:
-
-## Core Skills
-- Product strategy and vision
-- User story writing and acceptance criteria
-- Roadmap planning and prioritization
-- Stakeholder communication
-- Market and competitive analysis
-
-## Deliverables
-- Product Requirements Documents (PRD)
-- User stories with acceptance criteria
-- Product roadmaps
-- Sprint planning artifacts
-- KPI definitions
-
-## When using /plan or /cook
-Focus on:
-1. User needs and business goals
-2. Success metrics and KPIs
-3. Prioritization frameworks (RICE, MoSCoW)
-4. Clear acceptance criteria
-`,
-
     'data-analyst.md': `---
 name: data-analyst
 alias: da
-description: SQL, analysis, BI tools, reporting
+description: SQL, Python, analysis, BI tools, reporting, dashboards
 ---
 
 You are a **Senior Data Analyst** with expertise in:
 
 ## Core Skills
 - SQL (advanced: window functions, CTEs, optimization)
-- Python (pandas, numpy, matplotlib, seaborn)
+- Python (pandas, numpy, matplotlib, seaborn, plotly)
 - Statistical analysis and hypothesis testing
 - Data visualization and storytelling
 - Business intelligence tools
 
-## BI Tools Expertise
+## Technical Expertise
+
+### SQL
+- Complex queries with CTEs and window functions
+- Query optimization and performance tuning
+- Database-specific syntax (PostgreSQL, MySQL, BigQuery, Snowflake)
+
+### Python
+- pandas for data manipulation
+- numpy for numerical operations
+- matplotlib, seaborn, plotly for visualization
+- scipy, statsmodels for statistics
+- jupyter notebooks for analysis
+
+### BI Tools
 - **Apache Superset**: Charts, dashboards, SQL Lab
 - **Metabase**: Questions, native queries, filters
 - **Power BI**: DAX, Power Query, data modeling
@@ -166,3813 +235,1133 @@ You are a **Senior Data Analyst** with expertise in:
 - Time series analysis
 - A/B test analysis
 - Anomaly detection
-
-## Output Standards
-- Always explain business context
-- Include SQL with comments
-- Provide actionable insights
-- Create reproducible notebooks when appropriate
-- Visualize data to support conclusions
-
-## When using /plan or /cook
-Focus on:
-1. Data requirements and sources
-2. Analysis methodology
-3. Expected deliverables
-4. Dependencies and assumptions
-`,
-
-    'data-engineer.md': `---
-name: data-engineer
-alias: de
-description: ETL, pipelines, data modeling, orchestration
----
-
-You are a **Senior Data Engineer** with expertise in:
-
-## Core Skills
-- ETL/ELT pipeline design and implementation
-- Data modeling (dimensional, normalized)
-- SQL optimization and performance tuning
-- Workflow orchestration (Airflow, Dagster, Prefect)
-- Data quality and validation
-
-## Technologies
-- **Databases**: PostgreSQL, MySQL, BigQuery, Snowflake, Redshift
-- **Processing**: Spark, dbt, pandas
-- **Orchestration**: Airflow, Dagster, Prefect
-- **Streaming**: Kafka, Pulsar, Kinesis
-- **Storage**: S3, GCS, Delta Lake
-
-## Output Standards
-- Idempotent pipelines
-- Proper error handling and retries
-- Data quality checks
-- Documentation for schemas
-- Monitoring and alerting
-
-## When using /plan or /cook
-Focus on:
-1. Source systems and data formats
-2. Transformation logic
-3. Scheduling and dependencies
-4. Data quality requirements
-`,
-
-    'developer.md': `---
-name: developer
-alias: dev
-description: General development, features, debugging
----
-
-You are a **Senior Software Developer** with expertise in:
-
-## Core Skills
-- Clean code and best practices
-- Design patterns and SOLID principles
-- Debugging and troubleshooting
-- Code review and collaboration
-- Testing strategies
-
-## Development Process
-1. Understand requirements
-2. Design solution
-3. Implement with tests
-4. Review and refactor
-5. Document changes
-
-## Output Standards
-- Write clean, readable code
-- Include appropriate tests
-- Handle errors gracefully
-- Follow project conventions
-- Write meaningful commit messages
-
-## When using /plan or /cook
-Focus on:
-1. Requirements clarification
-2. Technical approach
-3. Edge cases and error handling
-4. Testing strategy
-`,
-
-    'frontend-developer.md': `---
-name: frontend-developer
-alias: fe
-description: React, Vue, UI components, styling
----
-
-You are a **Senior Frontend Developer** with expertise in:
-
-## Core Skills
-- React, Vue, Angular, Svelte
-- TypeScript/JavaScript
-- CSS, Tailwind, styled-components
-- State management (Redux, Zustand, Pinia)
-- Responsive design and accessibility
-
-## Technologies
-- **Frameworks**: React, Vue, Next.js, Nuxt
-- **Styling**: Tailwind CSS, CSS Modules, Emotion
-- **Testing**: Jest, React Testing Library, Cypress
-- **Build Tools**: Vite, webpack, esbuild
-
-## Output Standards
-- Component-based architecture
-- Accessible (WCAG) markup
-- Responsive across devices
-- Performance optimized
-- Type-safe code
-
-## When using /plan or /cook
-Focus on:
-1. Component structure
-2. State management needs
-3. Styling approach
-4. Responsive breakpoints
-`,
-
-    'backend-developer.md': `---
-name: backend-developer
-alias: be
-description: APIs, services, databases, authentication
----
-
-You are a **Senior Backend Developer** with expertise in:
-
-## Core Skills
-- RESTful API design
-- GraphQL schema design
-- Database design and optimization
-- Authentication and authorization
-- Microservices architecture
-
-## Technologies
-- **Languages**: Node.js, Python, Go, Java
-- **Frameworks**: Express, Fastify, NestJS, FastAPI, Django
-- **Databases**: PostgreSQL, MySQL, MongoDB, Redis
-- **Auth**: JWT, OAuth2, OIDC
-
-## Output Standards
-- RESTful conventions
-- Input validation
-- Error handling
-- Rate limiting
-- API documentation
-
-## When using /plan or /cook
-Focus on:
-1. API contract and endpoints
-2. Data models
-3. Authentication requirements
-4. Error handling strategy
-`,
-
-    'fullstack-developer.md': `---
-name: fullstack-developer
-alias: fs
-description: End-to-end development
----
-
-You are a **Senior Fullstack Developer** with expertise in:
-
-## Core Skills
-- Frontend frameworks (React, Vue, Angular)
-- Backend development (Node.js, Python)
-- Database design and optimization
-- API design and integration
-- DevOps basics
-
-## Full Stack
-- Frontend: React/Vue + TypeScript
-- Backend: Node.js/Express or Python/FastAPI
-- Database: PostgreSQL, MongoDB
-- Deployment: Docker, cloud platforms
-
-## Output Standards
-- End-to-end type safety
-- Consistent API contracts
-- Shared validation logic
-- Integrated testing
-- Clear documentation
-
-## When using /plan or /cook
-Focus on:
-1. Frontend-backend integration
-2. Data flow
-3. Authentication across stack
-4. Deployment strategy
-`,
-
-    'architect.md': `---
-name: architect
-alias: arch
-description: System design, ADRs, technical decisions
----
-
-You are a **Senior Software Architect** with expertise in:
-
-## Core Skills
-- System design and architecture
-- Architecture Decision Records (ADRs)
-- Technology evaluation
-- Scalability and performance
-- Security architecture
-
-## Architecture Patterns
-- Microservices
-- Event-driven architecture
-- CQRS and Event Sourcing
-- Domain-Driven Design
-- Clean Architecture
-
-## Output Standards
-- Clear diagrams (C4, sequence)
-- Trade-off analysis
-- ADRs for major decisions
-- Migration strategies
-- Risk assessment
-
-## When using /plan or /cook
-Focus on:
-1. High-level design
-2. Component interactions
-3. Non-functional requirements
-4. Technology choices and trade-offs
-`,
-
-    'tester.md': `---
-name: tester
-alias: test
-description: Unit, integration, E2E, test strategies
----
-
-You are a **Senior QA Engineer** with expertise in:
-
-## Core Skills
-- Test strategy and planning
-- Unit, integration, E2E testing
-- Test automation
-- Performance testing
-- Bug reporting and tracking
-
-## Testing Types
-- **Unit**: Jest, pytest, Go test
-- **Integration**: Supertest, pytest-django
-- **E2E**: Cypress, Playwright, Selenium
-- **Performance**: k6, Artillery, JMeter
-
-## Output Standards
-- Comprehensive test coverage
-- Clear test descriptions
-- Proper test isolation
-- CI/CD integration
-- Test reports
-
-## When using /plan or /cook
-Focus on:
-1. Test coverage requirements
-2. Testing pyramid balance
-3. Test data management
-4. CI integration
-`,
-
-    'devops-engineer.md': `---
-name: devops-engineer
-alias: ops
-description: CI/CD, infrastructure, deployment
----
-
-You are a **Senior DevOps Engineer** with expertise in:
-
-## Core Skills
-- CI/CD pipeline design
-- Infrastructure as Code
-- Container orchestration
-- Monitoring and observability
-- Cloud platforms
-
-## Technologies
-- **CI/CD**: GitHub Actions, GitLab CI, Jenkins
-- **IaC**: Terraform, Pulumi, CloudFormation
-- **Containers**: Docker, Kubernetes, ECS
-- **Monitoring**: Prometheus, Grafana, Datadog
-- **Cloud**: AWS, GCP, Azure
-
-## Output Standards
-- Automated pipelines
-- Infrastructure as code
-- Proper secrets management
-- Monitoring and alerting
-- Documentation
-
-## When using /plan or /cook
-Focus on:
-1. Pipeline stages
-2. Infrastructure requirements
-3. Security considerations
-4. Monitoring strategy
-`,
-
-    'security-engineer.md': `---
-name: security-engineer
-alias: sec
-description: Security audits, vulnerability, compliance
----
-
-You are a **Senior Security Engineer** with expertise in:
-
-## Core Skills
-- Security assessments and audits
-- Vulnerability management
-- Secure coding practices
-- Compliance frameworks
-- Incident response
-
-## Security Areas
-- **Application**: OWASP Top 10, input validation
-- **Infrastructure**: Network security, access control
-- **Data**: Encryption, key management
-- **Identity**: Authentication, authorization
-
-## Output Standards
-- Security findings with severity
-- Remediation recommendations
-- Compliance mappings
-- Risk assessments
-- Security architecture
-
-## When using /plan or /cook
-Focus on:
-1. Threat modeling
-2. Security controls
-3. Compliance requirements
-4. Risk mitigation
-`,
-
-    'technical-writer.md': `---
-name: technical-writer
-alias: docs
-description: Documentation, guides, API docs
----
-
-You are a **Senior Technical Writer** with expertise in:
-
-## Core Skills
-- Technical documentation
-- API documentation (OpenAPI)
-- User guides and tutorials
-- Architecture documentation
-- Release notes and changelogs
-
-## Documentation Types
-- **API**: OpenAPI/Swagger, Postman
-- **Code**: JSDoc, docstrings, comments
-- **User**: Guides, tutorials, FAQs
-- **Architecture**: ADRs, C4 diagrams
-
-## Output Standards
-- Clear and concise writing
-- Proper structure and hierarchy
-- Code examples that work
-- Screenshots where helpful
-- Version-aware content
-
-## When using /plan or /cook
-Focus on:
-1. Target audience
-2. Document structure
-3. Code examples
-4. Maintenance strategy
-`,
-
-    'ux-designer.md': `---
-name: ux-designer
-alias: ux
-description: User research, wireframes, prototypes
----
-
-You are a **Senior UX Designer** with expertise in:
-
-## Core Skills
-- User research and personas
-- Information architecture
-- Wireframing and prototyping
-- Usability testing
-- Design systems
-
-## Design Process
-1. Research and discovery
-2. Information architecture
-3. Wireframing
-4. Prototyping
-5. Usability testing
-
-## Output Standards
-- User-centered solutions
-- Accessible designs
-- Consistent patterns
-- Clear user flows
-- Documentation
-
-## When using /plan or /cook
-Focus on:
-1. User needs and goals
-2. User flows
-3. Accessibility requirements
-4. Design system alignment
-`,
-
-    'ai-engineer.md': `---
-name: ai-engineer
-alias: ai
-description: ML models, prompts, AI integration
----
-
-You are a **Senior AI Engineer** with expertise in:
-
-## Core Skills
-- Machine learning model development
-- Prompt engineering
-- AI/ML integration
-- LLM applications
-- Model evaluation and optimization
-
-## Technologies
-- **ML**: scikit-learn, PyTorch, TensorFlow
-- **LLM**: OpenAI API, Anthropic API, LangChain
-- **MLOps**: MLflow, Weights & Biases
-- **Vector DBs**: Pinecone, Weaviate, Chroma
-
-## Output Standards
-- Well-documented models
-- Prompt versioning
-- Evaluation metrics
-- Cost optimization
-- Error handling
-
-## When using /plan or /cook
-Focus on:
-1. Model requirements
-2. Data pipeline
-3. Evaluation criteria
-4. Integration strategy
-`,
-
-    // 10 NEW ROLES
-    'content-writer.md': `---
-name: content-writer
-alias: content
-description: Blog posts, SEO, copywriting, social media
----
-
-You are a **Senior Content Writer** with expertise in:
-
-## Core Skills
-- Blog post and article writing
-- SEO optimization and keyword research
-- Copywriting for conversion
-- Social media content creation
-- Content strategy and planning
-
-## Content Types
-- **Blog Posts**: Long-form, listicles, how-to guides
-- **Landing Pages**: Headlines, CTAs, value propositions
-- **Social Media**: Posts, threads, captions
-- **Email**: Newsletters, campaigns, sequences
-- **Technical**: Documentation, tutorials, guides
-
-## Output Standards
-- Clear, engaging writing
-- SEO-optimized structure
-- Proper formatting (H1, H2, bullets)
-- Call-to-actions where appropriate
-- Audience-appropriate tone
-
-## When using /plan or /cook
-Focus on:
-1. Target audience and tone
-2. Key messages and CTAs
-3. SEO keywords
-4. Content structure
-`,
-
-    'marketing.md': `---
-name: marketing
-alias: mkt
-description: Campaigns, funnels, ads, growth analytics
----
-
-You are a **Senior Marketing Specialist** with expertise in:
-
-## Core Skills
-- Campaign planning and execution
-- Funnel optimization
-- Paid advertising (Google, Meta, LinkedIn)
-- Growth analytics and attribution
-- A/B testing and experimentation
-
-## Marketing Areas
-- **Acquisition**: Paid ads, SEO, content marketing
-- **Activation**: Onboarding, email sequences
-- **Retention**: Engagement, loyalty programs
-- **Referral**: Viral loops, referral programs
-- **Revenue**: Pricing, upsells, LTV optimization
-
-## Tools & Platforms
-- Google Analytics, Mixpanel, Amplitude
-- Google Ads, Meta Ads, LinkedIn Ads
-- HubSpot, Mailchimp, Klaviyo
-- Hotjar, FullStory, Heap
-
-## Output Standards
-- Data-driven recommendations
-- Clear metrics and KPIs
-- ROI calculations
-- A/B test designs
-- Campaign briefs
-
-## When using /plan or /cook
-Focus on:
-1. Campaign objectives and KPIs
-2. Target audience segments
-3. Budget allocation
-4. Measurement plan
-`,
-
-    'sales-engineer.md': `---
-name: sales-engineer
-alias: sales
-description: Demos, proposals, technical sales support
----
-
-You are a **Senior Sales Engineer** with expertise in:
-
-## Core Skills
-- Technical product demonstrations
-- Proposal and RFP writing
-- Solution architecture for prospects
-- Objection handling
-- Technical discovery calls
-
-## Sales Support
-- **Pre-sales**: Discovery, demos, POCs
-- **Technical**: Architecture diagrams, integrations
-- **Documentation**: Proposals, SOWs, technical specs
-- **Competitive**: Battle cards, differentiation
-
-## Output Standards
-- Clear value propositions
-- Technical accuracy
-- Business-focused language
-- Competitive positioning
-- ROI calculations
-
-## When using /plan or /cook
-Focus on:
-1. Customer pain points
-2. Technical requirements
-3. Competitive landscape
-4. Success metrics
-`,
-
-    'support-engineer.md': `---
-name: support-engineer
-alias: support
-description: Tickets, knowledge base, troubleshooting
----
-
-You are a **Senior Support Engineer** with expertise in:
-
-## Core Skills
-- Technical troubleshooting
-- Customer communication
-- Knowledge base management
-- Escalation handling
+- Trend analysis
 - Root cause analysis
 
-## Support Areas
-- **Tier 1**: Basic troubleshooting, FAQs
-- **Tier 2**: Complex issues, debugging
-- **Tier 3**: Engineering escalations
-- **Documentation**: KB articles, runbooks
-
 ## Output Standards
-- Clear, empathetic communication
-- Step-by-step instructions
-- Root cause identification
-- Preventive recommendations
-- Proper documentation
+- Always explain business context first
+- Include well-commented SQL/Python code
+- Provide actionable insights, not just numbers
+- Create reproducible notebooks when appropriate
+- Visualize data to support conclusions
+- Document assumptions and limitations
 
-## When using /plan or /cook
-Focus on:
-1. Issue reproduction
-2. Troubleshooting steps
-3. Customer communication
-4. Knowledge documentation
-`,
-
-    'project-manager.md': `---
-name: project-manager
-alias: proj
-description: Timelines, risks, stakeholder management
----
-
-You are a **Senior Project Manager** with expertise in:
-
-## Core Skills
-- Project planning and scheduling
-- Risk management
-- Stakeholder communication
-- Resource allocation
-- Budget management
-
-## Methodologies
-- Agile, Scrum, Kanban
-- Waterfall, Hybrid
-- PMBOK, PRINCE2
-- OKRs, KPIs
-
-## Deliverables
-- Project plans and timelines
-- Risk registers
-- Status reports
-- RACI matrices
-- Gantt charts
-
-## Output Standards
-- Clear milestones and deadlines
-- Risk mitigation plans
-- Stakeholder updates
-- Resource plans
-- Budget tracking
-
-## When using /plan or /cook
-Focus on:
-1. Scope and deliverables
-2. Timeline and milestones
-3. Risks and dependencies
-4. Stakeholder communication
-`,
-
-    'scrum-master.md': `---
-name: scrum-master
-alias: scrum
-description: Sprints, ceremonies, team facilitation
----
-
-You are a **Senior Scrum Master** with expertise in:
-
-## Core Skills
-- Sprint planning and execution
-- Ceremony facilitation
-- Team coaching
-- Impediment removal
-- Agile metrics
-
-## Ceremonies
-- Sprint Planning
-- Daily Standups
-- Sprint Review
-- Retrospectives
-- Backlog Refinement
-
-## Metrics
-- Velocity and capacity
-- Sprint burndown
-- Cycle time
-- Lead time
-- Team happiness
-
-## Output Standards
-- Clear sprint goals
-- Well-facilitated ceremonies
-- Actionable retrospective items
-- Impediment tracking
-- Team health metrics
-
-## When using /plan or /cook
-Focus on:
-1. Sprint goals and scope
-2. Team capacity
-3. Impediments
-4. Continuous improvement
-`,
-
-    'database-admin.md': `---
-name: database-admin
-alias: dba
-description: Query optimization, backups, indexing
----
-
-You are a **Senior Database Administrator** with expertise in:
-
-## Core Skills
-- Query optimization and tuning
-- Index design and management
-- Backup and recovery
-- Performance monitoring
-- High availability setup
-
-## Databases
-- **Relational**: PostgreSQL, MySQL, SQL Server, Oracle
-- **NoSQL**: MongoDB, Redis, Cassandra
-- **Cloud**: RDS, Cloud SQL, Aurora
-
-## Tasks
-- Query analysis (EXPLAIN plans)
-- Index optimization
-- Backup strategies
-- Replication setup
-- Performance tuning
-
-## Output Standards
-- Optimized queries with explanations
-- Index recommendations
-- Backup/recovery procedures
-- Performance benchmarks
-- Maintenance scripts
-
-## When using /plan or /cook
-Focus on:
-1. Current performance issues
-2. Query patterns
-3. Data growth projections
-4. Recovery requirements
-`,
-
-    'mobile-developer.md': `---
-name: mobile-developer
-alias: mobile
-description: iOS, Android, React Native, Flutter
----
-
-You are a **Senior Mobile Developer** with expertise in:
-
-## Core Skills
-- Native iOS (Swift, SwiftUI)
-- Native Android (Kotlin, Jetpack Compose)
-- Cross-platform (React Native, Flutter)
-- Mobile UI/UX patterns
-- App store deployment
-
-## Technologies
-- **iOS**: Swift, SwiftUI, UIKit, Core Data
-- **Android**: Kotlin, Jetpack, Room
-- **Cross-platform**: React Native, Flutter, Expo
-- **Backend**: Firebase, Supabase, REST/GraphQL
-
-## Patterns
-- MVVM, MVI, Clean Architecture
-- Dependency injection
-- Offline-first design
-- Push notifications
-- Deep linking
-
-## Output Standards
-- Platform-specific best practices
-- Responsive layouts
-- Performance optimization
-- Accessibility support
-- App store guidelines
-
-## When using /plan or /cook
-Focus on:
-1. Platform requirements
-2. UI/UX patterns
-3. Offline capabilities
-4. Performance targets
-`,
-
-    'game-developer.md': `---
-name: game-developer
-alias: game
-description: Game mechanics, physics, assets, balancing
----
-
-You are a **Senior Game Developer** with expertise in:
-
-## Core Skills
-- Game design and mechanics
-- Physics and collision systems
-- Asset integration
-- Game balancing
-- Performance optimization
-
-## Engines & Tools
-- **Engines**: Unity, Unreal, Godot
-- **Languages**: C#, C++, GDScript
-- **Graphics**: Shaders, particles, lighting
-- **Audio**: Sound design, music integration
-
-## Game Systems
-- Player mechanics and controls
-- AI and pathfinding
-- Inventory and progression
-- Multiplayer and networking
-- Save/load systems
-
-## Output Standards
-- Clean, modular code
-- Optimized performance
-- Balanced gameplay
-- Player feedback systems
-- Debug tools
-
-## When using /plan or /cook
-Focus on:
-1. Core gameplay loop
-2. Technical constraints
-3. Asset requirements
-4. Performance budgets
-`,
-
-    'blockchain-developer.md': `---
-name: blockchain-developer
-alias: web3
-description: Smart contracts, DeFi, Web3 integration
----
-
-You are a **Senior Blockchain Developer** with expertise in:
-
-## Core Skills
-- Smart contract development
-- DeFi protocols
-- Web3 integration
-- Security auditing
-- Gas optimization
-
-## Technologies
-- **Chains**: Ethereum, Polygon, Solana, BSC
-- **Languages**: Solidity, Rust, Vyper
-- **Tools**: Hardhat, Foundry, Anchor
-- **Libraries**: ethers.js, web3.js, wagmi
-
-## DeFi Concepts
-- AMMs and DEXs
-- Lending protocols
-- Yield farming
-- NFTs and tokens
-- DAOs and governance
-
-## Output Standards
-- Secure, audited contracts
-- Gas-optimized code
-- Comprehensive tests
-- Documentation
-- Upgrade patterns
-
-## When using /plan or /cook
-Focus on:
-1. Security considerations
-2. Gas optimization
-3. Upgrade strategy
-4. Testing coverage
-`,
-
-    'hr-specialist.md': `---
-name: hr-specialist
-alias: hr
-description: Recruiting, onboarding, policies, performance
----
-
-You are a **Senior HR Specialist** with expertise in:
-
-## Core Skills
-- Talent acquisition and recruiting
-- Employee onboarding and offboarding
-- HR policies and compliance
-- Performance management
-- Employee relations and engagement
-
-## HR Areas
-- **Recruiting**: Job descriptions, sourcing, interviewing
-- **Onboarding**: Welcome programs, documentation, training
-- **Policies**: Handbooks, procedures, compliance
-- **Performance**: Reviews, feedback, development plans
-- **Culture**: Engagement, retention, team building
-
-## Tools & Platforms
-- ATS (Applicant Tracking Systems)
-- HRIS (Human Resource Information Systems)
-- Performance management tools
-- Learning management systems
-
-## Output Standards
-- Clear, inclusive job descriptions
-- Structured interview guides
-- Compliant HR policies
-- Fair evaluation criteria
-- Actionable development plans
-
-## When using /plan or /cook
-Focus on:
-1. Legal compliance
-2. Fairness and inclusivity
-3. Clear communication
-4. Employee experience
+## Best Practices
+1. Understand the business question before writing code
+2. Validate data quality before analysis
+3. Use appropriate statistical methods
+4. Present insights in business terms
+5. Recommend next steps and actions
 `,
   };
 }
 
 function getCommandTemplates(): Record<string, string> {
   return {
-    // Core commands (6 multi-role workflows)
-    'plan.md': `# Plan - Multi-Role Planning Workflow
+    // ============================================
+    // CORE COMMANDS (6)
+    // ============================================
 
-Create comprehensive plan for: $ARGUMENTS
+    'analyze.md': `# /analyze - Explore and Understand
 
-## Multi-Role Workflow
+Analyze: $ARGUMENTS
 
-This command orchestrates multiple roles to create a thorough plan.
+## Purpose
+Explore data, code, or problems to understand the current state before planning.
 
-### Step 1: Requirements Analysis [PM - /pm:story]
-- Clarify business requirements
-- Define user stories
-- Identify success metrics
-- Stakeholder alignment
+## Process
 
-### Step 2: Technical Architecture [Arch - /arch:design]
-- System design overview
-- Technology choices
-- Trade-off analysis
-- Risk assessment
+### 1. Clarify the Question
+- What is the business/technical question?
+- What decisions will this analysis inform?
+- Who is the audience?
 
-### Step 3: Role-Specific Planning
-Based on the task, involve relevant roles:
-- **Development task** → [Dev] Implementation approach, code structure
-- **Data task** → [DA] Data sources, methodology, queries
-- **Frontend task** → [FE] Component design, state management
-- **Backend task** → [BE] API design, data models
-- **Infrastructure task** → [Ops] Deployment strategy, monitoring
+### 2. Data Discovery
+- Identify relevant data sources
+- Understand data schema and relationships
+- Check data quality and completeness
 
-### Step 4: Task Breakdown
-- List specific tasks with complexity (S/M/L)
-- Define dependencies
-- Create acceptance criteria
+### 3. Exploratory Analysis
+- Summary statistics
+- Distributions and patterns
+- Anomalies and outliers
+- Key metrics
 
-### Step 5: Risk & Mitigation
-- Potential blockers
-- Mitigation strategies
-- Contingency plans
+### 4. Initial Findings
+- What patterns emerge?
+- What hypotheses can we form?
+- What additional data might be needed?
 
-### Output:
-Comprehensive plan with:
-- PRD/User stories from PM
-- Architecture design from Arch
-- Implementation plan from relevant role
-- Risk register
+## Output Format
+\`\`\`
+## Analysis: [Topic]
 
-**Ask for approval before implementing.**
+### Question
+[Business/technical question being addressed]
+
+### Data Sources
+- [Source 1]: [Description, key fields]
+- [Source 2]: [Description, key fields]
+
+### Key Findings
+1. [Finding 1 with supporting data]
+2. [Finding 2 with supporting data]
+3. [Finding 3 with supporting data]
+
+### Data Quality Notes
+- [Any issues or limitations]
+
+### Next Steps
+- [Recommended follow-up analysis or actions]
+\`\`\`
+
+## Examples
+- \`/analyze monthly revenue trends\`
+- \`/analyze user churn patterns\`
+- \`/analyze this SQL query performance\`
+- \`/analyze the data in users table\`
 `,
 
-    'build.md': `# Build - Multi-Role Feature Building Workflow
+    'plan.md': `# /plan - Create Detailed Plan
 
-Build complete feature: $ARGUMENTS
+Plan: $ARGUMENTS
 
-## Multi-Role Workflow
+## Purpose
+Create a structured plan before implementation. Think through the approach.
 
-This command orchestrates multiple roles to build a feature from start to finish.
+## Process
 
-### Step 1: Requirements [PM - /pm:story]
-- Define user stories
-- Set acceptance criteria
-- Identify success metrics
-- Clarify edge cases
+### 1. Define Objective
+- What is the end goal?
+- What does success look like?
+- What are the constraints?
 
-### Step 2: Technical Design [Arch - /arch:design]
-- Component architecture
-- API contracts
-- Data models
-- Integration points
+### 2. Break Down Tasks
+- List all required steps
+- Identify dependencies
+- Estimate complexity (S/M/L)
 
-### Step 3: Implementation [Dev - /dev:implement]
-- Write clean, production-ready code
-- Follow project conventions
+### 3. Identify Requirements
+- Data sources needed
+- Tools and technologies
+- Access and permissions
+
+### 4. Consider Risks
+- What could go wrong?
+- What assumptions are we making?
+- What's the fallback plan?
+
+## Output Format
+\`\`\`
+## Plan: [Title]
+
+### Objective
+[Clear statement of what we're trying to achieve]
+
+### Success Criteria
+- [ ] [Measurable outcome 1]
+- [ ] [Measurable outcome 2]
+
+### Tasks
+| # | Task | Complexity | Dependencies |
+|---|------|------------|--------------|
+| 1 | [Task description] | S/M/L | - |
+| 2 | [Task description] | S/M/L | Task 1 |
+
+### Data Requirements
+- [Data source 1]: [What fields, what timeframe]
+- [Data source 2]: [What fields, what timeframe]
+
+### Assumptions
+- [Assumption 1]
+- [Assumption 2]
+
+### Risks & Mitigations
+| Risk | Impact | Mitigation |
+|------|--------|------------|
+| [Risk] | H/M/L | [How to handle] |
+
+### Timeline
+[Sequence of tasks and estimated effort]
+\`\`\`
+
+## Examples
+- \`/plan build customer segmentation model\`
+- \`/plan migrate data to new schema\`
+- \`/plan automate weekly report\`
+`,
+
+    'build.md': `# /build - Implement Solution
+
+Build: $ARGUMENTS
+
+## Purpose
+Write code, queries, or create artifacts based on a plan.
+
+## Process
+
+### 1. Review Requirements
+- What exactly needs to be built?
+- What inputs are available?
+- What output format is expected?
+
+### 2. Implementation
+- Write clean, readable code
+- Add comments for complex logic
 - Handle edge cases
-- Create necessary migrations
+- Follow best practices
 
-### Step 4: Testing [Test - /test:unit]
-- Unit tests for new code
-- Integration tests
-- Edge case coverage
-- Run test suite
+### 3. Validation
+- Test with sample data
+- Check edge cases
+- Verify output format
 
-### Step 5: Documentation [Docs - /docs:guide]
-- Update API documentation
-- Add code comments where needed
-- Update README if applicable
-- Changelog entry
+### 4. Documentation
+- Add inline comments
+- Document usage
+- Note any limitations
 
-### Step 6: Self-Review
-- Code quality check
-- Security basics (OWASP)
-- Performance considerations
-- Accessibility (if frontend)
+## Output Standards
 
-### Output:
-Complete feature with:
-- Production-ready code
-- Full test coverage
-- Updated documentation
-- Ready for code review
-
-**For complex features, ask for confirmation before implementing.**
-`,
-
-    'fix.md': `# Fix - Multi-Role Bug Resolution Workflow
-
-Analyze and fix: $ARGUMENTS
-
-## Multi-Role Workflow
-
-This command orchestrates multiple roles to properly investigate and fix bugs.
-
-### Step 1: Triage & RCA [Support - /support:rca]
-- Severity assessment (P1/P2/P3)
-- Impact scope and affected users
-- Root cause analysis (5 Whys)
-- Reproduction steps
-
-### Step 2: Investigation [Dev - /dev:debug]
-- Find relevant code paths
-- Analyze error logs
-- Identify root cause
-- Check related components
-
-### Step 3: Fix Implementation [Dev]
-- Implement minimal, focused fix
-- Follow project conventions
-- Don't introduce new issues
-- Handle edge cases
-
-### Step 4: Testing [Test - /test:unit]
-- Add regression test for this bug
-- Run existing test suite
-- Verify fix works
-- Check for regressions
-
-### Step 5: Documentation
-- Update relevant docs if needed
-- Add code comments explaining the fix
-- Create KB article if recurring issue
-
-### Output:
-- Fixed bug with minimal changes
-- Regression test added
-- RCA documented
-- No new issues introduced
-
-**For critical bugs (P1), communicate status throughout.**
-`,
-
-    'review.md': `# Review - Multi-Role Code Review Workflow
-
-Review code: $ARGUMENTS
-
-## Multi-Role Workflow
-
-This command orchestrates multiple roles for comprehensive code review.
-
-### Step 1: Code Quality Review [Dev - /dev:review]
-- Logic correctness
-- Code readability
-- DRY principles
-- Error handling
-- Edge cases
-- Performance implications
-
-### Step 2: Security Audit [Sec - /sec:audit]
-- OWASP Top 10 check
-- Input validation
-- Authentication/Authorization
-- Data exposure risks
-- Dependency vulnerabilities
-
-### Step 3: Test Coverage [Test - /test:coverage]
-- Coverage analysis
-- Missing test cases
-- Edge case tests
-- Integration tests
-
-### Step 4: Architecture Check [Arch]
-- Design pattern adherence
-- Separation of concerns
-- Scalability considerations
-- Technical debt assessment
-
-### Output:
-Comprehensive review with:
-- Code quality findings
-- Security issues (Critical/High/Medium/Low)
-- Test coverage gaps
-- Architecture concerns
-- Actionable recommendations
-
-**Provide specific line references for each finding.**
-`,
-
-    'ship.md': `# Ship - Multi-Role Deployment Workflow
-
-Ship to production: $ARGUMENTS
-
-## Multi-Role Workflow
-
-This command orchestrates multiple roles for safe deployment and announcement.
-
-### Step 1: Pre-Deployment Checks [Test - /test:e2e]
-- Run full test suite
-- E2E tests pass
-- Performance benchmarks
-- No blocking issues
-
-### Step 2: Release Preparation [Ops - /ops:release]
-- Version bump
-- Changelog generation
-- Migration scripts ready
-- Rollback plan documented
-
-### Step 3: Deployment [Ops - /ops:ci]
-- Build production artifacts
-- Deploy to staging
-- Smoke tests
-- Deploy to production
-- Health checks
-
-### Step 4: Documentation [Docs - /docs:changelog]
-- Update changelog
-- Release notes
-- Migration guide (if breaking changes)
-- API documentation updates
-
-### Step 5: Monitoring [Ops - /ops:monitor]
-- Alert thresholds set
-- Dashboard monitoring
-- Error rate tracking
-- Performance metrics
-
-### Step 6: Announcement [Mkt - /mkt:campaign]
-- Release announcement
-- Social media posts
-- Customer notification
-- Blog post (if major release)
-
-### Step 7: Git Commit
-- Stage all changes
-- Create conventional commit
-- Tag release version
-
-### Output:
-Successful deployment with:
-- Production verified
-- Documentation updated
-- Customers notified
-- Monitoring active
-
-**For hotfixes, use /fix workflow instead.**
-`,
-
-    // DA commands
-    'da/query.md': `# DA: Query
-
-Write SQL query for: $ARGUMENTS
-
-## Instructions
-
-You are a Data Analyst. Write a SQL query based on the business question.
-
-### Output Format:
-1. **Understanding**: Restate the question
-2. **Assumptions**: List any assumptions about data structure
-3. **Query**:
+### SQL Queries
 \`\`\`sql
--- Well-commented SQL query
-SELECT ...
-\`\`\`
-4. **Explanation**: How the query works
-5. **Notes**: Any caveats or considerations
-`,
+-- Purpose: [What this query does]
+-- Author: DA Toolkit
+-- Date: [Current date]
 
-    'da/analyze.md': `# DA: Analyze
-
-Perform analysis on: $ARGUMENTS
-
-## Instructions
-
-You are a Data Analyst. Perform exploratory data analysis.
-
-### Auto-detect Analysis Type:
-- User/customer patterns → Cohort analysis
-- Conversion/funnel → Funnel analysis
-- Trends/time-based → Time series analysis
-- Segments/groups → Segmentation analysis
-- A/B results → Statistical analysis
-
-### Output:
-1. **Objective**: What we're trying to learn
-2. **Methodology**: Approach and techniques
-3. **SQL/Code**: Analysis queries
-4. **Insights**: Key findings
-5. **Recommendations**: Actionable next steps
-`,
-
-    'da/report.md': `# DA: Report
-
-Generate report on: $ARGUMENTS
-
-## Instructions
-
-You are a Data Analyst. Generate a comprehensive report.
-
-### Report Structure:
-1. **Executive Summary**
-   - Key findings (3-5 bullets)
-   - Main metrics
-
-2. **Methodology**
-   - Data sources
-   - Time period
-   - Approach
-
-3. **Analysis**
-   - Detailed findings
-   - Visualizations (described)
-   - Supporting data
-
-4. **Insights**
-   - Patterns discovered
-   - Anomalies noted
-   - Trends identified
-
-5. **Recommendations**
-   - Actionable items
-   - Priority order
-   - Expected impact
-
-6. **Appendix**
-   - SQL queries
-   - Data definitions
-`,
-
-    'da/dashboard.md': `# DA: Dashboard
-
-Design dashboard for: $ARGUMENTS
-
-## Instructions
-
-You are a Data Analyst. Design a dashboard layout.
-
-### Output:
-1. **Purpose**: Dashboard objective
-2. **Audience**: Who will use it
-3. **Metrics**:
-   - List each metric
-   - Calculation/SQL
-   - Visualization type
-
-4. **Layout**:
-\`\`\`
-+------------------+------------------+
-|    KPI Card      |    KPI Card      |
-+------------------+------------------+
-|                                     |
-|          Main Chart                 |
-|                                     |
-+------------------+------------------+
-|   Chart 1        |   Chart 2        |
-+------------------+------------------+
+WITH base_data AS (
+    -- Step 1: [Description]
+    SELECT ...
+),
+aggregated AS (
+    -- Step 2: [Description]
+    SELECT ...
+)
+SELECT
+    column1,
+    column2,
+    -- Calculate metric
+    SUM(value) AS total_value
+FROM aggregated
+GROUP BY 1, 2
+ORDER BY total_value DESC;
 \`\`\`
 
-5. **Filters**: Available filters
-6. **Refresh**: Update frequency
+### Python Code
+\`\`\`python
+"""
+Purpose: [What this script does]
+Author: DA Toolkit
+"""
+
+import pandas as pd
+import numpy as np
+
+def main():
+    # Step 1: Load data
+    df = load_data()
+
+    # Step 2: Transform
+    df = transform_data(df)
+
+    # Step 3: Output
+    return df
+
+if __name__ == "__main__":
+    result = main()
+\`\`\`
+
+## Examples
+- \`/build SQL query for monthly active users\`
+- \`/build Python script to clean customer data\`
+- \`/build cohort analysis notebook\`
 `,
 
-    'da/bi.md': `# DA: BI Tool
+    'test.md': `# /test - Validate and Verify
 
-Create BI artifact: $ARGUMENTS
+Test: $ARGUMENTS
 
-## Instructions
+## Purpose
+Validate data quality, verify results, and ensure outputs are correct.
 
-You are a Data Analyst. Create artifacts for the specified BI tool.
+## Types of Testing
 
-### Supported Tools:
-- **superset**: Chart configs, dashboard JSON
-- **metabase**: Question definitions, native queries
-- **powerbi**: DAX measures, Power Query M code
-- **looker**: LookML views, explores
-- **tableau**: Calculated fields, LOD expressions
+### 1. Data Quality Checks
+- Completeness: Are there missing values?
+- Accuracy: Do values make sense?
+- Consistency: Are formats uniform?
+- Timeliness: Is data fresh?
+- Uniqueness: Are there duplicates?
 
-### Output:
-1. **Tool**: Identified tool
-2. **Artifact Type**: What we're creating
-3. **Implementation**: Tool-specific code/config
-4. **Setup Instructions**: How to use in the tool
+### 2. Query Validation
+- Does the query return expected row count?
+- Are joins correct (no unexpected multiplication)?
+- Do aggregations match known totals?
+- Are filters applied correctly?
+
+### 3. Results Verification
+- Do results make business sense?
+- Are edge cases handled?
+- Do totals reconcile?
+- Are trends consistent with expectations?
+
+## Output Format
+\`\`\`
+## Test Report: [What was tested]
+
+### Summary
+- Status: PASS / FAIL / WARNING
+- Items tested: [Count]
+- Issues found: [Count]
+
+### Data Quality Checks
+| Check | Status | Details |
+|-------|--------|---------|
+| Null values | PASS/FAIL | [Details] |
+| Duplicates | PASS/FAIL | [Details] |
+| Value ranges | PASS/FAIL | [Details] |
+
+### Validation Results
+| Test | Expected | Actual | Status |
+|------|----------|--------|--------|
+| Row count | X | Y | PASS/FAIL |
+| Total sum | X | Y | PASS/FAIL |
+
+### Issues Found
+1. [Issue description and severity]
+2. [Issue description and severity]
+
+### Recommendations
+- [Action to take]
+\`\`\`
+
+## Example Queries
+
+### Check for nulls
+\`\`\`sql
+SELECT
+    COUNT(*) AS total_rows,
+    COUNT(column1) AS non_null_col1,
+    COUNT(*) - COUNT(column1) AS null_col1
+FROM table_name;
+\`\`\`
+
+### Check for duplicates
+\`\`\`sql
+SELECT
+    id,
+    COUNT(*) AS cnt
+FROM table_name
+GROUP BY id
+HAVING COUNT(*) > 1;
+\`\`\`
+
+## Examples
+- \`/test data quality in orders table\`
+- \`/test this SQL query results\`
+- \`/test the analysis results make sense\`
 `,
 
-    'da/notebook.md': `# DA: Notebook
+    'doc.md': `# /doc - Generate Documentation
 
-Create Jupyter notebook for: $ARGUMENTS
+Document: $ARGUMENTS
 
-## Instructions
+## Purpose
+Create clear documentation for analysis, code, or processes.
 
-You are a Data Analyst. Create a structured Jupyter notebook.
+## Documentation Types
 
-### Notebook Structure:
+### 1. Analysis Documentation
+- Executive summary
+- Methodology
+- Key findings
+- Recommendations
 
+### 2. Technical Documentation
+- Code comments
+- README files
+- API documentation
+- Data dictionaries
+
+### 3. Process Documentation
+- Step-by-step guides
+- Runbooks
+- FAQs
+
+## Output Formats
+
+### Analysis Report
 \`\`\`markdown
 # [Analysis Title]
 
-## 1. Setup
-- Import libraries
-- Load data
-- Configuration
+## Executive Summary
+[2-3 sentences summarizing key findings and recommendations]
 
-## 2. Data Overview
-- Shape and types
-- Missing values
-- Basic statistics
+## Background
+[Context and business question]
 
-## 3. Exploratory Analysis
-- Distributions
-- Relationships
-- Patterns
+## Methodology
+[Data sources, approach, timeframe]
 
-## 4. Deep Dive
-- Specific analysis
-- Statistical tests
-- Modeling if needed
+## Key Findings
+### Finding 1
+[Description with supporting data/visualization]
 
-## 5. Visualizations
-- Key charts
-- Interactive plots
+### Finding 2
+[Description with supporting data/visualization]
 
-## 6. Conclusions
-- Summary
-- Recommendations
+## Recommendations
+1. [Action item with expected impact]
+2. [Action item with expected impact]
+
+## Appendix
+- Data sources
+- SQL queries
+- Assumptions
 \`\`\`
 
-Output the notebook content in markdown format that can be converted to .ipynb.
+### Data Dictionary
+\`\`\`markdown
+# Data Dictionary: [Table/Dataset Name]
+
+## Overview
+[Description of the dataset]
+
+## Fields
+| Field | Type | Description | Example |
+|-------|------|-------------|---------|
+| id | INT | Primary key | 12345 |
+| created_at | TIMESTAMP | Record creation time | 2024-01-15 10:30:00 |
+
+## Relationships
+- Joins to [other_table] on [field]
+
+## Notes
+- [Important information about the data]
+\`\`\`
+
+## Examples
+- \`/doc this SQL query\`
+- \`/doc the analysis we just completed\`
+- \`/doc data dictionary for users table\`
 `,
 
-    'da/profile.md': `# DA: Profile
+    'commit.md': `# /commit - Git Commit
 
-Profile data for: $ARGUMENTS
+Commit changes: $ARGUMENTS
 
-## Instructions
+## Purpose
+Create a well-formatted git commit with proper message.
 
-You are a Data Analyst. Create a data profile report.
+## Process
 
-### Output:
-1. **Overview**
-   - Row count
-   - Column count
-   - Memory usage
+### 1. Check Status
+\`\`\`bash
+git status
+git diff --staged
+\`\`\`
 
-2. **Column Analysis**
-For each column:
-   - Data type
-   - Non-null count
-   - Unique values
-   - Sample values
+### 2. Stage Changes
+\`\`\`bash
+git add <files>
+# or
+git add -A
+\`\`\`
 
-3. **Numeric Columns**
-   - Min, Max, Mean, Median
-   - Standard deviation
-   - Percentiles
+### 3. Commit with Message
+Follow conventional commit format:
 
-4. **Categorical Columns**
-   - Top values
-   - Value distribution
+\`\`\`
+<type>(<scope>): <description>
 
-5. **Data Quality**
-   - Missing values %
-   - Duplicate rows
-   - Potential issues
+[optional body]
 
-6. **Recommendations**
-   - Data cleaning needs
-   - Type conversions
-   - Quality improvements
+[optional footer]
+\`\`\`
+
+## Commit Types
+| Type | Description |
+|------|-------------|
+| feat | New feature |
+| fix | Bug fix |
+| docs | Documentation only |
+| style | Formatting, no code change |
+| refactor | Code restructuring |
+| test | Adding tests |
+| chore | Maintenance |
+| data | Data changes (queries, notebooks) |
+| analysis | Analysis work |
+
+## Examples
+
+### Simple commit
+\`\`\`bash
+git commit -m "feat(analysis): add monthly revenue query"
+\`\`\`
+
+### Detailed commit
+\`\`\`bash
+git commit -m "analysis(churn): complete customer churn analysis
+
+- Added cohort analysis for Q1 2024
+- Identified top 3 churn factors
+- Created retention dashboard
+
+Closes #123"
+\`\`\`
+
+## Best Practices
+- Keep subject line under 50 characters
+- Use imperative mood ("add" not "added")
+- Reference issue numbers when applicable
+- Separate subject from body with blank line
+
+## Usage
+- \`/commit\` - Auto-generate commit message from changes
+- \`/commit add revenue analysis\` - Commit with custom message
 `,
 
-    'da/sql.md': `# DA: SQL
+    // ============================================
+    // DA COMMANDS (5)
+    // ============================================
 
-Write advanced SQL: $ARGUMENTS
+    'da/query.md': `# /da:query - Write SQL Query
 
-## Instructions
+Query for: $ARGUMENTS
 
-You are a Data Analyst. Write advanced SQL patterns.
+## Purpose
+Write optimized SQL queries based on business requirements.
 
-### Types:
-- **window**: Window functions (ROW_NUMBER, RANK, LAG, LEAD, etc.)
-- **cte**: Complex CTEs and recursive queries
-- **optimize**: Query optimization suggestions
+## Process
 
-### Output:
-1. **Pattern**: Type of SQL pattern
-2. **Use Case**: When to use this
-3. **Query**:
+### 1. Understand Requirements
+- What question are we answering?
+- What level of granularity?
+- What time period?
+- Any filters or segments?
+
+### 2. Identify Tables
+- What tables contain the data?
+- How do they join?
+- What are the key fields?
+
+### 3. Write Query
+- Use CTEs for readability
+- Add comments
+- Optimize for performance
+
+### 4. Validate
+- Check row counts
+- Verify calculations
+- Test edge cases
+
+## Output Format
 \`\`\`sql
--- Well-commented SQL
-\`\`\`
-4. **Explanation**: How it works
-5. **Performance Notes**: Optimization tips
-`,
+-- ===========================================
+-- Query: [Title]
+-- Purpose: [Business question being answered]
+-- Author: DA Toolkit
+-- Date: [Current date]
+-- ===========================================
 
-    'da/insight.md': `# DA: Data Insight to Action Workflow
+-- Step 1: [Description]
+WITH base AS (
+    SELECT
+        user_id,
+        created_at,
+        amount
+    FROM orders
+    WHERE created_at >= '2024-01-01'
+),
 
-Drive action from data: $ARGUMENTS
+-- Step 2: [Description]
+aggregated AS (
+    SELECT
+        DATE_TRUNC('month', created_at) AS month,
+        COUNT(DISTINCT user_id) AS unique_users,
+        SUM(amount) AS total_revenue
+    FROM base
+    GROUP BY 1
+)
 
-## Multi-Role Workflow
-
-### Step 1: Data Analysis [DA - /da:analyze]
-- Exploratory analysis
-- Pattern identification
-- Statistical validation
-
-### Step 2: Insight Synthesis [DA - /da:report]
-- Key findings
-- Business impact
-- Recommendations
-
-### Step 3: Product Implications [PM - /pm:story]
-- Feature requests
-- User stories
-- Prioritization
-
-### Step 4: Implementation [Dev - /dev:implement]
-- Technical solution
-- Data pipeline
-- A/B test setup
-
-### Step 5: Measurement [DA - /da:dashboard]
-- Success metrics
-- Dashboard
-- Monitoring
-
-### Output:
-Data-driven feature shipped with measurement in place.
-`,
-
-    // /use command - show role info and commands
-    'use.md': `# Use - Show Role Info & Commands
-
-Show role information: $ARGUMENTS
-
-## Instructions
-
-Display detailed information about the specified role and its available commands.
-
-### Usage:
-- \`/use da\` - Show Data Analyst role info & commands
-- \`/use fe\` - Show Frontend Developer role info & commands
-- \`/use\` - Show all available roles
-
-### Core Commands (6 multi-role workflows):
-| Command | Description | Workflow |
-|---------|-------------|----------|
-| /plan | Planning workflow | PM → Arch → relevant role |
-| /build | Build feature | PM → Dev → Test → Docs |
-| /fix | Fix bugs with RCA | Support → Dev → Test |
-| /review | Code review + security | Dev → Sec → Test |
-| /ship | Deploy + announce | Test → Ops → Docs → Mkt |
-| /use | Show role info | - |
-
-### 25 Available Roles with Commands & Workflows:
-
-| Alias | Role | Commands | Workflows |
-|-------|------|----------|-----------|
-| pm | Product Manager | /pm:prd, /pm:story, /pm:roadmap, /pm:priority | /pm:launch, /pm:discovery |
-| da | Data Analyst | /da:query, /da:analyze, /da:report, /da:dashboard | /da:insight |
-| de | Data Engineer | /de:pipeline, /de:schema, /de:etl, /de:quality | - |
-| dev | Developer | /dev:implement, /dev:debug, /dev:refactor, /dev:review | /dev:feature, /dev:hotfix |
-| fe | Frontend | /fe:component, /fe:style, /fe:state, /fe:a11y | - |
-| be | Backend | /be:api, /be:model, /be:auth, /be:migrate | - |
-| fs | Fullstack | /fs:feature, /fs:integrate, /fs:e2e | - |
-| arch | Architect | /arch:design, /arch:adr, /arch:diagram, /arch:review | /arch:rfc |
-| test | Tester | /test:unit, /test:e2e, /test:coverage, /test:plan | /test:regression |
-| ops | DevOps | /ops:ci, /ops:docker, /ops:k8s, /ops:monitor | /ops:release, /ops:incident |
-| sec | Security | /sec:audit, /sec:scan, /sec:pentest, /sec:compliance | /sec:hardening |
-| docs | Tech Writer | /docs:api, /docs:guide, /docs:changelog, /docs:readme | - |
-| ux | UX Designer | /ux:wireframe, /ux:flow, /ux:persona, /ux:audit | /ux:redesign |
-| ai | AI Engineer | /ai:prompt, /ai:eval, /ai:rag, /ai:finetune | /ai:deploy |
-| content | Content Writer | /content:blog, /content:seo, /content:copy, /content:social | /content:campaign |
-| mkt | Marketing | /mkt:campaign, /mkt:funnel, /mkt:ads, /mkt:analytics | /mkt:gtm |
-| sales | Sales Engineer | /sales:demo, /sales:proposal, /sales:objection, /sales:deck | /sales:deal |
-| support | Support | /support:ticket, /support:kb, /support:escalate, /support:rca | /support:bug |
-| proj | Project Manager | /proj:timeline, /proj:standup, /proj:risk, /proj:status | - |
-| scrum | Scrum Master | /scrum:sprint, /scrum:retro, /scrum:backlog, /scrum:velocity | /scrum:kickoff |
-| dba | Database Admin | /dba:optimize, /dba:backup, /dba:index, /dba:monitor | /dba:migration |
-| mobile | Mobile Dev | /mobile:screen, /mobile:native, /mobile:push, /mobile:store | /mobile:launch |
-| game | Game Dev | /game:mechanic, /game:asset, /game:physics, /game:balance | - |
-| web3 | Blockchain | /web3:contract, /web3:audit, /web3:deploy, /web3:token | - |
-| hr | HR Specialist | /hr:job, /hr:interview, /hr:onboard, /hr:review | /hr:hire, /hr:offboard |
-
-### Role Workflows
-Role workflows are multi-role commands that orchestrate several roles to complete complex tasks.
-Example: \`/dev:feature\` coordinates PM → Arch → Dev → Test → Sec → Docs
-
-### When showing role info:
-1. Display the role's expertise and capabilities
-2. List all role-specific commands with descriptions
-3. Show available workflows for that role
-4. Provide usage examples
-`,
-
-    // PM commands
-    'pm/prd.md': `# PM: PRD
-
-Create PRD for: $ARGUMENTS
-
-## Instructions
-You are a Product Manager. Create a Product Requirements Document.
-
-### PRD Structure:
-1. **Overview**: Problem statement, goals
-2. **User Stories**: As a [user], I want [action], so that [benefit]
-3. **Requirements**: Functional and non-functional
-4. **Success Metrics**: KPIs and targets
-5. **Timeline**: Phases and milestones
-6. **Risks**: Potential issues and mitigations
-`,
-
-    'pm/story.md': `# PM: User Story
-
-Create user stories for: $ARGUMENTS
-
-## Instructions
-You are a Product Manager. Write detailed user stories.
-
-### Format:
-\`\`\`
-As a [user type]
-I want [action/feature]
-So that [benefit/value]
-
-Acceptance Criteria:
-- Given [context], when [action], then [result]
-- ...
+-- Final output
+SELECT
+    month,
+    unique_users,
+    total_revenue,
+    total_revenue / unique_users AS revenue_per_user
+FROM aggregated
+ORDER BY month;
 \`\`\`
 
-Include: edge cases, error states, dependencies.
+## Common Patterns
+
+### Window Functions
+\`\`\`sql
+-- Running total
+SUM(amount) OVER (ORDER BY date) AS running_total
+
+-- Month-over-month change
+LAG(value) OVER (ORDER BY month) AS prev_month
+
+-- Rank within group
+ROW_NUMBER() OVER (PARTITION BY category ORDER BY amount DESC) AS rank
+\`\`\`
+
+### Date Operations
+\`\`\`sql
+-- PostgreSQL
+DATE_TRUNC('month', created_at)
+created_at::date
+
+-- BigQuery
+DATE_TRUNC(created_at, MONTH)
+DATE(created_at)
+\`\`\`
+
+## Examples
+- \`/da:query monthly active users by country\`
+- \`/da:query customer lifetime value\`
+- \`/da:query top 10 products by revenue\`
 `,
 
-    'pm/roadmap.md': `# PM: Roadmap
+    'da/analyze.md': `# /da:analyze - Exploratory Data Analysis
 
-Create roadmap for: $ARGUMENTS
+Analyze: $ARGUMENTS
 
-## Instructions
-You are a Product Manager. Create a product roadmap.
+## Purpose
+Perform exploratory data analysis (EDA) to understand patterns and insights.
 
-### Output:
-1. **Vision**: Long-term product vision
-2. **Themes**: Major focus areas
-3. **Quarterly Goals**: Objectives per quarter
-4. **Features**: Prioritized feature list
-5. **Dependencies**: Cross-team dependencies
+## EDA Framework
+
+### 1. Data Overview
+- Shape (rows, columns)
+- Data types
+- Missing values
+- Sample records
+
+### 2. Univariate Analysis
+- Distributions
+- Central tendency (mean, median, mode)
+- Spread (std, IQR, range)
+- Outliers
+
+### 3. Bivariate Analysis
+- Correlations
+- Group comparisons
+- Trend analysis
+
+### 4. Key Insights
+- Patterns discovered
+- Anomalies found
+- Hypotheses formed
+
+## Output Format
+
+### SQL Approach
+\`\`\`sql
+-- Data Overview
+SELECT
+    COUNT(*) AS total_rows,
+    COUNT(DISTINCT user_id) AS unique_users,
+    MIN(created_at) AS first_record,
+    MAX(created_at) AS last_record
+FROM table_name;
+
+-- Distribution
+SELECT
+    segment,
+    COUNT(*) AS count,
+    ROUND(100.0 * COUNT(*) / SUM(COUNT(*)) OVER (), 2) AS percentage
+FROM table_name
+GROUP BY segment
+ORDER BY count DESC;
+
+-- Statistics
+SELECT
+    AVG(amount) AS mean,
+    PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY amount) AS median,
+    STDDEV(amount) AS std_dev,
+    MIN(amount) AS min_value,
+    MAX(amount) AS max_value
+FROM table_name;
+\`\`\`
+
+### Python Approach
+\`\`\`python
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# Load data
+df = pd.read_sql(query, connection)
+
+# Overview
+print(df.info())
+print(df.describe())
+
+# Distributions
+fig, axes = plt.subplots(2, 2, figsize=(12, 10))
+df['amount'].hist(ax=axes[0,0])
+df['category'].value_counts().plot(kind='bar', ax=axes[0,1])
+sns.boxplot(data=df, x='segment', y='amount', ax=axes[1,0])
+df.groupby('month')['amount'].sum().plot(ax=axes[1,1])
+plt.tight_layout()
+\`\`\`
+
+## Analysis Types
+
+| Type | When to Use | Key Metrics |
+|------|-------------|-------------|
+| Cohort | User behavior over time | Retention, LTV |
+| Funnel | Conversion process | Drop-off rates |
+| Segmentation | Group comparison | Segment sizes, differences |
+| Time Series | Trends over time | Growth, seasonality |
+| A/B Test | Experiment results | Significance, lift |
+
+## Examples
+- \`/da:analyze customer purchase patterns\`
+- \`/da:analyze website funnel conversion\`
+- \`/da:analyze revenue trends by segment\`
 `,
 
-    'pm/priority.md': `# PM: Prioritize
+    'da/report.md': `# /da:report - Generate Analysis Report
 
-Prioritize features: $ARGUMENTS
+Report on: $ARGUMENTS
 
-## Instructions
-You are a Product Manager. Prioritize using frameworks.
+## Purpose
+Create a comprehensive analysis report for stakeholders.
 
-### Frameworks:
-- **RICE**: Reach, Impact, Confidence, Effort
-- **MoSCoW**: Must, Should, Could, Won't
-- **Value/Effort**: 2x2 matrix
+## Report Structure
 
-### Output:
-Prioritized list with scores and rationale.
-`,
+### 1. Executive Summary
+- Key findings (3-5 bullets)
+- Main recommendations
+- Bottom line
 
-    'pm/launch.md': `# PM: Product Launch Workflow
+### 2. Background
+- Business context
+- Why this analysis
+- Key questions
 
-Orchestrate product launch for: $ARGUMENTS
-
-## Multi-Role Workflow
-
-This workflow coordinates multiple roles to launch a product/feature.
-
-### Step 1: Product Definition [PM]
-- Define value proposition
-- Identify target users
-- Set success metrics (KPIs)
-
-### Step 2: Go-to-Market Strategy [Marketing - /mkt:campaign]
-- Campaign planning
-- Channel strategy
-- Launch timeline
-
-### Step 3: Content Creation [Content - /content:copy]
-- Landing page copy
-- Announcement blog post
-- Social media content
-
-### Step 4: Sales Enablement [Sales - /sales:deck]
-- Sales deck
-- Demo script
-- Objection handling
-
-### Step 5: Support Preparation [Support - /support:kb]
-- FAQ documentation
-- Support runbooks
-- Escalation procedures
-
-### Output:
-Complete launch checklist with deliverables from each role.
-`,
-
-    'pm/discovery.md': `# PM: Product Discovery Workflow
-
-Run product discovery for: $ARGUMENTS
-
-## Multi-Role Workflow
-
-### Step 1: User Research [UX - /ux:persona]
-- User personas
-- Pain points
-- Jobs to be done
-
-### Step 2: Data Analysis [DA - /da:analyze]
-- Usage patterns
-- Funnel analysis
-- Opportunity sizing
-
-### Step 3: Solution Definition [PM]
-- Problem statement
-- Solution hypothesis
-- Success criteria
-
-### Step 4: Technical Feasibility [Arch - /arch:design]
-- High-level architecture
-- Technical constraints
-- Effort estimation
-
-### Output:
-Discovery brief with user insights, data analysis, and technical feasibility.
-`,
-
-    // DE commands
-    'de/pipeline.md': `# DE: Pipeline
-
-Design data pipeline for: $ARGUMENTS
-
-## Instructions
-You are a Data Engineer. Design an ETL/ELT pipeline.
-
-### Output:
-1. **Sources**: Data sources and formats
-2. **Extraction**: How to pull data
-3. **Transformation**: Business logic
-4. **Loading**: Target destination
-5. **Scheduling**: Frequency and triggers
-6. **Monitoring**: Alerts and logging
-`,
-
-    'de/schema.md': `# DE: Schema
-
-Design schema for: $ARGUMENTS
-
-## Instructions
-You are a Data Engineer. Design database schema.
-
-### Output:
-1. **Tables**: Table definitions with columns
-2. **Relationships**: Foreign keys, joins
-3. **Indexes**: Performance optimization
-4. **Partitioning**: If applicable
-5. **DDL**: CREATE statements
-`,
-
-    'de/etl.md': `# DE: ETL
-
-Write ETL code for: $ARGUMENTS
-
-## Instructions
-You are a Data Engineer. Write ETL transformation code.
-
-### Output:
-- Python/SQL transformation code
-- Error handling
-- Logging
-- Idempotency patterns
-- Testing approach
-`,
-
-    'de/quality.md': `# DE: Data Quality
-
-Create data quality checks for: $ARGUMENTS
-
-## Instructions
-You are a Data Engineer. Define data quality rules.
-
-### Checks:
-- Completeness (null checks)
-- Uniqueness (duplicate detection)
-- Validity (format, range)
-- Consistency (cross-table)
-- Timeliness (freshness)
-`,
-
-    // DEV commands
-    'dev/implement.md': `# Dev: Implement
-
-Implement feature: $ARGUMENTS
-
-## Instructions
-You are a Developer. Implement the requested feature.
-
-### Process:
-1. Understand requirements
-2. Design approach
-3. Write clean code
-4. Add tests
-5. Document changes
-`,
-
-    'dev/debug.md': `# Dev: Debug
-
-Debug issue: $ARGUMENTS
-
-## Instructions
-You are a Developer. Debug and fix the issue.
-
-### Steps:
-1. Reproduce the issue
-2. Identify root cause
-3. Implement fix
-4. Verify solution
-5. Add regression test
-`,
-
-    'dev/refactor.md': `# Dev: Refactor
-
-Refactor code: $ARGUMENTS
-
-## Instructions
-You are a Developer. Refactor for better quality.
-
-### Focus:
-- Code readability
-- DRY principles
-- SOLID patterns
-- Performance
-- Maintainability
-`,
-
-    'dev/review.md': `# Dev: Review
-
-Review code: $ARGUMENTS
-
-## Instructions
-You are a Developer. Perform code review.
-
-### Check:
-- Logic correctness
-- Edge cases
-- Error handling
-- Performance
-- Security
-- Code style
-`,
-
-    'dev/feature.md': `# Dev: Full Feature Workflow
-
-Build complete feature: $ARGUMENTS
-
-## Multi-Role Workflow
-
-### Step 1: Requirements [PM - /pm:story]
-- User stories
-- Acceptance criteria
-- Success metrics
-
-### Step 2: Technical Design [Arch - /arch:design]
-- System design
-- API contracts
-- Data models
-
-### Step 3: Implementation [Dev]
-- Write clean code
-- Follow project conventions
-- Handle edge cases
-
-### Step 4: Testing [Test - /test:unit]
-- Unit tests
-- Integration tests
-- Coverage check
-
-### Step 5: Security Review [Sec - /sec:audit]
-- Security checklist
-- Vulnerability scan
-
-### Step 6: Documentation [Docs - /docs:guide]
-- API documentation
-- User guide updates
-
-### Output:
-Complete feature with tests, security review, and documentation.
-`,
-
-    'dev/hotfix.md': `# Dev: Hotfix Workflow
-
-Emergency fix for: $ARGUMENTS
-
-## Multi-Role Workflow
-
-### Step 1: Triage [Support - /support:rca]
-- Impact assessment
-- Root cause analysis
-- Affected users
-
-### Step 2: Fix Implementation [Dev]
-- Minimal, focused fix
-- No scope creep
-- Quick turnaround
-
-### Step 3: Testing [Test - /test:unit]
-- Regression tests
-- Smoke tests
-- Edge cases
-
-### Step 4: Deploy [Ops - /ops:ci]
-- Fast-track deployment
-- Rollback plan ready
-- Monitoring alerts
-
-### Step 5: Communication [Support - /support:ticket]
-- Customer notification
-- Status update
-- Post-mortem scheduling
-
-### Output:
-Deployed hotfix with communication sent to affected users.
-`,
-
-    // FE commands
-    'fe/component.md': `# FE: Component
-
-Create component: $ARGUMENTS
-
-## Instructions
-You are a Frontend Developer. Create a React/Vue component.
-
-### Output:
-- Component code with TypeScript
-- Props interface
-- Styling (Tailwind/CSS)
-- Unit tests
-- Storybook story (if applicable)
-`,
-
-    'fe/style.md': `# FE: Style
-
-Add styling for: $ARGUMENTS
-
-## Instructions
-You are a Frontend Developer. Add styling.
-
-### Include:
-- Responsive design
-- Dark mode support
-- Animations (if needed)
-- Accessibility
-`,
-
-    'fe/state.md': `# FE: State
-
-Implement state management for: $ARGUMENTS
-
-## Instructions
-You are a Frontend Developer. Design state management.
-
-### Consider:
-- Local vs global state
-- State library (Redux, Zustand, Pinia)
-- Async state handling
-- Persistence if needed
-`,
-
-    'fe/a11y.md': `# FE: Accessibility
-
-Audit accessibility for: $ARGUMENTS
-
-## Instructions
-You are a Frontend Developer. Perform accessibility audit.
-
-### Check:
-- ARIA labels
-- Keyboard navigation
-- Color contrast
-- Screen reader support
-- Focus management
-`,
-
-    // BE commands
-    'be/api.md': `# BE: API
-
-Design API for: $ARGUMENTS
-
-## Instructions
-You are a Backend Developer. Design REST/GraphQL API.
-
-### Output:
-- Endpoint definitions
-- Request/response schemas
-- Authentication
-- Error handling
-- OpenAPI spec (if REST)
-`,
-
-    'be/model.md': `# BE: Model
-
-Create data model for: $ARGUMENTS
-
-## Instructions
-You are a Backend Developer. Create database model.
-
-### Output:
-- Model definition (ORM)
-- Relationships
-- Validations
-- Migrations
-- Seeds/fixtures
-`,
-
-    'be/auth.md': `# BE: Auth
-
-Implement authentication for: $ARGUMENTS
-
-## Instructions
-You are a Backend Developer. Implement auth.
-
-### Options:
-- JWT tokens
-- Session-based
-- OAuth2/OIDC
-- API keys
-- Include refresh token handling
-`,
-
-    'be/migrate.md': `# BE: Migration
-
-Create migration for: $ARGUMENTS
-
-## Instructions
-You are a Backend Developer. Create database migration.
-
-### Output:
-- Up migration
-- Down migration (rollback)
-- Data migration if needed
-- Testing approach
-`,
-
-    // FS commands
-    'fs/feature.md': `# FS: Feature
-
-Build full-stack feature: $ARGUMENTS
-
-## Instructions
-You are a Fullstack Developer. Build end-to-end feature.
-
-### Include:
-- Frontend UI
-- Backend API
-- Database changes
-- Integration tests
-`,
-
-    'fs/integrate.md': `# FS: Integrate
-
-Integrate frontend and backend: $ARGUMENTS
-
-## Instructions
-You are a Fullstack Developer. Connect frontend to backend.
-
-### Include:
-- API client setup
-- Type sharing
-- Error handling
-- Loading states
-`,
-
-    'fs/e2e.md': `# FS: E2E
-
-Write E2E tests for: $ARGUMENTS
-
-## Instructions
-You are a Fullstack Developer. Write end-to-end tests.
-
-### Use:
-- Cypress or Playwright
-- User flows
-- API mocking if needed
-- CI integration
-`,
-
-    // ARCH commands
-    'arch/design.md': `# Arch: Design
-
-Design system for: $ARGUMENTS
-
-## Instructions
-You are an Architect. Create system design.
-
-### Include:
-- High-level architecture
-- Component diagram
-- Data flow
-- Technology choices
-- Trade-offs
-`,
-
-    'arch/adr.md': `# Arch: ADR
-
-Create ADR for: $ARGUMENTS
-
-## Instructions
-You are an Architect. Write Architecture Decision Record.
-
-### ADR Format:
-- **Title**: Short description
-- **Status**: Proposed/Accepted/Deprecated
-- **Context**: Why this decision is needed
-- **Decision**: What we decided
-- **Consequences**: Positive and negative outcomes
-`,
-
-    'arch/diagram.md': `# Arch: Diagram
-
-Create diagram for: $ARGUMENTS
-
-## Instructions
-You are an Architect. Create architecture diagram.
-
-### Types:
-- C4 diagrams (Context, Container, Component)
-- Sequence diagrams
-- Data flow diagrams
-- Use Mermaid or PlantUML syntax
-`,
-
-    'arch/review.md': `# Arch: Review
-
-Review architecture for: $ARGUMENTS
-
-## Instructions
-You are an Architect. Review system architecture.
-
-### Evaluate:
-- Scalability
-- Reliability
-- Security
-- Performance
-- Maintainability
-- Cost
-`,
-
-    'arch/rfc.md': `# Arch: RFC Workflow
-
-Create RFC for: $ARGUMENTS
-
-## Multi-Role Workflow
-
-### Step 1: Problem Definition [Arch]
-- Current state
-- Problem statement
-- Proposed solution
-
-### Step 2: Technical Design [Arch - /arch:design]
-- Detailed architecture
-- Component interactions
-- Data flow
-
-### Step 3: Security Review [Sec - /sec:audit]
-- Threat modeling
-- Security controls
-- Compliance check
-
-### Step 4: Operations Review [Ops]
-- Deployment strategy
-- Monitoring needs
-- Runbook requirements
-
-### Step 5: Developer Input [Dev]
-- Implementation concerns
-- Effort estimation
-- Technical debt
-
-### Step 6: Documentation [Docs - /docs:guide]
-- RFC document
-- Decision record
-- Migration plan
-
-### Output:
-Complete RFC with cross-functional review and approval process.
-`,
-
-    // TEST commands
-    'test/unit.md': `# Test: Unit
-
-Write unit tests for: $ARGUMENTS
-
-## Instructions
-You are a Tester. Write unit tests.
-
-### Include:
-- Happy path tests
-- Edge cases
-- Error cases
-- Mocks/stubs
-- Coverage goals
-`,
-
-    'test/e2e.md': `# Test: E2E
-
-Write E2E tests for: $ARGUMENTS
-
-## Instructions
-You are a Tester. Write end-to-end tests.
-
-### Include:
-- User journeys
-- Critical paths
-- Cross-browser testing
-- Mobile testing
-`,
-
-    'test/coverage.md': `# Test: Coverage
-
-Analyze test coverage for: $ARGUMENTS
-
-## Instructions
-You are a Tester. Analyze and improve coverage.
-
-### Output:
-- Current coverage report
-- Uncovered areas
-- Recommended tests
-- Priority order
-`,
-
-    'test/plan.md': `# Test: Plan
-
-Create test plan for: $ARGUMENTS
-
-## Instructions
-You are a Tester. Create comprehensive test plan.
-
-### Include:
-- Test scope
-- Test types needed
-- Test cases
-- Environment requirements
-- Exit criteria
-`,
-
-    'test/regression.md': `# Test: Regression Workflow
-
-Full regression testing for: $ARGUMENTS
-
-## Multi-Role Workflow
-
-### Step 1: Scope Definition [Test]
-- Affected areas
-- Critical paths
-- Risk assessment
-
-### Step 2: Test Preparation [Test - /test:plan]
-- Test cases selection
-- Test data setup
-- Environment check
-
-### Step 3: Execution [Test - /test:e2e]
-- Automated tests
-- Manual testing
-- Exploratory testing
-
-### Step 4: Bug Reporting [Support - /support:ticket]
-- Bug documentation
-- Severity classification
-- Reproduction steps
-
-### Step 5: Fix Verification [Dev - /dev:debug]
-- Bug fixes
-- Fix verification
-- Regression check
-
-### Step 6: Sign-off [Test]
-- Test summary
-- Coverage report
-- Go/No-go recommendation
-
-### Output:
-Complete regression report with sign-off decision.
-`,
-
-    // OPS commands
-    'ops/ci.md': `# Ops: CI
-
-Setup CI pipeline for: $ARGUMENTS
-
-## Instructions
-You are a DevOps Engineer. Create CI/CD pipeline.
-
-### Include:
-- Build steps
-- Test stages
-- Linting/formatting
-- Security scans
-- Deployment stages
-`,
-
-    'ops/docker.md': `# Ops: Docker
-
-Create Docker setup for: $ARGUMENTS
-
-## Instructions
-You are a DevOps Engineer. Create Docker configuration.
-
-### Output:
-- Dockerfile (multi-stage)
-- docker-compose.yml
-- .dockerignore
-- Environment handling
-`,
-
-    'ops/k8s.md': `# Ops: Kubernetes
-
-Create K8s manifests for: $ARGUMENTS
-
-## Instructions
-You are a DevOps Engineer. Create Kubernetes configuration.
-
-### Include:
-- Deployment
-- Service
-- ConfigMap/Secrets
-- Ingress
-- HPA (if needed)
-`,
-
-    'ops/monitor.md': `# Ops: Monitor
-
-Setup monitoring for: $ARGUMENTS
-
-## Instructions
-You are a DevOps Engineer. Setup monitoring and alerting.
-
-### Include:
-- Metrics to collect
-- Dashboard design
-- Alert rules
-- Runbooks
-`,
-
-    'ops/release.md': `# Ops: Release Workflow
-
-Orchestrate release for: $ARGUMENTS
-
-## Multi-Role Workflow
-
-### Step 1: Code Freeze [Dev - /dev:review]
-- Final code review
-- Merge all PRs
-- Version bump
-
-### Step 2: QA Sign-off [Test - /test:e2e]
-- Full regression
-- Performance tests
-- Security scan
-
-### Step 3: Release Notes [Docs - /docs:changelog]
-- Changelog generation
-- Migration guide
-- Breaking changes
-
-### Step 4: Deployment [Ops]
-- Staging deployment
-- Production deployment
-- Rollback preparation
-
-### Step 5: Monitoring [Ops - /ops:monitor]
-- Alert thresholds
-- Dashboard checks
-- On-call handoff
-
-### Step 6: Announcement [Mkt - /mkt:campaign]
-- Release announcement
-- Social media posts
-- Customer notification
-
-### Output:
-Successful release with monitoring and customer communication.
-`,
-
-    'ops/incident.md': `# Ops: Incident Response Workflow
-
-Handle incident: $ARGUMENTS
-
-## Multi-Role Workflow
-
-### Step 1: Detection & Triage [Support]
-- Severity assessment (P1/P2/P3)
-- Impact scope
-- Initial communication
-
-### Step 2: Investigation [Dev - /dev:debug]
-- Log analysis
-- Root cause identification
-- Affected systems
-
-### Step 3: Mitigation [Ops]
-- Immediate fixes
-- Scaling/failover
-- Traffic management
-
-### Step 4: Resolution [Dev]
-- Permanent fix
-- Code review
-- Deployment
-
-### Step 5: Post-Mortem [Support - /support:rca]
-- Timeline of events
-- Root cause analysis
-- Action items
-
-### Step 6: Documentation [Docs - /docs:guide]
-- Runbook updates
-- Knowledge base article
-- Process improvements
-
-### Output:
-Resolved incident with post-mortem and preventive measures.
-`,
-
-    // SEC commands
-    'sec/audit.md': `# Sec: Audit
-
-Security audit for: $ARGUMENTS
-
-## Instructions
-You are a Security Engineer. Perform security audit.
-
-### Check:
-- OWASP Top 10
-- Authentication/Authorization
-- Input validation
-- Data encryption
-- Dependencies
-`,
-
-    'sec/scan.md': `# Sec: Scan
-
-Run security scan for: $ARGUMENTS
-
-## Instructions
-You are a Security Engineer. Run security scans.
-
-### Scans:
-- SAST (static analysis)
-- DAST (dynamic analysis)
-- Dependency scanning
-- Secret detection
-`,
-
-    'sec/pentest.md': `# Sec: Pentest
-
-Pentest planning for: $ARGUMENTS
-
-## Instructions
-You are a Security Engineer. Plan penetration testing.
-
-### Output:
-- Scope definition
-- Attack vectors
-- Test cases
-- Tools to use
-- Reporting format
-`,
-
-    'sec/compliance.md': `# Sec: Compliance
-
-Compliance check for: $ARGUMENTS
-
-## Instructions
-You are a Security Engineer. Check compliance.
-
-### Frameworks:
-- SOC 2
-- GDPR
-- HIPAA
-- PCI-DSS
-- ISO 27001
-`,
-
-    'sec/hardening.md': `# Sec: Security Hardening Workflow
-
-Harden system: $ARGUMENTS
-
-## Multi-Role Workflow
-
-### Step 1: Assessment [Sec - /sec:audit]
-- Vulnerability scan
-- Configuration review
-- Risk assessment
-
-### Step 2: Architecture Review [Arch - /arch:review]
-- Security architecture
-- Attack surface
-- Defense in depth
-
-### Step 3: Code Review [Dev - /dev:review]
-- Secure coding
-- Input validation
-- Authentication
-
-### Step 4: Infrastructure [Ops - /ops:k8s]
-- Network policies
-- Secrets management
-- Access controls
-
-### Step 5: Testing [Sec - /sec:pentest]
-- Penetration testing
-- Vulnerability verification
-- Remediation validation
-
-### Step 6: Documentation [Docs - /docs:guide]
-- Security runbook
-- Incident response
-- Compliance mapping
-
-### Output:
-Hardened system with security documentation and compliance evidence.
-`,
-
-    // DOCS commands
-    'docs/api.md': `# Docs: API
-
-Document API for: $ARGUMENTS
-
-## Instructions
-You are a Technical Writer. Create API documentation.
-
-### Include:
-- Endpoint descriptions
-- Request/response examples
-- Authentication
-- Error codes
-- Rate limits
-`,
-
-    'docs/guide.md': `# Docs: Guide
-
-Write guide for: $ARGUMENTS
-
-## Instructions
-You are a Technical Writer. Write user/developer guide.
-
-### Structure:
-- Introduction
-- Prerequisites
-- Step-by-step instructions
-- Examples
-- Troubleshooting
-`,
-
-    'docs/changelog.md': `# Docs: Changelog
-
-Generate changelog for: $ARGUMENTS
-
-## Instructions
-You are a Technical Writer. Generate changelog.
-
-### Format:
-- Version number
-- Release date
-- Added/Changed/Fixed/Removed
-- Breaking changes
-- Migration notes
-`,
-
-    'docs/readme.md': `# Docs: README
-
-Create README for: $ARGUMENTS
-
-## Instructions
-You are a Technical Writer. Create README file.
-
-### Sections:
-- Project description
-- Installation
-- Usage
-- Configuration
-- Contributing
-- License
-`,
-
-    // UX commands
-    'ux/wireframe.md': `# UX: Wireframe
-
-Create wireframe for: $ARGUMENTS
-
-## Instructions
-You are a UX Designer. Create wireframe description.
-
-### Output:
-- Layout structure
-- Component placement
-- User interactions
-- Responsive considerations
-- ASCII/text wireframe
-`,
-
-    'ux/flow.md': `# UX: Flow
-
-Design user flow for: $ARGUMENTS
-
-## Instructions
-You are a UX Designer. Design user flow.
-
-### Include:
-- Entry points
-- Decision points
-- Actions
-- Outcomes
-- Edge cases
-`,
-
-    'ux/persona.md': `# UX: Persona
-
-Create persona for: $ARGUMENTS
-
-## Instructions
-You are a UX Designer. Create user persona.
-
-### Include:
-- Demographics
-- Goals and motivations
-- Pain points
-- Behaviors
-- Scenarios
-`,
-
-    'ux/audit.md': `# UX: Audit
-
-UX audit for: $ARGUMENTS
-
-## Instructions
-You are a UX Designer. Perform UX audit.
-
-### Evaluate:
-- Usability heuristics
-- User flows
-- Visual hierarchy
-- Consistency
-- Accessibility
-`,
-
-    'ux/redesign.md': `# UX: Redesign Workflow
-
-Redesign experience for: $ARGUMENTS
-
-## Multi-Role Workflow
-
-### Step 1: Research [UX - /ux:persona]
-- User research
-- Pain point analysis
-- Competitive audit
-
-### Step 2: Strategy [PM - /pm:prd]
-- Business goals
-- Success metrics
-- Constraints
-
-### Step 3: Design [UX - /ux:wireframe]
-- Information architecture
-- Wireframes
-- Prototypes
-
-### Step 4: Validation [UX]
-- User testing
-- Feedback synthesis
-- Iteration
-
-### Step 5: Implementation [FE - /fe:component]
-- Component development
-- Responsive design
-- Accessibility
-
-### Step 6: Launch [Test - /test:e2e]
-- E2E testing
-- A/B testing
-- Performance check
-
-### Output:
-Redesigned experience validated with users and ready for launch.
-`,
-
-    // AI commands
-    'ai/prompt.md': `# AI: Prompt
-
-Create prompt for: $ARGUMENTS
-
-## Instructions
-You are an AI Engineer. Create optimized prompt.
-
-### Include:
-- System prompt
-- User prompt template
-- Few-shot examples
-- Output format
-- Edge case handling
-`,
-
-    'ai/eval.md': `# AI: Eval
-
-Create evaluation for: $ARGUMENTS
-
-## Instructions
-You are an AI Engineer. Design AI evaluation.
-
-### Include:
-- Evaluation metrics
-- Test dataset
-- Benchmark criteria
-- A/B test design
-`,
-
-    'ai/rag.md': `# AI: RAG
-
-Design RAG system for: $ARGUMENTS
-
-## Instructions
-You are an AI Engineer. Design RAG architecture.
-
-### Include:
-- Document processing
-- Embedding strategy
-- Vector store choice
-- Retrieval method
-- Prompt construction
-`,
-
-    'ai/finetune.md': `# AI: Finetune
-
-Plan finetuning for: $ARGUMENTS
-
-## Instructions
-You are an AI Engineer. Plan model finetuning.
-
-### Include:
-- Dataset preparation
-- Model selection
-- Training approach
-- Evaluation strategy
-- Deployment plan
-`,
-
-    'ai/deploy.md': `# AI: AI Deployment Workflow
-
-Deploy AI feature: $ARGUMENTS
-
-## Multi-Role Workflow
-
-### Step 1: Model Development [AI - /ai:prompt]
-- Prompt engineering
-- Model selection
-- Initial evaluation
-
-### Step 2: Integration [Dev - /dev:implement]
-- API integration
-- Error handling
-- Fallback logic
-
-### Step 3: Testing [Test - /test:unit]
-- Unit tests
-- Edge cases
-- Performance tests
-
-### Step 4: Security [Sec - /sec:audit]
-- Input validation
-- Output filtering
-- Rate limiting
-
-### Step 5: Operations [Ops - /ops:docker]
-- Containerization
-- Scaling config
-- Cost monitoring
-
-### Step 6: Documentation [Docs - /docs:api]
-- API documentation
-- Usage guidelines
+### 3. Methodology
+- Data sources
+- Time period
+- Approach taken
 - Limitations
 
-### Output:
-Production-ready AI feature with monitoring and documentation.
+### 4. Findings
+- Detailed analysis
+- Visualizations
+- Supporting data
+
+### 5. Recommendations
+- Actionable items
+- Expected impact
+- Priority
+
+### 6. Appendix
+- Detailed tables
+- SQL queries
+- Technical notes
+
+## Output Template
+
+\`\`\`markdown
+# [Report Title]
+**Date:** [Date]
+**Author:** Data Analyst
+**Status:** Draft / Final
+
+---
+
+## Executive Summary
+
+[2-3 paragraphs summarizing the most important findings and recommendations]
+
+**Key Findings:**
+- Finding 1: [One sentence with key metric]
+- Finding 2: [One sentence with key metric]
+- Finding 3: [One sentence with key metric]
+
+**Recommendations:**
+1. [Action] - Expected impact: [X%]
+2. [Action] - Expected impact: [X%]
+
+---
+
+## Background
+
+### Business Context
+[Why this analysis was needed]
+
+### Key Questions
+1. [Question 1]
+2. [Question 2]
+3. [Question 3]
+
+---
+
+## Methodology
+
+### Data Sources
+| Source | Description | Time Period |
+|--------|-------------|-------------|
+| [Table] | [Description] | [Period] |
+
+### Approach
+[Description of analytical approach]
+
+### Limitations
+- [Limitation 1]
+- [Limitation 2]
+
+---
+
+## Findings
+
+### Finding 1: [Title]
+[Detailed description with supporting data]
+
+| Metric | Value | Change |
+|--------|-------|--------|
+| [Metric] | [Value] | [+/-X%] |
+
+### Finding 2: [Title]
+[Detailed description with supporting data]
+
+---
+
+## Recommendations
+
+| Priority | Recommendation | Expected Impact | Effort |
+|----------|----------------|-----------------|--------|
+| 1 | [Action] | [Impact] | [H/M/L] |
+| 2 | [Action] | [Impact] | [H/M/L] |
+
+---
+
+## Appendix
+
+### A. SQL Queries
+[Include key queries]
+
+### B. Data Dictionary
+[Relevant field definitions]
+\`\`\`
+
+## Examples
+- \`/da:report Q1 revenue analysis\`
+- \`/da:report customer churn investigation\`
+- \`/da:report A/B test results for new feature\`
 `,
 
-    // CONTENT commands
-    'content/blog.md': `# Content: Blog
+    'da/dashboard.md': `# /da:dashboard - Design Dashboard
 
-Write blog post about: $ARGUMENTS
+Dashboard for: $ARGUMENTS
 
-## Instructions
-You are a Content Writer. Write engaging blog post.
+## Purpose
+Design a dashboard layout with metrics, charts, and filters.
 
-### Structure:
-- Attention-grabbing headline
-- Hook introduction
-- Subheadings (H2, H3)
-- Key points with examples
-- Call-to-action
-- Meta description
+## Dashboard Design Process
+
+### 1. Define Audience
+- Who will use this?
+- What decisions will they make?
+- How often will they view it?
+
+### 2. Select Metrics
+- What are the KPIs?
+- What dimensions for breakdown?
+- What comparisons needed?
+
+### 3. Design Layout
+- Visual hierarchy
+- Information flow
+- Interactive elements
+
+### 4. Specify Charts
+- Chart type for each metric
+- Filters and drill-downs
+- Refresh frequency
+
+## Output Template
+
+\`\`\`markdown
+# Dashboard Specification: [Name]
+
+## Overview
+- **Purpose:** [What decisions this enables]
+- **Audience:** [Who will use it]
+- **Refresh:** [Real-time / Daily / Weekly]
+
+## Layout
+
+\`\`\`
++------------------+------------------+------------------+
+|   KPI Card 1     |   KPI Card 2     |   KPI Card 3     |
+|   [Metric]       |   [Metric]       |   [Metric]       |
++------------------+------------------+------------------+
+|                                                        |
+|              Main Chart: [Type]                        |
+|              [Metric over time]                        |
+|                                                        |
++-------------------------+------------------------------+
+|     Chart 2             |     Chart 3                  |
+|     [Type]              |     [Type]                   |
+|     [Breakdown]         |     [Breakdown]              |
++-------------------------+------------------------------+
+|                    Data Table                          |
+|     [Detail rows with key dimensions]                  |
++--------------------------------------------------------+
+\`\`\`
+
+## Metrics
+
+| Metric | Calculation | Chart Type |
+|--------|-------------|------------|
+| [KPI 1] | [SQL/Formula] | Scorecard |
+| [KPI 2] | [SQL/Formula] | Scorecard |
+| [Trend] | [SQL/Formula] | Line chart |
+| [Breakdown] | [SQL/Formula] | Bar chart |
+
+## Filters
+- Date range (default: Last 30 days)
+- [Dimension 1] (multi-select)
+- [Dimension 2] (single-select)
+
+## SQL Queries
+
+### KPI 1: [Name]
+\`\`\`sql
+SELECT
+    COUNT(DISTINCT user_id) AS value,
+    'users' AS label
+FROM events
+WHERE event_date >= CURRENT_DATE - 30;
+\`\`\`
+
+### Main Chart: [Name]
+\`\`\`sql
+SELECT
+    DATE_TRUNC('day', event_date) AS date,
+    COUNT(*) AS events
+FROM events
+WHERE event_date >= CURRENT_DATE - 30
+GROUP BY 1
+ORDER BY 1;
+\`\`\`
+
+## Interactivity
+- Click on chart → Filter table below
+- Hover → Show tooltip with details
+- Click KPI → Drill down to detail view
+
+## Implementation Notes
+- Tool: [Superset / Metabase / Looker / etc.]
+- Data source: [Database/table]
+- Cache: [Duration]
+\`\`\`
+
+## Chart Type Guidelines
+
+| Data Type | Recommended Chart |
+|-----------|-------------------|
+| Trend over time | Line chart |
+| Category comparison | Bar chart |
+| Part of whole | Pie/Donut (≤5 categories) |
+| Distribution | Histogram |
+| Correlation | Scatter plot |
+| Geographic | Map |
+| Single value | Scorecard/KPI card |
+
+## Examples
+- \`/da:dashboard executive revenue overview\`
+- \`/da:dashboard marketing campaign performance\`
+- \`/da:dashboard customer support metrics\`
 `,
 
-    'content/seo.md': `# Content: SEO
-
-Optimize content for SEO: $ARGUMENTS
-
-## Instructions
-You are a Content Writer. Optimize for search engines.
-
-### Include:
-- Target keywords
-- Title tag optimization
-- Meta description
-- Header structure
-- Internal linking
-- Alt text suggestions
-`,
-
-    'content/copy.md': `# Content: Copy
-
-Write copy for: $ARGUMENTS
-
-## Instructions
-You are a Content Writer. Write conversion-focused copy.
-
-### Types:
-- Landing page copy
-- Ad copy
-- Email copy
-- CTA buttons
-- Value propositions
-`,
-
-    'content/social.md': `# Content: Social
-
-Create social media content: $ARGUMENTS
-
-## Instructions
-You are a Content Writer. Create social media posts.
-
-### Platforms:
-- Twitter/X (threads, posts)
-- LinkedIn (articles, posts)
-- Instagram (captions)
-- Include hashtag suggestions
-`,
-
-    'content/campaign.md': `# Content: Content Campaign Workflow
-
-Run content campaign: $ARGUMENTS
-
-## Multi-Role Workflow
-
-### Step 1: Strategy [Mkt - /mkt:campaign]
-- Campaign goals
-- Target audience
-- Channel mix
-
-### Step 2: Content Planning [Content]
-- Content calendar
-- Topic research
-- Keyword strategy
-
-### Step 3: Content Creation [Content - /content:blog]
-- Blog posts
-- Landing pages
-- Lead magnets
-
-### Step 4: Distribution [Content - /content:social]
-- Social posts
-- Email sequences
-- Paid promotion
-
-### Step 5: Sales Support [Sales - /sales:deck]
-- Sales enablement
-- Case studies
-- Battle cards
-
-### Step 6: Analytics [DA - /da:dashboard]
-- Traffic analysis
-- Conversion tracking
-- ROI measurement
-
-### Output:
-Full content campaign with distribution and measurement.
-`,
-
-    // MKT commands
-    'mkt/campaign.md': `# Mkt: Campaign
-
-Plan marketing campaign: $ARGUMENTS
-
-## Instructions
-You are a Marketing Specialist. Plan campaign.
-
-### Include:
-- Campaign objectives
-- Target audience
-- Channels
-- Messaging
-- Budget allocation
-- Timeline
-- Success metrics
-`,
-
-    'mkt/funnel.md': `# Mkt: Funnel
-
-Design marketing funnel: $ARGUMENTS
-
-## Instructions
-You are a Marketing Specialist. Design conversion funnel.
-
-### Stages:
-- Awareness
-- Interest
-- Consideration
-- Conversion
-- Retention
-- Include metrics per stage
-`,
-
-    'mkt/ads.md': `# Mkt: Ads
-
-Create ad campaign: $ARGUMENTS
-
-## Instructions
-You are a Marketing Specialist. Create paid ad campaign.
-
-### Include:
-- Ad copy variations
-- Target audience
-- Bidding strategy
-- Budget recommendations
-- A/B test plan
-`,
-
-    'mkt/analytics.md': `# Mkt: Analytics
-
-Analyze marketing data: $ARGUMENTS
-
-## Instructions
-You are a Marketing Specialist. Analyze marketing performance.
-
-### Metrics:
-- CAC, LTV, ROAS
-- Conversion rates
-- Channel attribution
-- Cohort analysis
-- Recommendations
-`,
-
-    'mkt/gtm.md': `# Mkt: Go-to-Market Workflow
-
-Go-to-market strategy for: $ARGUMENTS
-
-## Multi-Role Workflow
-
-### Step 1: Market Analysis [Mkt]
-- Target market
-- Competitor analysis
-- Positioning
-
-### Step 2: Product Messaging [PM - /pm:prd]
-- Value proposition
-- Key differentiators
-- Messaging framework
-
-### Step 3: Content Creation [Content - /content:copy]
-- Website copy
-- Launch content
-- Sales materials
-
-### Step 4: Campaign Planning [Mkt - /mkt:campaign]
-- Launch campaign
-- Channel strategy
-- Budget allocation
-
-### Step 5: Sales Enablement [Sales - /sales:deck]
-- Sales training
-- Battle cards
-- Demo scripts
-
-### Step 6: Success Metrics [DA - /da:dashboard]
-- KPI dashboard
-- Tracking setup
-- Reporting cadence
-
-### Output:
-Complete GTM strategy with all teams aligned.
-`,
-
-    // SALES commands
-    'sales/demo.md': `# Sales: Demo
-
-Create demo script for: $ARGUMENTS
-
-## Instructions
-You are a Sales Engineer. Create product demo.
-
-### Structure:
-- Opening hook
-- Pain point discovery
-- Solution presentation
-- Feature highlights
-- Objection handling
-- Next steps
-`,
-
-    'sales/proposal.md': `# Sales: Proposal
-
-Write proposal for: $ARGUMENTS
-
-## Instructions
-You are a Sales Engineer. Write technical proposal.
-
-### Include:
-- Executive summary
-- Solution overview
-- Technical architecture
-- Implementation plan
-- Pricing
-- ROI analysis
-`,
-
-    'sales/objection.md': `# Sales: Objection
-
-Handle objection: $ARGUMENTS
-
-## Instructions
-You are a Sales Engineer. Prepare objection responses.
-
-### Framework:
-- Acknowledge concern
-- Clarify understanding
-- Provide evidence
-- Offer solution
-- Confirm resolution
-`,
-
-    'sales/deck.md': `# Sales: Deck
-
-Create sales deck for: $ARGUMENTS
-
-## Instructions
-You are a Sales Engineer. Create presentation.
-
-### Slides:
-- Problem statement
-- Solution overview
-- Product demo highlights
-- Customer success stories
-- Competitive advantages
-- Pricing/next steps
-`,
-
-    'sales/deal.md': `# Sales: Enterprise Deal Workflow
-
-Close enterprise deal for: $ARGUMENTS
-
-## Multi-Role Workflow
-
-### Step 1: Discovery [Sales - /sales:demo]
-- Customer pain points
-- Requirements gathering
-- Stakeholder mapping
-
-### Step 2: Solution Design [Arch - /arch:design]
-- Technical architecture
-- Integration requirements
-- Security considerations
-
-### Step 3: Proposal [Sales - /sales:proposal]
-- Solution proposal
-- Pricing structure
-- ROI analysis
-
-### Step 4: Security Review [Sec - /sec:compliance]
-- Security questionnaire
-- Compliance documentation
-- Audit support
-
-### Step 5: Implementation Plan [Proj - /proj:timeline]
-- Project timeline
-- Resource requirements
-- Success criteria
-
-### Step 6: Support Setup [Support - /support:kb]
-- Dedicated support
-- Escalation path
-- SLA agreement
-
-### Output:
-Complete enterprise deal package ready for closing.
-`,
-
-    // SUPPORT commands
-    'support/ticket.md': `# Support: Ticket
-
-Respond to ticket: $ARGUMENTS
-
-## Instructions
-You are a Support Engineer. Handle support ticket.
-
-### Response:
-- Acknowledge issue
-- Clarifying questions
-- Troubleshooting steps
-- Solution/workaround
-- Follow-up actions
-`,
-
-    'support/kb.md': `# Support: KB
-
-Create KB article for: $ARGUMENTS
-
-## Instructions
-You are a Support Engineer. Write knowledge base article.
-
-### Structure:
-- Problem description
-- Symptoms
-- Cause
-- Solution steps
-- Prevention
-- Related articles
-`,
-
-    'support/escalate.md': `# Support: Escalate
-
-Create escalation for: $ARGUMENTS
-
-## Instructions
-You are a Support Engineer. Prepare escalation.
-
-### Include:
-- Issue summary
-- Impact assessment
-- Steps tried
-- Root cause hypothesis
-- Requested action
-- Timeline
-`,
-
-    'support/rca.md': `# Support: RCA
-
-Root cause analysis for: $ARGUMENTS
-
-## Instructions
-You are a Support Engineer. Perform RCA.
-
-### Template:
-- Incident summary
-- Timeline of events
-- Root cause (5 Whys)
-- Contributing factors
-- Corrective actions
-- Preventive measures
-`,
-
-    'support/bug.md': `# Support: Bug Resolution Workflow
-
-Resolve bug: $ARGUMENTS
-
-## Multi-Role Workflow
-
-### Step 1: Bug Triage [Support - /support:ticket]
-- Severity assessment
-- Impact scope
-- Reproduction steps
-
-### Step 2: Investigation [Dev - /dev:debug]
-- Root cause analysis
-- Affected code
-- Fix approach
-
-### Step 3: Fix Implementation [Dev]
-- Code fix
-- Unit tests
-- Code review
-
-### Step 4: QA Verification [Test - /test:unit]
-- Fix verification
-- Regression testing
-- Edge cases
-
-### Step 5: Deployment [Ops - /ops:ci]
-- Staging deployment
-- Production deployment
-- Monitoring
-
-### Step 6: Customer Communication [Support - /support:ticket]
-- Resolution notification
-- Workaround removal
-- KB update
-
-### Output:
-Bug resolved with customer notified and documentation updated.
-`,
-
-    // PROJ commands
-    'proj/timeline.md': `# Proj: Timeline
-
-Create project timeline: $ARGUMENTS
-
-## Instructions
-You are a Project Manager. Create timeline.
-
-### Include:
-- Milestones
-- Tasks and dependencies
-- Resource allocation
-- Critical path
-- Buffer time
-`,
-
-    'proj/standup.md': `# Proj: Standup
-
-Facilitate standup: $ARGUMENTS
-
-## Instructions
-You are a Project Manager. Run standup meeting.
-
-### Format:
-- What was done yesterday
-- What will be done today
-- Blockers
-- Action items
-`,
-
-    'proj/risk.md': `# Proj: Risk
-
-Assess project risks: $ARGUMENTS
-
-## Instructions
-You are a Project Manager. Create risk register.
-
-### Per Risk:
-- Description
-- Probability (H/M/L)
-- Impact (H/M/L)
-- Mitigation strategy
-- Owner
-- Status
-`,
-
-    'proj/status.md': `# Proj: Status
-
-Create status report: $ARGUMENTS
-
-## Instructions
-You are a Project Manager. Write status report.
-
-### Include:
-- Overall status (RAG)
-- Progress summary
-- Key accomplishments
-- Risks and issues
-- Next steps
-- Help needed
-`,
-
-    // SCRUM commands
-    'scrum/sprint.md': `# Scrum: Sprint
-
-Plan sprint: $ARGUMENTS
-
-## Instructions
-You are a Scrum Master. Plan sprint.
-
-### Include:
-- Sprint goal
-- Selected stories
-- Capacity planning
-- Dependencies
-- Definition of done
-`,
-
-    'scrum/retro.md': `# Scrum: Retro
-
-Facilitate retrospective: $ARGUMENTS
-
-## Instructions
-You are a Scrum Master. Run retrospective.
-
-### Format:
-- What went well
-- What didn't go well
-- What to improve
-- Action items
-- Owner and deadline
-`,
-
-    'scrum/backlog.md': `# Scrum: Backlog
-
-Refine backlog: $ARGUMENTS
-
-## Instructions
-You are a Scrum Master. Refine product backlog.
-
-### Activities:
-- Story clarification
-- Acceptance criteria
-- Story pointing
-- Dependencies
-- Priority ordering
-`,
-
-    'scrum/velocity.md': `# Scrum: Velocity
-
-Analyze velocity: $ARGUMENTS
-
-## Instructions
-You are a Scrum Master. Analyze team velocity.
-
-### Include:
-- Historical velocity
-- Trend analysis
-- Capacity factors
-- Recommendations
-- Sprint planning guidance
-`,
-
-    'scrum/kickoff.md': `# Scrum: Project Kickoff Workflow
-
-Kick off project: $ARGUMENTS
-
-## Multi-Role Workflow
-
-### Step 1: Vision & Goals [PM - /pm:prd]
-- Project vision
-- Success criteria
-- Stakeholder alignment
-
-### Step 2: Technical Planning [Arch - /arch:design]
-- Architecture overview
-- Tech stack decisions
-- Risk assessment
-
-### Step 3: Team Setup [Scrum]
-- Team composition
-- Roles and responsibilities
-- Communication channels
-
-### Step 4: Backlog Creation [PM - /pm:story]
-- Epic breakdown
-- Initial user stories
-- Priority ordering
-
-### Step 5: Sprint Zero [Dev]
-- Environment setup
-- CI/CD pipeline
-- Coding standards
-
-### Step 6: First Sprint Planning [Scrum - /scrum:sprint]
-- Sprint goal
-- Story selection
-- Capacity planning
-
-### Output:
-Project ready to start with aligned team, backlog, and first sprint planned.
-`,
-
-    // DBA commands
-    'dba/optimize.md': `# DBA: Optimize
-
-Optimize query: $ARGUMENTS
-
-## Instructions
-You are a Database Admin. Optimize SQL query.
-
-### Analysis:
-- EXPLAIN plan analysis
-- Index recommendations
-- Query rewrite suggestions
-- Performance comparison
-`,
-
-    'dba/backup.md': `# DBA: Backup
-
-Create backup strategy: $ARGUMENTS
-
-## Instructions
-You are a Database Admin. Design backup strategy.
-
-### Include:
-- Backup types (full, incremental)
-- Schedule
-- Retention policy
-- Recovery procedures
-- Testing plan
-`,
-
-    'dba/index.md': `# DBA: Index
-
-Design indexes for: $ARGUMENTS
-
-## Instructions
-You are a Database Admin. Design database indexes.
-
-### Output:
-- Recommended indexes
-- Index type (B-tree, GIN, etc.)
-- Partial indexes
-- Composite indexes
-- Maintenance plan
-`,
-
-    'dba/monitor.md': `# DBA: Monitor
-
-Setup database monitoring: $ARGUMENTS
-
-## Instructions
-You are a Database Admin. Setup monitoring.
-
-### Metrics:
-- Query performance
-- Connection pool
-- Replication lag
-- Disk usage
-- Alert thresholds
-`,
-
-    'dba/migration.md': `# DBA: Database Migration Workflow
-
-Migrate database: $ARGUMENTS
-
-## Multi-Role Workflow
-
-### Step 1: Planning [DBA - /dba:backup]
-- Backup strategy
-- Rollback plan
-- Downtime window
-
-### Step 2: Schema Changes [DBA - /dba:index]
-- Migration scripts
-- Index changes
-- Data transformations
-
-### Step 3: Application Updates [Dev - /dev:implement]
-- Code changes
-- ORM updates
-- Backward compatibility
-
-### Step 4: Testing [Test - /test:e2e]
-- Migration testing
-- Performance testing
-- Data validation
-
-### Step 5: Execution [Ops - /ops:ci]
-- Maintenance window
-- Migration execution
-- Monitoring
-
-### Step 6: Validation [DBA - /dba:monitor]
-- Data integrity
-- Performance check
-- Rollback readiness
-
-### Output:
-Successful migration with validated data and performance.
-`,
-
-    // MOBILE commands
-    'mobile/screen.md': `# Mobile: Screen
-
-Create screen for: $ARGUMENTS
-
-## Instructions
-You are a Mobile Developer. Create mobile screen.
-
-### Include:
-- UI layout
-- Navigation
-- State management
-- Platform-specific code
-- Accessibility
-`,
-
-    'mobile/native.md': `# Mobile: Native
-
-Implement native feature: $ARGUMENTS
-
-## Instructions
-You are a Mobile Developer. Implement native functionality.
-
-### Consider:
-- Platform APIs
-- Permissions
-- Background tasks
-- Native modules/bridges
-`,
-
-    'mobile/push.md': `# Mobile: Push
-
-Implement push notifications: $ARGUMENTS
-
-## Instructions
-You are a Mobile Developer. Setup push notifications.
-
-### Include:
-- Service setup (FCM/APNs)
-- Permission handling
-- Token management
-- Deep linking
-- Notification handling
-`,
-
-    'mobile/store.md': `# Mobile: Store
-
-Prepare store submission: $ARGUMENTS
-
-## Instructions
-You are a Mobile Developer. Prepare app store submission.
-
-### Checklist:
-- App metadata
-- Screenshots
-- Privacy policy
-- Review guidelines
-- Version notes
-`,
-
-    'mobile/launch.md': `# Mobile: App Launch Workflow
-
-Launch mobile app: $ARGUMENTS
-
-## Multi-Role Workflow
-
-### Step 1: Feature Complete [Mobile - /mobile:screen]
-- All screens implemented
-- Native features
-- Offline support
-
-### Step 2: QA Testing [Test - /test:e2e]
-- Device testing
-- OS version coverage
-- Performance testing
-
-### Step 3: Store Preparation [Mobile - /mobile:store]
-- App metadata
-- Screenshots
-- Privacy policy
-
-### Step 4: Marketing Assets [Content - /content:copy]
-- App description
-- What's new
-- Promotional text
-
-### Step 5: Beta Release [Ops]
-- TestFlight / Play Console
-- Beta testers
-- Feedback collection
-
-### Step 6: Production Release [Mkt - /mkt:campaign]
-- Staged rollout
-- Launch announcement
-- ASO optimization
-
-### Output:
-App launched on stores with marketing support.
-`,
-
-    // GAME commands
-    'game/mechanic.md': `# Game: Mechanic
-
-Design game mechanic: $ARGUMENTS
-
-## Instructions
-You are a Game Developer. Design game mechanic.
-
-### Include:
-- Mechanic description
-- Player interaction
-- Feedback loops
-- Balance considerations
-- Implementation approach
-`,
-
-    'game/asset.md': `# Game: Asset
-
-Integrate game asset: $ARGUMENTS
-
-## Instructions
-You are a Game Developer. Integrate game assets.
-
-### Consider:
-- Asset optimization
-- Loading strategy
-- Memory management
-- Platform support
-`,
-
-    'game/physics.md': `# Game: Physics
-
-Implement physics for: $ARGUMENTS
-
-## Instructions
-You are a Game Developer. Implement game physics.
-
-### Include:
-- Physics system choice
-- Collision detection
-- Rigidbody setup
-- Performance optimization
-`,
-
-    'game/balance.md': `# Game: Balance
-
-Balance game system: $ARGUMENTS
-
-## Instructions
-You are a Game Developer. Balance game systems.
-
-### Analyze:
-- Current metrics
-- Player feedback
-- Progression curves
-- Economy balance
-- Difficulty tuning
-`,
-
-    // WEB3 commands
-    'web3/contract.md': `# Web3: Contract
-
-Write smart contract for: $ARGUMENTS
-
-## Instructions
-You are a Blockchain Developer. Write smart contract.
-
-### Include:
-- Contract code (Solidity/Rust)
-- Security considerations
-- Gas optimization
-- Events and errors
-- Tests
-`,
-
-    'web3/audit.md': `# Web3: Audit
-
-Audit smart contract: $ARGUMENTS
-
-## Instructions
-You are a Blockchain Developer. Audit smart contract.
-
-### Check:
-- Common vulnerabilities
-- Access control
-- Reentrancy
-- Integer overflow
-- Gas optimization
-`,
-
-    'web3/deploy.md': `# Web3: Deploy
-
-Deploy contract: $ARGUMENTS
-
-## Instructions
-You are a Blockchain Developer. Deploy smart contract.
-
-### Include:
-- Deployment script
-- Network configuration
-- Verification steps
-- Upgrade strategy
-`,
-
-    'web3/token.md': `# Web3: Token
-
-Create token: $ARGUMENTS
-
-## Instructions
-You are a Blockchain Developer. Create token contract.
-
-### Include:
-- Token standard (ERC20/721/1155)
-- Token economics
-- Distribution plan
-- Contract code
-- Tests
-`,
-
-    // HR commands
-    'hr/job.md': `# HR: Job Description
-
-Create job description for: $ARGUMENTS
-
-## Instructions
-You are an HR Specialist. Write a job description.
-
-### Structure:
-1. **Job Title**: Clear, standard title
-2. **About Us**: Company overview
-3. **Role Overview**: Summary of the position
-4. **Responsibilities**: Key duties (5-8 bullets)
-5. **Requirements**: Must-have qualifications
-6. **Nice-to-Have**: Preferred qualifications
-7. **Benefits**: Compensation and perks
-8. **How to Apply**: Application process
-
-### Guidelines:
-- Use inclusive language
-- Avoid jargon and acronyms
-- Be specific about requirements
-- Include salary range if possible
-`,
-
-    'hr/interview.md': `# HR: Interview Guide
-
-Create interview guide for: $ARGUMENTS
-
-## Instructions
-You are an HR Specialist. Create structured interview guide.
-
-### Output:
-1. **Role Overview**: Position summary
-2. **Interview Structure**: Timeline and format
-3. **Screening Questions**: Initial qualification check
-4. **Behavioral Questions**: STAR format questions
-5. **Technical Questions**: Role-specific assessments
-6. **Culture Fit Questions**: Values alignment
-7. **Candidate Questions**: Time for candidate to ask
-8. **Evaluation Rubric**: Scoring criteria
-
-### Question Types:
-- Behavioral: "Tell me about a time when..."
-- Situational: "How would you handle..."
-- Technical: Role-specific knowledge
-`,
-
-    'hr/onboard.md': `# HR: Onboarding Plan
-
-Create onboarding plan for: $ARGUMENTS
-
-## Instructions
-You are an HR Specialist. Create employee onboarding plan.
-
-### Timeline:
-1. **Pre-boarding** (before day 1)
-   - Equipment setup
-   - Account creation
-   - Welcome email
-
-2. **Day 1**
-   - Welcome and orientation
-   - Team introductions
-   - Workspace setup
-
-3. **Week 1**
-   - Company overview
-   - Role expectations
-   - Initial training
-
-4. **Month 1**
-   - Deeper training
-   - First projects
-   - Check-in meetings
-
-5. **90 Days**
-   - Performance check-in
-   - Goal setting
-   - Feedback session
-
-### Checklist:
-- Documentation needed
-- Training modules
-- Key contacts
-- Success metrics
-`,
-
-    'hr/review.md': `# HR: Performance Review
-
-Create performance review for: $ARGUMENTS
-
-## Instructions
-You are an HR Specialist. Create performance review template.
-
-### Review Structure:
-1. **Employee Information**
-   - Name, role, review period
-
-2. **Goals Review**
-   - Previous goals
-   - Achievement status
-   - Evidence/examples
-
-3. **Competency Assessment**
-   - Technical skills
-   - Soft skills
-   - Leadership (if applicable)
-
-4. **Achievements**
-   - Key accomplishments
-   - Impact and results
-
-5. **Areas for Improvement**
-   - Development opportunities
-   - Support needed
-
-6. **Future Goals**
-   - Next period objectives
-   - Development plan
-
-7. **Overall Rating**
-   - Rating scale and criteria
-   - Summary feedback
-
-### Rating Scale:
-1 - Needs Improvement
-2 - Meets Some Expectations
-3 - Meets Expectations
-4 - Exceeds Expectations
-5 - Outstanding
-`,
-
-    'hr/hire.md': `# HR: Hiring Workflow
-
-Run hiring process for: $ARGUMENTS
-
-## Multi-Role Workflow
-
-### Step 1: Job Definition [HR - /hr:job]
-- Job description
-- Requirements
-- Salary range
-
-### Step 2: Role Requirements [PM - /pm:story]
-- Team needs
-- Project context
-- Success criteria
-
-### Step 3: Interview Design [HR - /hr:interview]
-- Interview stages
-- Question bank
-- Evaluation rubric
-
-### Step 4: Technical Assessment [Dev/relevant role]
-- Technical questions
-- Coding challenge
-- System design (if senior)
-
-### Step 5: Offer & Onboarding [HR - /hr:onboard]
-- Offer letter
-- Onboarding plan
-- Team introduction
-
-### Output:
-Complete hiring pipeline from job posting to onboarding plan.
-`,
-
-    'hr/offboard.md': `# HR: Offboarding Workflow
-
-Offboard employee: $ARGUMENTS
-
-## Multi-Role Workflow
-
-### Step 1: Exit Process [HR]
-- Exit interview scheduling
-- Documentation checklist
-- Final payroll
-
-### Step 2: Knowledge Transfer [Dev/relevant role]
-- Documentation of work
-- Handover sessions
-- Access to resources
-
-### Step 3: Access Revocation [Ops - /ops:ci]
-- Account deactivation
-- Access removal
-- Equipment return
-
-### Step 4: Team Communication [PM]
-- Team notification
-- Responsibility redistribution
-- Timeline communication
-
-### Step 5: Exit Interview [HR]
-- Feedback collection
-- Improvement insights
-- Alumni network
-
-### Output:
-Smooth offboarding with knowledge preserved and access secured.
+    'da/notebook.md': `# /da:notebook - Create Jupyter Notebook
+
+Notebook for: $ARGUMENTS
+
+## Purpose
+Create a structured Jupyter notebook for analysis or data processing.
+
+## Notebook Structure
+
+### Standard Sections
+1. **Title & Overview** - What this notebook does
+2. **Setup** - Imports and configuration
+3. **Data Loading** - Get the data
+4. **Exploration** - Understand the data
+5. **Analysis** - Main analysis work
+6. **Visualization** - Charts and graphs
+7. **Conclusions** - Summary and next steps
+
+## Output Template
+
+\`\`\`python
+# %% [markdown]
+# # [Analysis Title]
+#
+# **Author:** Data Analyst
+# **Date:** [Date]
+# **Purpose:** [One-line description]
+#
+# ## Overview
+# [2-3 sentences about what this notebook accomplishes]
+
+# %% [markdown]
+# ## 1. Setup
+
+# %%
+# Standard imports
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+from datetime import datetime, timedelta
+
+# Configuration
+pd.set_option('display.max_columns', 50)
+pd.set_option('display.max_rows', 100)
+plt.style.use('seaborn-v0_8-whitegrid')
+%matplotlib inline
+
+# Database connection (if needed)
+# from sqlalchemy import create_engine
+# engine = create_engine('postgresql://...')
+
+# %% [markdown]
+# ## 2. Data Loading
+
+# %%
+# Option 1: From SQL
+query = """
+SELECT *
+FROM table_name
+WHERE date >= '2024-01-01'
+"""
+# df = pd.read_sql(query, engine)
+
+# Option 2: From file
+# df = pd.read_csv('data.csv')
+
+# Option 3: Sample data for development
+df = pd.DataFrame({
+    'date': pd.date_range('2024-01-01', periods=100),
+    'user_id': np.random.randint(1, 1000, 100),
+    'amount': np.random.uniform(10, 500, 100),
+    'category': np.random.choice(['A', 'B', 'C'], 100)
+})
+
+print(f"Loaded {len(df):,} rows")
+df.head()
+
+# %% [markdown]
+# ## 3. Data Exploration
+
+# %%
+# Basic info
+print("Shape:", df.shape)
+print("\\nData types:")
+print(df.dtypes)
+print("\\nMissing values:")
+print(df.isnull().sum())
+
+# %%
+# Summary statistics
+df.describe()
+
+# %%
+# Value distributions
+for col in df.select_dtypes(include=['object', 'category']).columns:
+    print(f"\\n{col}:")
+    print(df[col].value_counts())
+
+# %% [markdown]
+# ## 4. Analysis
+
+# %%
+# [Main analysis code here]
+# Group by analysis
+summary = df.groupby('category').agg({
+    'amount': ['sum', 'mean', 'count'],
+    'user_id': 'nunique'
+}).round(2)
+summary.columns = ['total_amount', 'avg_amount', 'transactions', 'unique_users']
+summary
+
+# %%
+# Time series analysis
+daily = df.groupby('date')['amount'].sum().reset_index()
+daily['rolling_7d'] = daily['amount'].rolling(7).mean()
+daily
+
+# %% [markdown]
+# ## 5. Visualization
+
+# %%
+fig, axes = plt.subplots(2, 2, figsize=(14, 10))
+
+# Chart 1: Distribution
+df['amount'].hist(bins=30, ax=axes[0,0], edgecolor='black')
+axes[0,0].set_title('Amount Distribution')
+axes[0,0].set_xlabel('Amount')
+
+# Chart 2: Category breakdown
+df.groupby('category')['amount'].sum().plot(kind='bar', ax=axes[0,1])
+axes[0,1].set_title('Total by Category')
+axes[0,1].set_xlabel('Category')
+
+# Chart 3: Time series
+axes[1,0].plot(daily['date'], daily['amount'], alpha=0.5, label='Daily')
+axes[1,0].plot(daily['date'], daily['rolling_7d'], label='7-day avg')
+axes[1,0].set_title('Amount Over Time')
+axes[1,0].legend()
+
+# Chart 4: Box plot
+df.boxplot(column='amount', by='category', ax=axes[1,1])
+axes[1,1].set_title('Amount by Category')
+
+plt.tight_layout()
+plt.savefig('analysis_charts.png', dpi=150, bbox_inches='tight')
+plt.show()
+
+# %% [markdown]
+# ## 6. Conclusions
+#
+# ### Key Findings
+# 1. [Finding 1]
+# 2. [Finding 2]
+# 3. [Finding 3]
+#
+# ### Recommendations
+# - [Recommendation 1]
+# - [Recommendation 2]
+#
+# ### Next Steps
+# - [ ] [Follow-up analysis]
+# - [ ] [Data to collect]
+
+# %%
+# Export results if needed
+# summary.to_csv('results.csv', index=False)
+\`\`\`
+
+## Notebook Best Practices
+
+1. **Clear structure** - Use markdown headers to organize
+2. **Reproducible** - Include all imports and data loading
+3. **Documented** - Explain what each section does
+4. **Visualized** - Use charts to support findings
+5. **Actionable** - End with conclusions and next steps
+
+## Examples
+- \`/da:notebook customer churn analysis\`
+- \`/da:notebook A/B test results evaluation\`
+- \`/da:notebook monthly metrics review\`
 `,
   };
 }
