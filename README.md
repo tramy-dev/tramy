@@ -7,7 +7,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square)](https://opensource.org/licenses/MIT)
 [![Node](https://img.shields.io/node/v/tramy.svg?style=flat-square&color=green)](https://nodejs.org)
 
-**6 Core Commands** | **6 DA Commands** | **12 Total** | [**Documentation**](https://tramy.dev/docs)
+**6 Core Commands** | **6 DA Commands** | [**Documentation**](https://tramy.dev/docs)
 
 ---
 
@@ -30,7 +30,7 @@ tramy setup
 - `CLAUDE.md` - Project context with 6 core commands
 - `.claude/commands/` - 6 core command templates
 
-### Data Analyst Setup (Full Toolkit)
+### Data Analyst Setup (DA Commands Only)
 
 ```bash
 cd your-project
@@ -38,8 +38,8 @@ tramy setup da
 ```
 
 **Generates:**
-- `CLAUDE.md` - Full DA toolkit documentation
-- `.claude/commands/` - 6 core + 6 DA commands
+- `CLAUDE.md` - DA toolkit documentation
+- `.claude/commands/da/` - 6 DA commands only
 - `.claude/agents/` - DA agent template
 - `data/raw/` - Raw data files
 - `data/processed/` - Processed data files
@@ -154,8 +154,8 @@ After running `/analyze "sales_2024.csv"`:
 ## CLI Commands
 
 ```bash
-tramy setup        # Setup with core commands
-tramy setup da     # Setup DA toolkit with folders
+tramy setup        # Setup with 6 core commands
+tramy setup da     # Setup with 6 DA commands only
 tramy setup --yes  # Quick setup (no prompts)
 tramy list         # List all commands
 tramy doctor       # Health check
@@ -202,12 +202,6 @@ your-project/
     ├── agents/
     │   └── data-analyst.md
     ├── commands/
-    │   ├── analyze.md
-    │   ├── plan.md
-    │   ├── build.md
-    │   ├── test.md
-    │   ├── doc.md
-    │   ├── commit.md
     │   └── da/
     │       ├── query.md
     │       ├── analyze.md
