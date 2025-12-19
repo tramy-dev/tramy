@@ -15,8 +15,8 @@ export const listCommand = new Command('list')
     console.log();
     console.log(chalk.bold.white('Statistics'));
     console.log(`  ${chalk.dim('Core Commands:')} ${chalk.white('6')}`);
-    console.log(`  ${chalk.dim('DA Commands:')} ${chalk.white('5')}`);
-    console.log(`  ${chalk.dim('Total:')} ${chalk.bold.green('11')} commands`);
+    console.log(`  ${chalk.dim('DA Commands:')} ${chalk.white('6')}`);
+    console.log(`  ${chalk.dim('Total:')} ${chalk.bold.green('12')} commands`);
 
     // Core commands
     console.log();
@@ -33,6 +33,7 @@ export const listCommand = new Command('list')
     console.log(chalk.bold.cyan('DA Commands'));
     console.log(`  ${chalk.cyan('/da:query'.padEnd(20))} Write optimized SQL queries`);
     console.log(`  ${chalk.cyan('/da:analyze'.padEnd(20))} Exploratory data analysis`);
+    console.log(`  ${chalk.cyan('/da:clean'.padEnd(20))} Clean data (raw → processed)`);
     console.log(`  ${chalk.cyan('/da:report'.padEnd(20))} Generate analysis reports`);
     console.log(`  ${chalk.cyan('/da:dashboard'.padEnd(20))} Design BI dashboards`);
     console.log(`  ${chalk.cyan('/da:notebook'.padEnd(20))} Create Jupyter notebooks`);

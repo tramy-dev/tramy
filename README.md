@@ -7,7 +7,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square)](https://opensource.org/licenses/MIT)
 [![Node](https://img.shields.io/node/v/tramy.svg?style=flat-square&color=green)](https://nodejs.org)
 
-**6 Core Commands** | **5 DA Commands** | **11 Total** | [**Documentation**](https://tramy.dev/docs)
+**6 Core Commands** | **6 DA Commands** | **12 Total** | [**Documentation**](https://tramy.dev/docs)
 
 ---
 
@@ -39,7 +39,7 @@ tramy setup da
 
 **Generates:**
 - `CLAUDE.md` - Full DA toolkit documentation
-- `.claude/commands/` - 6 core + 5 DA commands
+- `.claude/commands/` - 6 core + 6 DA commands
 - `.claude/agents/` - DA agent template
 - `data/raw/` - Raw data files
 - `data/processed/` - Processed data files
@@ -60,12 +60,13 @@ tramy setup da
 | `/doc` | Generate documentation and reports |
 | `/commit` | Git commit with proper message |
 
-## DA Commands (5)
+## DA Commands (6)
 
 | Command | Description |
 |---------|-------------|
 | `/da:query` | Write optimized SQL queries |
 | `/da:analyze` | Exploratory data analysis |
+| `/da:clean` | Clean data (raw → processed) |
 | `/da:report` | Generate analysis reports |
 | `/da:dashboard` | Design BI dashboards |
 | `/da:notebook` | Create Jupyter notebooks |
@@ -210,6 +211,7 @@ your-project/
     │   └── da/
     │       ├── query.md
     │       ├── analyze.md
+    │       ├── clean.md
     │       ├── report.md
     │       ├── dashboard.md
     │       └── notebook.md

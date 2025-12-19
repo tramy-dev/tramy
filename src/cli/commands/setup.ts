@@ -133,12 +133,13 @@ export const setupCommand = new Command('setup')
         logger.blank();
         logger.success('DA Toolkit is ready!');
         logger.blank();
-        logger.info('5 DA commands installed');
+        logger.info('6 DA commands installed');
         logger.blank();
         logger.info('DA Commands:');
         logger.list([
           '/da:query     - Write optimized SQL queries',
           '/da:analyze   - Exploratory data analysis',
+          '/da:clean     - Clean data (raw → processed)',
           '/da:report    - Generate analysis reports',
           '/da:dashboard - Design BI dashboards',
           '/da:notebook  - Create Jupyter notebooks',
