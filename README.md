@@ -6,7 +6,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square)](https://opensource.org/licenses/MIT)
 [![Node](https://img.shields.io/node/v/tramy.svg?style=flat-square&color=green)](https://nodejs.org)
 
-**6 Core Commands** | **5 DA Commands** | **11 Total**
+**6 Core Commands** | **5 DA Commands** | **11 Total** | [**Documentation**](https://tramy.dev/docs)
 
 ---
 
