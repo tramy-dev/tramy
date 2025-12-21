@@ -13,9 +13,25 @@
 
 ## Installation
 
+### Option 1: Claude Code Plugin (Recommended)
+
+Install directly in Claude Code:
+
+```
+/plugin add tramy-dev/tramy
+```
+
+This gives you access to all 137 commands across 25 roles instantly.
+
+### Option 2: CLI (npm)
+
 ```bash
 npm install -g tramy
 ```
+
+Then run `tramy setup` or `tramy setup da` to scaffold your project.
+
+---
 
 ## Quick Start
 
