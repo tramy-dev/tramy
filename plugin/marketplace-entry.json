@@ -1,7 +1,7 @@
 {
   "name": "tramy",
-  "description": "The Ultimate AI Productivity Toolkit - 25 roles, 137 commands, multi-role workflows",
-  "version": "2.0.2",
+  "description": "DA Toolkit - Data Analyst Toolkit for Claude Code with knowledge management and specialized workflows",
+  "version": "3.0.5",
   "source": {
     "type": "github",
     "repo": "tramy-dev/tramy",
@@ -13,23 +13,20 @@
   },
   "license": "MIT",
   "tags": [
+    "data-analyst",
+    "data-analysis",
     "productivity",
     "workflow",
-    "roles",
-    "agents",
-    "commands",
-    "multi-role",
-    "automation",
-    "pm",
-    "devops",
-    "frontend",
-    "backend",
-    "data-analyst"
+    "knowledge-management",
+    "sql",
+    "jupyter",
+    "dashboard",
+    "reporting"
   ],
   "categories": [
+    "data-analysis",
     "productivity",
-    "workflow",
-    "development"
+    "workflow"
   ],
   "features": {
     "coreCommands": 6,

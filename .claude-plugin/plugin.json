@@ -1,7 +1,7 @@
 {
   "name": "tramy",
-  "description": "The Ultimate AI Productivity Toolkit for Claude Code - 25 roles, 137 commands, multi-role workflows",
-  "version": "2.0.2",
+  "description": "DA Toolkit - Data Analyst Toolkit for Claude Code with knowledge management and specialized workflows",
+  "version": "3.0.5",
   "author": {
     "name": "tramy.dev",
     "email": "daiduong.eth@gmail.com",
